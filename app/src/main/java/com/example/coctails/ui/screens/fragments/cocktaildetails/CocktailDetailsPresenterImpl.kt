@@ -1,16 +1,27 @@
 package com.example.coctails.ui.screens.fragments.cocktaildetails
 
-import com.example.coctails.core.App
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import androidx.annotation.NonNull
+import com.example.coctails.network.models.firebase.drink.Cocktails
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+
 
 class CocktailDetailsPresenterImpl : CocktailDetailsPresenter() {
 
-    override fun getCocktailDetails(cocktailsId: String) {
-            addToDispose(
-                App.instanse?.api?.getCocktailById(cocktailsId)
-                    ?.subscribeOn(Schedulers.io())
-                    ?.observeOn(AndroidSchedulers.mainThread())
-                    ?.subscribe { t1, t2 -> screenView?.showResult(t1)})
-        }
+    var database = FirebaseDatabase.getInstance()
+    var myRef = database.getReference("drink")
+
+
+    override fun getCocktailDetails(category: String, cocktailsId: String) {
+        myRef.child(category).child(cocktailsId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
+                    screenView?.showResult(dataSnapshot.getValue(Cocktails::class.java)!!)
+                }
+
+                override fun onCancelled(@NonNull databaseError: DatabaseError) {}
+            })
+    }
 }

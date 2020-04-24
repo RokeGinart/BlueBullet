@@ -2,24 +2,34 @@ package com.example.coctails.ui.screens.fragments.cocktaildetails
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.coctails.R
-import com.example.coctails.network.models.CocktailsSearch
+import com.example.coctails.interfaces.OnRecyclerItemClick
+import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
+import com.example.coctails.ui.screens.fragments.cocktaildetails.adapters.IngredientsRecyclerAdapter
+import com.example.coctails.ui.screens.fragments.mainscreen.adapters.CocktailsRecyclerAdapter
+import com.example.coctails.utils.CATEGORY
+import com.example.coctails.utils.COCKTAIL
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_cocktail_details.*
+import kotlinx.android.synthetic.main.fragment_main_screen.*
 
 class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsView>(),
-    CocktailDetailsView {
+    CocktailDetailsView, OnRecyclerItemClick{
 
     override fun getLayoutId(): Int = R.layout.fragment_cocktail_details
 
     private var activity: MainActivity? = null
+    private var mLayoutManager: LinearLayoutManager? = null
+    private var adapter: IngredientsRecyclerAdapter? = null
 
     private var cocktailId: String? = null
+    private var category: String? = null
 
     override fun providePresenter(): CocktailDetailsPresenter = CocktailDetailsPresenterImpl()
 
@@ -28,9 +38,12 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
         presenter.bindView(this)
 
         val bundle = arguments
-        cocktailId = bundle!!.getString("COCKTAIL")
+        cocktailId = bundle!!.getString(COCKTAIL)
+        category = bundle.getString(CATEGORY)
 
-        presenter.getCocktailDetails(cocktailId!!)
+        presenter.getCocktailDetails(category!!, cocktailId!!)
+
+        setupRecycler()
     }
 
     override fun onAttach(context: Context) {
@@ -38,18 +51,35 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
         activity = context as MainActivity
     }
 
+    private fun setupRecycler() {
+        mLayoutManager = LinearLayoutManager(context)
+        ingredientsRecyclerCD.layoutManager = mLayoutManager
+        ingredientsRecyclerCD.setHasFixedSize(true)
+        adapter = IngredientsRecyclerAdapter(this)
+        ingredientsRecyclerCD.adapter = adapter
+    }
+
+    override fun onItemClick(position: Int) {
+
+    }
+
     override fun onResume() {
         super.onResume()
-        commonToolbarTitle.text = "Cocktail Details"
         commonToolbarBackPress.visibility = View.VISIBLE
         commonToolbarBackPress.setOnClickListener { activity?.onBackPressed() }
     }
 
-    override fun showResult(cocktails: CocktailsSearch) {
-        Glide.with(this).load(cocktails.drinks?.get(0)?.strDrinkThumb).centerCrop()
+    override fun showResult(cocktails: Cocktails) {
+        Glide.with(this).load(cocktails.image).centerCrop()
             .into(cocktailImage)
-        cocktailName.text = cocktails.drinks?.get(0)?.strDrink
-        cocktailData.text = cocktails.drinks?.get(0)?.strInstructions
+        cocktailName.text = cocktails.name
+        cocktailCategoryCD.text = cocktails.category?.name
+        cocktailGlassCD.text = cocktails.glass
+        cocktailIbaCD.text = cocktails.iba
+        instructionCD.text = cocktails.instruction
+        cookTimeCD.text = cocktails.cooktime
+
+        adapter?.setList(cocktails.ingredients!!.subList(1, cocktails.ingredients!!.size))
     }
 
     override fun onDestroyView() {

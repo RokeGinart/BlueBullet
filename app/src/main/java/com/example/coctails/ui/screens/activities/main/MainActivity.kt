@@ -19,11 +19,15 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
         setContentView(R.layout.activity_main)
         presenter.bindView(this)
 
-        loadFragment(MainScreenFragment(), "Main", false)
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container, MainScreenFragment(), "Main")
+            .commit()
     }
 
     fun loadFragment(fragment: Fragment, name : String, addToBackStackBoo: Boolean){
-        val fm = supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment, name)
+        val fm = supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.right_in, R.anim.lift_in)
+            .add(R.id.fragment_container, fragment, name)
         this.fragment = fragment
         if(addToBackStackBoo){
             fm.addToBackStack(null)
@@ -35,7 +39,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
     override fun onBackPressed() {
         val fm = supportFragmentManager
         if (fm.backStackEntryCount > 0) {
-            fm.beginTransaction().remove(fragment!!).commit()
+            fm.beginTransaction().setCustomAnimations(R.anim.left_out, R.anim.right_out).remove(fragment!!).commit()
             fm.popBackStack()
         } else {
             val t = System.currentTimeMillis()

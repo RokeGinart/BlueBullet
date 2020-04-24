@@ -1,34 +1,33 @@
-package com.example.coctails.ui.screens.fragments.mainscreen.adapters
+package com.example.coctails.ui.screens.fragments.cocktaildetails.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.coctails.R
 import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.network.models.firebase.drink.Cocktails
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.cocktail_item.view.*
+import kotlinx.android.synthetic.main.ingredients_item.view.*
 
-class CocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemClick) :
-    RecyclerView.Adapter<CocktailsRecyclerAdapter.ViewHolder>() {
+class IngredientsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemClick) :
+    RecyclerView.Adapter<IngredientsRecyclerAdapter.ViewHolder>() {
 
-    private val cocktails = ArrayList<Cocktails>()
+    private val ingredients = ArrayList<Cocktails.Ingredients?>()
 
-    fun setList(stList: List<Cocktails>) {
-        cocktails.clear()
-        cocktails.addAll(stList)
+    fun setList(stList: List<Cocktails.Ingredients?>) {
+        ingredients.addAll(stList)
         notifyDataSetChanged()
     }
 
     fun clearAdapter() {
-        cocktails.clear()
+        ingredients.clear()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.cocktail_item, parent, false)
+        val view = layoutInflater.inflate(R.layout.ingredients_item, parent, false)
 
         val viewHolder = ViewHolder(view)
         viewHolder.onItemClick = onRecyclerItemClick
@@ -37,12 +36,15 @@ class CocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemCl
     }
 
     override fun getItemCount(): Int {
-        return cocktails.size
+        return ingredients.size
+
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val drink = cocktails[position]
-        holder.bind(drink)
+        val ingredient = ingredients[position]
+
+        Log.d("TAGS", "asd " + ingredient?.name  + " " + ingredient?.id )
+            holder.bind(ingredient)
     }
 
     class ViewHolder(itemView: View) :
@@ -53,16 +55,10 @@ class CocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemCl
 
         lateinit var onItemClick: OnRecyclerItemClick
 
-        fun bind(coctails: Cocktails) {
+        fun bind(ingredients: Cocktails.Ingredients?) {
             itemView.setOnClickListener { onItemClick.onItemClick(adapterPosition) }
 
-            Glide.with(itemView.context)
-                .load(coctails.image)
-                .centerCrop()
-                .into(itemView.cocktailsImageMV)
-
-            itemView.cocktailsNameMV.text = coctails.name
+            itemView.ingredientName.text = ingredients?.name
         }
     }
 }
-

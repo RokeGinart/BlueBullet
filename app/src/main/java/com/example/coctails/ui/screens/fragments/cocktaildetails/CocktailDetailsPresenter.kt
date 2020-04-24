@@ -4,5 +4,5 @@ import com.example.coctails.ui.BasePresenter
 
 abstract class CocktailDetailsPresenter : BasePresenter<CocktailDetailsView>(){
 
-    abstract fun getCocktailDetails(cocktailsId : String)
+    abstract fun getCocktailDetails(category: String, cocktailsId : String)
 }

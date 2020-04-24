@@ -1,5 +1,6 @@
 package com.example.coctails.network
 
+import com.example.coctails.network.models.CocktailsCategoryList
 import com.example.coctails.network.models.CocktailsSearch
 import io.reactivex.Single
 
@@ -9,16 +10,15 @@ class ApiManager : CocktailsAPI {
     private val appApi = retrofit.create(CocktailsAPI::class.java)
 
 
-    override fun searchCocktails(cocktailName: String): Single<CocktailsSearch> {
+    override fun searchCocktails(cocktailName: String): Single<CocktailsCategoryList> {
        return appApi.searchCocktails(cocktailName)
     }
 
-    /*   override fun getTopMovie(): Single<List<TopMovies>> {
-        return appApi.getTopMovie()
+    override fun getCocktailsByCategory(cocktailCategory: String): Single<CocktailsCategoryList> {
+        return appApi.getCocktailsByCategory(cocktailCategory)
     }
 
-    override fun getLatestUpdate(page: Int): Single<LatestUpdate> {
-        return appApi.getLatestUpdate(page)
+    override fun getCocktailById(cocktailId: String): Single<CocktailsSearch> {
+        return appApi.getCocktailById(cocktailId)
     }
-    */
 }

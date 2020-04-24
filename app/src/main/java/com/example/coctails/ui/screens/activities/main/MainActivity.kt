@@ -1,13 +1,16 @@
 package com.example.coctails.ui.screens.activities.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.coctails.R
-import com.example.coctails.network.models.CocktailsSearch
 import com.example.coctails.ui.screens.BaseActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.coctails.ui.screens.fragments.mainscreen.MainScreenFragment
 
 class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
+
+    private var backPressedTime: Long = 0
+    private var fragment: Fragment? = null
 
     override fun providePresenter(): MainPresenter = MainPresenterImpl()
 
@@ -16,12 +19,40 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
         setContentView(R.layout.activity_main)
         presenter.bindView(this)
 
-        click.setOnClickListener {
-            presenter.getCocktail(nameCock.text.toString())
+        loadFragment(MainScreenFragment(), "Main", false)
+    }
+
+    fun loadFragment(fragment: Fragment, name : String, addToBackStackBoo: Boolean){
+        val fm = supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment, name)
+        this.fragment = fragment
+        if(addToBackStackBoo){
+            fm.addToBackStack(null)
+        }
+
+        fm.commit()
+    }
+
+    override fun onBackPressed() {
+        val fm = supportFragmentManager
+        if (fm.backStackEntryCount > 0) {
+            fm.beginTransaction().remove(fragment!!).commit()
+            fm.popBackStack()
+        } else {
+            val t = System.currentTimeMillis()
+            if (t - backPressedTime > 2000) {
+                backPressedTime = t
+                Toast.makeText(this, "Press back to exit", Toast.LENGTH_SHORT).show()
+            } else {
+                super.onBackPressed()
+                this.finish()
+            }
         }
     }
 
-    override fun showCocktails(cocktailsSearch: CocktailsSearch) {
-        result.text = cocktailsSearch.drinks?.get(0)?.strCategory + " " + cocktailsSearch.drinks?.get(0)?.strAlcoholic
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.unbindView()
     }
 }
+
+

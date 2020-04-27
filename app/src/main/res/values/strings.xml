@@ -4,12 +4,20 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="bar">Бар</string>
+    <string name="info">Информация</string>
     <string name="search">Поиск</string>
     <string name="options">Опции</string>
     <string name="category">Категория:</string>
+    <string name="categories">Категории</string>
     <string name="glass">Посуда:</string>
     <string name="alc">Алкоголь:</string>
     <string name="ingredients">Ингредиенты</string>
     <string name="receipt">Рецепт</string>
     <string name="time">Время:</string>
+    <string name="cocktails">Коктейли</string>
+    <string name="shots">Шот</string>
+    <string name="longs">Лонг</string>
+    <string name="short_desc">Небольшие (Short drinks).\n\nПодаются в бокалах объемом 60–160 мл, крепость варьируется от 17 до 45 градусов.</string>
+    <string name="long_desc">Лонги (Long drinks).\n\nПьют из высоких стаканов объемом 160–300 мл, крепость редко превышает 17 градусов.</string>
+    <string name="shot_desc">Шоты (Shot drinks).\n\nСервируются в стопках объемом 40–60 мл, выпиваются залпом.\nМогут быть слоеными, крепкими, слабыми, некоторые поджигают.</string>
 </resources>

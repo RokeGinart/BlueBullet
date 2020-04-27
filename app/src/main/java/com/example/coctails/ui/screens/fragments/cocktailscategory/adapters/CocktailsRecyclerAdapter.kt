@@ -1,4 +1,4 @@
-package com.example.coctails.ui.screens.fragments.mainscreen.adapters
+package com.example.coctails.ui.screens.fragments.cocktailscategory.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +25,8 @@ class CocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemCl
     fun clearAdapter() {
         cocktails.clear()
     }
+
+    fun getAdapterList() : List<Cocktails> = cocktails
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

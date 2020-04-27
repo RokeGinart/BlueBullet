@@ -17,4 +17,11 @@
         android:icon="@drawable/ic_tune"
         android:title="@string/options" />
 
+    <item
+        android:id="@+id/commonToolbarInfo"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@drawable/ic_info"
+        android:title="@string/info" />
+
 </menu>

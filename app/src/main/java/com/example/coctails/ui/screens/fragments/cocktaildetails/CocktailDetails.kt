@@ -37,8 +37,6 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
         val bundle = arguments
         cocktails = bundle?.getSerializable(COCKTAIL) as Cocktails?
 
-        setHasOptionsMenu(true)
-
         setupRecycler()
     }
 
@@ -64,47 +62,20 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
     override fun onResume() {
         super.onResume()
         activity?.setSupportActionBar(commonToolbar)
+        setHasOptionsMenu(true)
         activity?.supportActionBar?.title = null
         commonToolbarBackPress.setOnClickListener { activity?.onBackPressed() }
     }
 
     override fun showResult(cocktails: Cocktails) {
-        /* Glide.with(this).load(cocktails.image).centerCrop()
-             .into(cocktailImage)
-         cocktailName.text = cocktails.name
-         cocktailCategoryCD.text = cocktails.category?.name
-         cocktailGlassCD.text = cocktails.glass
-         cocktailIbaCD.text = cocktails.iba
-         instructionCD.text = cocktails.instruction
-         cookTimeCD.text = cocktails.cooktime
-
-         adapter?.setList(cocktails.ingredients!!.subList(1, cocktails.ingredients!!.size))*/
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.toolbar_menu, menu)
-        val menuInfo = menu.findItem(R.id.commonToolbarInfo)
-        val menuS = menu.findItem(R.id.commonToolbarSort)
-        val menuF = menu.findItem(R.id.commonToolbarSearch)
-
-        menuInfo.isVisible = true
-        menuS.isVisible = false
-        menuF.isVisible = false
-
-        menuInfo.setOnMenuItemClickListener {
-            Toast.makeText(activity, "Info", Toast.LENGTH_SHORT).show()
-            return@setOnMenuItemClickListener true
-        }
-
-        super.onCreateOptionsMenu(menu, inflater)
-
-    }
 
     private fun setData(cocktails: Cocktails) {
         Glide.with(this).load(cocktails.image).centerCrop()
             .into(cocktailImage)
         cocktailCategoryCD.text = cocktails.category?.name
-        cocktailGlassCD.text = cocktails.glass
+        cocktailGlassCD.text = cocktails.glass?.name
         cocktailIbaCD.text = cocktails.iba
         instructionCD.text = cocktails.instruction
         cookTimeCD.text = cocktails.cooktime

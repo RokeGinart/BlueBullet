@@ -15,9 +15,12 @@
     <string name="receipt">Рецепт</string>
     <string name="time">Время:</string>
     <string name="cocktails">Коктейли</string>
-    <string name="shots">Шот</string>
-    <string name="longs">Лонг</string>
-    <string name="short_desc">Небольшие (Short drinks).\n\nПодаются в бокалах объемом 60–160 мл, крепость варьируется от 17 до 45 градусов.</string>
+    <string name="shots">Шоты</string>
+    <string name="shorts">Средние</string>
+    <string name="nonalcohol">Безалкогольные</string>
+    <string name="longs">Лонги</string>
+    <string name="short_desc">Средние (Short drinks).\n\nПодаются в бокалах объемом 60–160 мл, крепость варьируется от 17 до 45 градусов.</string>
     <string name="long_desc">Лонги (Long drinks).\n\nПьют из высоких стаканов объемом 160–300 мл, крепость редко превышает 17 градусов.</string>
     <string name="shot_desc">Шоты (Shot drinks).\n\nСервируются в стопках объемом 40–60 мл, выпиваются залпом.\nМогут быть слоеными, крепкими, слабыми, некоторые поджигают.</string>
+    <string name="nonalco_desc">Безалкогольные.\n\nНапитки не содержащие алкоголя.</string>
 </resources>

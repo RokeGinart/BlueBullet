@@ -10,6 +10,8 @@ import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.network.models.firebase.drink.Cocktails
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.cocktail_item.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemClick) :
     RecyclerView.Adapter<CocktailsRecyclerAdapter.ViewHolder>() {
@@ -19,6 +21,7 @@ class CocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemCl
     fun setList(stList: List<Cocktails>) {
         cocktails.clear()
         cocktails.addAll(stList)
+        cocktails.sortWith(Comparator { firstName, secondName -> firstName.name.compareTo(secondName.name) })
         notifyDataSetChanged()
     }
 
@@ -55,15 +58,15 @@ class CocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemCl
 
         lateinit var onItemClick: OnRecyclerItemClick
 
-        fun bind(coctails: Cocktails) {
+        fun bind(cocktails: Cocktails) {
             itemView.setOnClickListener { onItemClick.onItemClick(adapterPosition) }
 
             Glide.with(itemView.context)
-                .load(coctails.image)
+                .load(cocktails.image)
                 .centerCrop()
                 .into(itemView.cocktailsImageMV)
 
-            itemView.cocktailsNameMV.text = coctails.name
+            itemView.cocktailsNameMV.text = cocktails.name
         }
     }
 }

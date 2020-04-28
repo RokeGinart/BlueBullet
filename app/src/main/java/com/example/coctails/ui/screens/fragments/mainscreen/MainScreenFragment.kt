@@ -1,13 +1,13 @@
 package com.example.coctails.ui.screens.fragments.mainscreen
 
 import android.app.Dialog
+import android.app.SearchManager
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import com.example.coctails.R
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
@@ -35,6 +35,10 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
 
         categoryCocktails.setOnClickListener(this)
         categoryCocktails.setOnLongClickListener(this)
+
+        categoryShort.setOnLongClickListener(this)
+        categoryNonAlcohol.setOnLongClickListener(this)
+
     }
 
     override fun onAttach(context: Context) {
@@ -53,6 +57,8 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
         when (v?.id){
             R.id.categoryShots -> showDialog(getString(R.string.shot_desc))
             R.id.categoryCocktails -> showDialog(getString(R.string.long_desc))
+            R.id.categoryShort -> showDialog(getString(R.string.short_desc))
+            R.id.categoryNonAlcohol -> showDialog(getString(R.string.nonalco_desc))
         }
 
         return true
@@ -75,6 +81,7 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
 
         dialog.show()
     }
+
 
     private fun startCocktailsFragment(category: String, title : String){
         val fragment = CocktailsCategoryFragment()

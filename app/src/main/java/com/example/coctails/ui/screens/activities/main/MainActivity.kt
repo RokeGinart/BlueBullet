@@ -1,14 +1,20 @@
 package com.example.coctails.ui.screens.activities.main
 
 import android.os.Bundle
+import android.view.Gravity
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.example.coctails.R
+import com.example.coctails.interfaces.OnSearch
 import com.example.coctails.ui.screens.BaseActivity
 import com.example.coctails.ui.screens.fragments.favorites.FavoritesFragment
 import com.example.coctails.ui.screens.fragments.mainscreen.MainScreenFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
 
@@ -37,6 +43,13 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
                 }
 
                 R.id.action_nearby -> {
+                    /*   fm.beginTransaction().hide(active).show(fragment3).commit()
+
+                       active = fragment3*/
+                    return@OnNavigationItemSelectedListener true
+                }
+
+                R.id.action_settings -> {
                     /*   fm.beginTransaction().hide(active).show(fragment3).commit()
 
                        active = fragment3*/
@@ -87,12 +100,24 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
             val t = System.currentTimeMillis()
             if (t - backPressedTime > 2000) {
                 backPressedTime = t
-                Toast.makeText(this, "Press back to exit", Toast.LENGTH_SHORT).show()
+                customToast("Нажмите назад, чтобы выйти")
             } else {
                 super.onBackPressed()
                 this.finish()
             }
         }
+    }
+
+    fun customToast(text: String) {
+        val inflater = layoutInflater
+        val layout: View =
+            inflater.inflate(R.layout.custom_toast, findViewById(R.id.customToastLayout))
+        val tv = layout.findViewById(R.id.customToastMessage) as TextView
+        tv.text = text
+        val toast = Toast(applicationContext)
+        toast.setGravity(Gravity.BOTTOM, 0, 200)
+        toast.view = layout
+        toast.show()
     }
 
     override fun onDestroy() {

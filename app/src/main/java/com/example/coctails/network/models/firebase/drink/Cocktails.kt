@@ -7,7 +7,7 @@ data class Cocktails(
     var name: String = "",
     var image: String = "",
     var category: Category? = null,
-    var glass: String = "",
+    var glass: Glass? = null,
     var iba: String = "",
     var cooktime: String = "",
     var instruction: String = "",
@@ -23,6 +23,11 @@ data class Cocktails(
 
     data class Category(
         var category: String = "",
+        var name: String = ""
+    ) : Serializable
+
+    data class Glass(
+        var id: Int = 0,
         var name: String = ""
     ) : Serializable
 }

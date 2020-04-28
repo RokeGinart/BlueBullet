@@ -7,6 +7,7 @@
     android:background="@drawable/background"
     tools:context=".ui.screens.activities.main.MainActivity">
 
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
@@ -23,6 +24,7 @@
         android:background="@drawable/bottom_navigation_background"
         app:itemIconTint="@color/bottom_nav_theme"
         app:itemTextColor="@color/bottom_nav_theme"
+        app:labelVisibilityMode="selected"
         app:menu="@menu/bottom_menu"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

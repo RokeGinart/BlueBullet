@@ -42,8 +42,6 @@ class IngredientsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItem
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val ingredient = ingredients[position]
-
-        Log.d("TAGS", "asd " + ingredient?.name  + " " + ingredient?.id )
             holder.bind(ingredient)
     }
 

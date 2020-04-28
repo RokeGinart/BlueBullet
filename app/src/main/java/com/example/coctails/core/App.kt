@@ -11,7 +11,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Coctails.init(this)
+        Cocktails.init(this)
 
         instanse = this
         api = ApiManager()

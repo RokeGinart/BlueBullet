@@ -18,18 +18,28 @@ class CocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemCl
 
     private val cocktails = ArrayList<Cocktails>()
 
-    fun setList(stList: List<Cocktails>) {
+    fun setList(stList: List<Cocktails>){
         cocktails.clear()
         cocktails.addAll(stList)
+        notifyDataSetChanged()
+    }
+
+    fun setSortedByNameList() {
         cocktails.sortWith(Comparator { firstName, secondName -> firstName.name.compareTo(secondName.name) })
         notifyDataSetChanged()
     }
 
-    fun clearAdapter() {
-        cocktails.clear()
+    fun setSortedByAlcoholList() {
+        cocktails.sortWith(compareBy { it.abv })
+        notifyDataSetChanged()
     }
 
-    fun getAdapterList() : List<Cocktails> = cocktails
+    fun setSortedByTime() {
+        cocktails.sortWith(compareBy { it.cooktime })
+        notifyDataSetChanged()
+    }
+
+    fun getAdapterList(): List<Cocktails> = cocktails
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

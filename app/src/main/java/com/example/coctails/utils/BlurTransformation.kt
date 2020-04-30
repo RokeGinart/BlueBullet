@@ -8,7 +8,7 @@ import android.renderscript.RenderScript
 import android.renderscript.ScriptIntrinsicBlur
 
 class BlurTransformation {
-    private val BITMAP_SCALE = 0.4f
+    private val BITMAP_SCALE = 0.1f
     private val BLUR_RADIUS = 7.5f
 
     fun blur(context: Context?, image: Bitmap): Bitmap? {

@@ -4,8 +4,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="bar">Бар</string>
+    <string name="workspace">Рабочий стол</string>
+    <string name="favorites">Избранное</string>
+    <string name="settings">Настройки</string>
     <string name="info">Информация</string>
     <string name="search">Поиск</string>
+    <string name="sort">Сортировка</string>
     <string name="options">Опции</string>
     <string name="category">Категория:</string>
     <string name="categories">Категории</string>
@@ -23,4 +27,13 @@
     <string name="long_desc">Лонги (Long drinks).\n\nПьют из высоких стаканов объемом 160–300 мл, крепость редко превышает 17 градусов.</string>
     <string name="shot_desc">Шоты (Shot drinks).\n\nСервируются в стопках объемом 40–60 мл, выпиваются залпом.\nМогут быть слоеными, крепкими, слабыми, некоторые поджигают.</string>
     <string name="nonalco_desc">Безалкогольные.\n\nНапитки не содержащие алкоголя.</string>
+    <string name="percent">%</string>
+    <string name="tild">~</string>
+    <string name="sort_title">Отсортировать по:</string>
+    <string name="cancel">Отменить</string>
+    <string name="apply">Применить</string>
+    <string name="sort_name">Названию</string>
+    <string name="sort_alcohol">Содержанию алкоголя</string>
+    <string name="sort_time">Время приготовления</string>
+    <string name="min">мин.</string>
 </resources>

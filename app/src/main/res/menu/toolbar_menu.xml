@@ -15,5 +15,5 @@
         app:showAsAction="ifRoom"
         android:enabled="true"
         android:icon="@drawable/ic_tune"
-        android:title="@string/options" />
+        android:title="@string/sort" />
 </menu>

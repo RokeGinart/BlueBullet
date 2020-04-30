@@ -2,13 +2,18 @@ package com.example.coctails.ui.screens.fragments.cocktailscategory
 
 import android.app.SearchManager
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
+import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,7 +32,8 @@ import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_cocktails_category.*
 
 
-class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, CocktailsCategoryView>(), CocktailsCategoryView,
+class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, CocktailsCategoryView>(),
+    CocktailsCategoryView,
     OnRecyclerItemClick {
 
     private var mLayoutManager: GridLayoutManager? = null
@@ -37,7 +43,8 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
     private var searchView: SearchView? = null
     private var category: String? = null
     private var titleTemp: String? = null
-    private var listPopupWindow : ListPopupWindow? = null
+    private var listPopupWindow: ListPopupWindow? = null
+    private var selectedSort = 0
 
     override fun getLayoutId(): Int = R.layout.fragment_cocktails_category
 
@@ -55,14 +62,6 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
 
         setupRecycler()
         setupPopupWindow()
-
-        Log.d("TAGS", "onViewCreated")
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("TAGS", "onStart")
     }
 
     private fun setupRecycler() {
@@ -75,6 +74,7 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
 
     override fun showCocktailsCategory(cocktailsList: List<Cocktails>) {
         adapter?.setList(cocktailsList)
+        adapter?.setSortedByNameList()
         cocktails = cocktailsList
 
         progressCategory.visibility = View.GONE
@@ -84,18 +84,17 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activity = context as MainActivity
-        Log.d("TAGS", "onAttach")
 
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("TAGS", "onResume")
         activity?.setSupportActionBar(commonToolbar)
         setHasOptionsMenu(true)
         activity?.supportActionBar?.title = null
         commonToolbarTitle.text = titleTemp
         commonToolbarBackPress.setOnClickListener { activity?.onBackPressed() }
+        cocktailsCategoryLayout.setOnClickListener(null)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -145,7 +144,6 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
 
         activity?.loadFragment(fragment, "CocktailDetails", true)
         searchView?.clearFocus()
-        setHasOptionsMenu(false)
     }
 
     override fun onDestroyView() {
@@ -154,10 +152,9 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
     }
 
     private fun findCocktailByName(name: String) {
-        adapter?.clearAdapter()
-
         if (name == "") {
             cocktails?.let { adapter?.setList(it) }
+            setSortedList(selectedSort)
             errorMessage.visibility = View.GONE
         } else {
             val searchRes = mutableListOf<Cocktails>()
@@ -180,11 +177,73 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         listPopupWindow?.width = metrics.widthPixels //sets width as per the screen.
         listPopupWindow?.height = ListPopupWindow.WRAP_CONTENT
         listPopupWindow?.isModal = true
-        val filterLayout: View =
-            layoutInflater.inflate(R.layout.custom_popup_menu, null)
-        val layout = filterLayout.findViewById(R.id.popupLayout) as LinearLayout
+
+        val filterLayout: View = layoutInflater.inflate(R.layout.custom_popup_menu, null)
+
+        val nameSelected = filterLayout.findViewById(R.id.sortByName) as LinearLayout
+        val alcSelected = filterLayout.findViewById(R.id.sortByAlcohol) as LinearLayout
+        val timeSelected = filterLayout.findViewById(R.id.sortByTime) as LinearLayout
+
+        val timeCheck = filterLayout.findViewById(R.id.timeCheck) as ImageView
+        val nameCheck = filterLayout.findViewById(R.id.nameCheck) as ImageView
+        val alcCheck = filterLayout.findViewById(R.id.alcCheck) as ImageView
+
+     //   val apply = filterLayout.findViewById(R.id.sortApply) as TextView
+      //  val sortCancel = filterLayout.findViewById(R.id.sortCancel) as TextView
+
+        nameSelected.setOnClickListener {
+            nameSelected.background = resources.getDrawable(R.drawable.view_borders)
+            alcSelected.background = null
+            timeSelected.background = null
+
+            nameCheck.visibility = View.VISIBLE
+            timeCheck.visibility = View.INVISIBLE
+            alcCheck.visibility = View.INVISIBLE
+
+            selectedSort = 0
+            adapter?.setSortedByNameList()
+        }
+
+        alcSelected.setOnClickListener {
+            alcSelected.background = resources.getDrawable(R.drawable.view_borders)
+            nameSelected.background = null
+            timeSelected.background = null
+
+            alcCheck.visibility = View.VISIBLE
+            nameCheck.visibility = View.INVISIBLE
+            timeCheck.visibility = View.INVISIBLE
+
+            selectedSort = 1
+            adapter?.setSortedByAlcoholList()
+        }
+
+        timeSelected.setOnClickListener {
+            timeSelected.background = resources.getDrawable(R.drawable.view_borders)
+            alcSelected.background = null
+            nameSelected.background = null
+
+            timeCheck.visibility = View.VISIBLE
+            nameCheck.visibility = View.INVISIBLE
+            alcCheck.visibility = View.INVISIBLE
+
+            selectedSort = 2
+            adapter?.setSortedByTime()
+        }
+
         listPopupWindow?.setPromptView(filterLayout)
     }
+
+    private fun setSortedList(sort: Int) {
+        when (sort) {
+            0 -> {
+                adapter?.setSortedByNameList()
+            }
+            1 -> {
+                adapter?.setSortedByAlcoholList()
+            }
+            2 -> {
+                adapter?.setSortedByTime()
+            }
+        }
+    }
 }
-
-

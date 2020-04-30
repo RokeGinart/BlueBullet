@@ -3,26 +3,155 @@
     android:id="@+id/popupLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/purple"
+    android:background="@color/blue"
     android:orientation="vertical"
-    android:paddingEnd="5dp"
     android:paddingStart="5dp"
+    android:paddingEnd="5dp"
     android:paddingBottom="5dp">
 
     <LinearLayout
-        android:background="@drawable/popup_background"
-        android:elevation="0dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/popup_background"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
 
         <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:gravity="center"
-            android:text="Its works"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/sort_title"
             android:textColor="@color/white"
-            android:textSize="50dp">
+            android:textSize="15dp" />
 
-        </TextView>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/sortByName"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/view_borders"
+                android:layout_width="wrap_content"
+                android:padding="5dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/nameCheck"
+                    android:layout_marginStart="20dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_check">
+
+                </ImageView>
+
+                <TextView
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:text="@string/sort_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/sortByAlcohol"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_width="wrap_content"
+                android:padding="5dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/alcCheck"
+                    android:layout_marginStart="20dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:visibility="invisible"
+                    android:src="@drawable/ic_check">
+
+                </ImageView>
+
+                <TextView
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:text="@string/sort_alcohol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/sortByTime"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_width="wrap_content"
+                android:padding="5dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/timeCheck"
+                    android:layout_marginStart="20dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:visibility="invisible"
+                    android:src="@drawable/ic_check">
+
+                </ImageView>
+
+                <TextView
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:text="@string/sort_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+            </LinearLayout>
+
+
+           <!-- <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/sortCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/cancel"
+                    android:textColor="@color/white"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/sortApply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/apply"
+                    android:textColor="@color/white"
+                    android:textSize="15dp" />
+
+
+            </LinearLayout>-->
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

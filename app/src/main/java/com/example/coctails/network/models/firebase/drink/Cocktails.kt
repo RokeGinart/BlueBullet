@@ -8,8 +8,8 @@ data class Cocktails(
     var image: String = "",
     var category: Category? = null,
     var glass: Glass? = null,
-    var iba: String = "",
-    var cooktime: String = "",
+    var abv: Int = 0,
+    var cooktime: Int = 0,
     var instruction: String = "",
     var ingredients: List<Ingredients>? = null
 ) : Serializable {

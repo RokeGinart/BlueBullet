@@ -5,12 +5,10 @@ import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.example.coctails.R
-import com.example.coctails.interfaces.OnSearch
 import com.example.coctails.ui.screens.BaseActivity
-import com.example.coctails.ui.screens.fragments.favorites.FavoritesFragment
+import com.example.coctails.ui.screens.fragments.favorites.WorkspaceFragment
 import com.example.coctails.ui.screens.fragments.mainscreen.MainScreenFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,10 +17,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
 
     private var backPressedTime: Long = 0
-    private var fragment: Fragment? = null
-    private var active = Fragment()
+    private var fragmentList = mutableListOf<Fragment>()
     private val fragment1 = MainScreenFragment()
-    private val fragment2 = FavoritesFragment()
+    private val fragment2 = WorkspaceFragment()
+    private var active = Fragment()
     private val fm = supportFragmentManager
 
     private val mOnNavigationItemSelectedListener =
@@ -36,13 +34,13 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
                 }
 
 
-                R.id.action_favorites -> {
+                R.id.action_workspace -> {
                     fm.beginTransaction().hide(active).show(fragment2).commit()
                     active = fragment2
                     return@OnNavigationItemSelectedListener true
                 }
 
-                R.id.action_nearby -> {
+                R.id.action_favorites -> {
                     /*   fm.beginTransaction().hide(active).show(fragment3).commit()
 
                        active = fragment3*/
@@ -73,20 +71,30 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
         active = fragment1
 
         fm.beginTransaction().add(R.id.fragment_container, fragment1, "Main").commit()
-        fm.beginTransaction().add(R.id.fragment_container, fragment2, "Favorites").hide(fragment2)
-            .commit()
+        fm.beginTransaction().add(R.id.fragment_container, fragment2, "Favorites").hide(fragment2).commit()
     }
 
     fun loadFragment(fragment: Fragment, name: String, addToBackStackBoo: Boolean) {
+        hideBottomNavigation()
+
         val fm = fm.beginTransaction()
             .setCustomAnimations(R.anim.right_in, R.anim.lift_in)
             .add(R.id.fragment_container, fragment, name)
-        this.fragment = fragment
 
         if (addToBackStackBoo) {
             fm.addToBackStack(null)
+            fragmentList.add(fragment)
         }
 
+        fm.commit()
+    }
+
+    fun loadPhotoFragment(fragment: Fragment, name: String) {
+        val fm = fm.beginTransaction()
+            .setCustomAnimations(R.anim.photo_anim, R.anim.lift_in)
+            .add(R.id.fragment_container, fragment, name)
+        fragmentList.add(fragment)
+        fm.addToBackStack(null)
         fm.commit()
     }
 
@@ -94,8 +102,13 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
         val fm = supportFragmentManager
         if (fm.backStackEntryCount > 0) {
             fm.beginTransaction().setCustomAnimations(R.anim.left_out, R.anim.right_out)
-                .remove(fragment!!).commit()
+                .remove(fragmentList[fm.backStackEntryCount-1]).commit()
             fm.popBackStack()
+            fragmentList.removeAt(fm.backStackEntryCount - 1)
+
+            if(fm.backStackEntryCount == 1){
+                showBottomNavigation()
+            }
         } else {
             val t = System.currentTimeMillis()
             if (t - backPressedTime > 2000) {
@@ -105,6 +118,28 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
                 super.onBackPressed()
                 this.finish()
             }
+        }
+    }
+
+    private fun hideBottomNavigation() {
+        with(bottom_navigation) {
+            if (visibility == View.VISIBLE) {
+                animate()
+                    .translationY(0f)
+                    .translationYBy(200f)
+                    .withEndAction { visibility = View.GONE }
+                    .duration = 300
+            }
+        }
+    }
+
+    private fun showBottomNavigation() {
+        with(bottom_navigation) {
+                visibility = View.VISIBLE
+                animate()
+                    .translationYBy(200f)
+                    .translationY(0f)
+                    .duration = 300
         }
     }
 

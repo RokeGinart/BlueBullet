@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import com.example.coctails.R
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
@@ -18,9 +19,10 @@ import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_main_screen.*
 import java.util.*
 
-class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), MainScreenView, View.OnClickListener, View.OnLongClickListener {
+class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), MainScreenView,
+    View.OnClickListener, View.OnLongClickListener {
 
-    private var activity : MainActivity? = null
+    private var activity: MainActivity? = null
 
     override fun getLayoutId(): Int = R.layout.fragment_main_screen
 
@@ -30,16 +32,9 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
         super.onViewCreated(view, savedInstanceState)
         presenter.bindView(this)
 
-        categoryShots.setOnClickListener(this)
-        categoryShots.setOnLongClickListener(this)
-
-        categoryCocktails.setOnClickListener(this)
-        categoryCocktails.setOnLongClickListener(this)
-
-        categoryShort.setOnLongClickListener(this)
-        categoryNonAlcohol.setOnLongClickListener(this)
-
+        setupClicks()
     }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -47,14 +42,16 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
     }
 
     override fun onClick(v: View?) {
-        when (v?.id){
+        when (v?.id) {
             R.id.categoryShots -> startCocktailsFragment("shots", getString(R.string.shots))
             R.id.categoryCocktails -> startCocktailsFragment("longs", getString(R.string.longs))
+            R.id.categoryNonAlcohol -> startCocktailsFragment("nonalcohol", getString(R.string.nonalcohol))
+            R.id.categoryShort -> startCocktailsFragment("shorts", getString(R.string.shorts))
         }
     }
 
     override fun onLongClick(v: View?): Boolean {
-        when (v?.id){
+        when (v?.id) {
             R.id.categoryShots -> showDialog(getString(R.string.shot_desc))
             R.id.categoryCocktails -> showDialog(getString(R.string.long_desc))
             R.id.categoryShort -> showDialog(getString(R.string.short_desc))
@@ -64,26 +61,22 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
         return true
     }
 
-    private fun showDialog(text : String){
+    private fun showDialog(text: String) {
 
         val dialog = Dialog(context!!)
         dialog.setContentView(R.layout.main_dialog_info)
-        Objects.requireNonNull(dialog.window)?.setBackgroundDrawable(
+        dialog.window?.setBackgroundDrawable(
             ColorDrawable(Color.TRANSPARENT)
         )
 
         val dialogHome = dialog.findViewById<TextView>(R.id.dialogTextInfo)
         dialogHome.text = text
-        dialogHome.setOnClickListener { v: View? ->
-
-            dialog.dismiss()
-        }
-
+        dialogHome.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 
 
-    private fun startCocktailsFragment(category: String, title : String){
+    private fun startCocktailsFragment(category: String, title: String) {
         val fragment = CocktailsCategoryFragment()
         val bundle = Bundle()
 
@@ -105,6 +98,18 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
     override fun onDestroyView() {
         super.onDestroyView()
         presenter.unbindView()
+    }
+
+    private fun setupClicks(){
+        categoryCocktails.setOnClickListener(this)
+        categoryShots.setOnClickListener(this)
+        categoryShort.setOnClickListener(this)
+        categoryNonAlcohol.setOnClickListener(this)
+
+        categoryCocktails.setOnLongClickListener(this)
+        categoryShots.setOnLongClickListener(this)
+        categoryShort.setOnLongClickListener(this)
+        categoryNonAlcohol.setOnLongClickListener(this)
     }
 }
 

@@ -109,6 +109,9 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
             if(fm.backStackEntryCount == 1){
                 showBottomNavigation()
             }
+
+           window?.navigationBarColor = resources.getColor(R.color.blue)
+           window?.statusBarColor = resources.getColor(R.color.blue)
         } else {
             val t = System.currentTimeMillis()
             if (t - backPressedTime > 2000) {
@@ -159,6 +162,8 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
         super.onDestroy()
         presenter.unbindView()
     }
+
+
 }
 
 

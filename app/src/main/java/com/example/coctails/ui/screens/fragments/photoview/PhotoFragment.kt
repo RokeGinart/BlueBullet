@@ -43,11 +43,7 @@ class PhotoFragment : BaseFragment<PhotoFragmentPresenter, PhotoFragmentView>(),
         super.onResume()
         activity?.window?.navigationBarColor = resources.getColor(R.color.black)
         activity?.window?.statusBarColor = resources.getColor(R.color.black)
-        exitFromImageView.setOnClickListener{
-            activity?.window?.navigationBarColor = resources.getColor(R.color.blue)
-            activity?.window?.statusBarColor = resources.getColor(R.color.blue)
-            activity?.onBackPressed()
-        }
+        exitFromImageView.setOnClickListener{ activity?.onBackPressed() }
 
         photoLayout.setOnClickListener(null)
     }

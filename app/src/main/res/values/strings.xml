@@ -35,5 +35,6 @@
     <string name="sort_name">Названию</string>
     <string name="sort_alcohol">Содержанию алкоголя</string>
     <string name="sort_time">Время приготовления</string>
+    <string name="main_ingredients">Базовый ингредиент</string>
     <string name="min">мин.</string>
 </resources>

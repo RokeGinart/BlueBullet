@@ -42,8 +42,8 @@
 
                     <ImageView
                         android:id="@+id/cocktailImage"
-                        android:layout_width="150dp"
-                        android:layout_height="200dp" />
+                        android:layout_width="140dp"
+                        android:layout_height="180dp" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -142,6 +142,47 @@
                             android:layout_marginLeft="10dp"
                             android:textColor="@color/grey"
                             android:textSize="15dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <FrameLayout
+                            android:layout_weight="2"
+                            android:layout_width="0dp"
+                            android:background="@drawable/info_back"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:padding="18dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:src="@drawable/ic_info">
+
+                            </ImageView>
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_weight="2"
+                            android:layout_marginStart="1dp"
+                            android:layout_width="0dp"
+                            android:background="@drawable/fav_back"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:padding="18dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:src="@drawable/ic_favorite_ns">
+
+                            </ImageView>
+
+                        </FrameLayout>
 
                     </LinearLayout>
 

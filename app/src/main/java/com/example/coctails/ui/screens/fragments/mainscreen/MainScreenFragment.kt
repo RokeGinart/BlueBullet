@@ -47,6 +47,7 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
             R.id.categoryCocktails -> startCocktailsFragment("longs", getString(R.string.longs))
             R.id.categoryNonAlcohol -> startCocktailsFragment("nonalcohol", getString(R.string.nonalcohol))
             R.id.categoryShort -> startCocktailsFragment("shorts", getString(R.string.shorts))
+            R.id.allCocktails -> startCocktailsFragment("all", getString(R.string.cocktails))
         }
     }
 
@@ -105,6 +106,7 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
         categoryShots.setOnClickListener(this)
         categoryShort.setOnClickListener(this)
         categoryNonAlcohol.setOnClickListener(this)
+        allCocktails.setOnClickListener(this)
 
         categoryCocktails.setOnLongClickListener(this)
         categoryShots.setOnLongClickListener(this)

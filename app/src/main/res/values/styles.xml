@@ -8,5 +8,7 @@
         <item name="colorAccent">@color/blue</item>
         <item name="android:navigationBarColor">@color/blue</item>
     </style>
-
 </resources>
+
+
+

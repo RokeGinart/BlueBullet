@@ -18,8 +18,26 @@ class CocktailsCategoryPresenterImpl : CocktailsCategoryPresenter() {
             override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
                 val responseList = mutableListOf<Cocktails>()
 
-                dataSnapshot.children.forEach{
+                dataSnapshot.children.forEach {
                     responseList.add(it.getValue(Cocktails::class.java)!!)
+                }
+
+                screenView?.showCocktailsCategory(responseList)
+            }
+
+            override fun onCancelled(@NonNull databaseError: DatabaseError) {}
+        })
+    }
+
+    override fun getAllCocktails() {
+        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
+                val responseList = mutableListOf<Cocktails>()
+
+                dataSnapshot.children.forEach {
+                    it.children.forEach { cocktails ->
+                        responseList.add(cocktails.getValue(Cocktails::class.java)!!)
+                    }
                 }
 
                 screenView?.showCocktailsCategory(responseList)

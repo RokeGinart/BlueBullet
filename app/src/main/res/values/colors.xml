@@ -6,6 +6,7 @@
 
     <color name="white">#E7E7E7</color>
     <color name="grey">#555454</color>
+    <color name="grey1">#353131</color>
     <color name="black">#000000</color>
     <color name="black1">#252323</color>
 
@@ -16,6 +17,9 @@
     <color name="purple1">#650B72</color>
     <color name="purple2">#89079C</color>
     <color name="purple3">#3B0544</color>
+    <color name="purple4">#5F0472</color>
+
+    <color name="pink">#4f1b4c</color>
 
     <color name="theme">#202024</color>
 

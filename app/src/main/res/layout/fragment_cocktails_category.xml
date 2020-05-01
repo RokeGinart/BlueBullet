@@ -37,6 +37,18 @@
     </TextView>
 
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/backToTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/purple"
+        app:rippleColor="@color/purple1"
+        android:src="@drawable/ic_top_arrow_com"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <LinearLayout
         android:id="@+id/cocktailsCategoryLayout"
         android:layout_width="match_parent"

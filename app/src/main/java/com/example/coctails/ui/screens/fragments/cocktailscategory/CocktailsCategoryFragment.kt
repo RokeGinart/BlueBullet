@@ -1,22 +1,20 @@
 package com.example.coctails.ui.screens.fragments.cocktailscategory
 
+import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
-import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.coctails.R
 import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.network.models.firebase.drink.Cocktails
@@ -30,6 +28,7 @@ import com.example.coctails.utils.TOOLBAR_TITLE
 import com.example.coctails.utils.TranslitUtils
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_cocktails_category.*
+import java.time.Duration
 
 
 class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, CocktailsCategoryView>(),
@@ -58,7 +57,14 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         category = bundle?.getString(CATEGORY)
         titleTemp = bundle?.getString(TOOLBAR_TITLE)
 
-        category?.let { presenter.getCocktailsByCategory(it) }
+        if (category.equals("all")) {
+            category?.let { presenter.getAllCocktails() }
+        } else {
+            category?.let { presenter.getCocktailsByCategory(it) }
+
+        }
+
+        hideFab(10)
 
         setupRecycler()
         setupPopupWindow()
@@ -69,8 +75,45 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         cocktailRecycler.layoutManager = mLayoutManager
         cocktailRecycler.setHasFixedSize(true)
         adapter = CocktailsRecyclerAdapter(this)
+
         cocktailRecycler.adapter = adapter
+        cocktailRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(-1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
+                    hideFab(300)
+                }else{
+                    showFab()
+                }
+            }
+        })
+
+        backToTop.setOnClickListener {
+            cocktailRecycler.run { cocktailRecycler.smoothScrollToPosition(0) }
+        }
+
     }
+
+    private fun showFab() {
+        with(backToTop) {
+            visibility = View.VISIBLE
+            animate()
+                .translationYBy(300f)
+                .translationY(0f)
+                .duration = 300
+        }
+    }
+
+    private fun hideFab(duration : Long) {
+        with(backToTop) {
+            animate()
+                .translationY(0f)
+                .translationYBy(300f)
+                .withEndAction { visibility = View.GONE }
+                .duration = duration
+        }
+    }
+
 
     override fun showCocktailsCategory(cocktailsList: List<Cocktails>) {
         adapter?.setList(cocktailsList)
@@ -151,6 +194,7 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         presenter.unbindView()
     }
 
+    @SuppressLint("DefaultLocale")
     private fun findCocktailByName(name: String) {
         if (name == "") {
             cocktails?.let { adapter?.setList(it) }
@@ -168,13 +212,14 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         }
     }
 
+    @SuppressLint("InflateParams")
     private fun setupPopupWindow() {
         listPopupWindow = activity?.let { ListPopupWindow(it) }
 
         val metrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
         listPopupWindow?.anchorView = commonToolbarPoint
-        listPopupWindow?.width = metrics.widthPixels //sets width as per the screen.
+        listPopupWindow?.width = metrics.widthPixels
         listPopupWindow?.height = ListPopupWindow.WRAP_CONTENT
         listPopupWindow?.isModal = true
 
@@ -188,11 +233,8 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         val nameCheck = filterLayout.findViewById(R.id.nameCheck) as ImageView
         val alcCheck = filterLayout.findViewById(R.id.alcCheck) as ImageView
 
-     //   val apply = filterLayout.findViewById(R.id.sortApply) as TextView
-      //  val sortCancel = filterLayout.findViewById(R.id.sortCancel) as TextView
-
         nameSelected.setOnClickListener {
-            nameSelected.background = resources.getDrawable(R.drawable.view_borders)
+            nameSelected.background = activity?.getDrawable(R.drawable.view_borders)
             alcSelected.background = null
             timeSelected.background = null
 
@@ -205,7 +247,7 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         }
 
         alcSelected.setOnClickListener {
-            alcSelected.background = resources.getDrawable(R.drawable.view_borders)
+            alcSelected.background = activity?.getDrawable(R.drawable.view_borders)
             nameSelected.background = null
             timeSelected.background = null
 
@@ -218,7 +260,7 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         }
 
         timeSelected.setOnClickListener {
-            timeSelected.background = resources.getDrawable(R.drawable.view_borders)
+            timeSelected.background = activity?.getDrawable(R.drawable.view_borders)
             alcSelected.background = null
             nameSelected.background = null
 

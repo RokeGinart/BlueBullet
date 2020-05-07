@@ -46,5 +46,30 @@ class CocktailsCategoryPresenterImpl : CocktailsCategoryPresenter() {
             override fun onCancelled(@NonNull databaseError: DatabaseError) {}
         })
     }
+
+    override fun getCocktailsByIngredient(ingredient: String) {
+        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
+                val allCocktails = mutableListOf<Cocktails>()
+                val responseList = mutableListOf<Cocktails>()
+
+                dataSnapshot.children.forEach {
+                    it.children.forEach { cocktails ->
+                        allCocktails.add(cocktails.getValue(Cocktails::class.java)!!)
+                    }
+                }
+
+                allCocktails.forEach{
+                    if(it.mainIngredient == ingredient){
+                        responseList.add(it)
+                    }
+                }
+
+                screenView?.showCocktailsCategory(responseList)
+            }
+
+            override fun onCancelled(@NonNull databaseError: DatabaseError) {}
+        })
+    }
 }
 

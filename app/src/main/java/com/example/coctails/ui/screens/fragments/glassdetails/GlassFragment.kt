@@ -1,4 +1,4 @@
-package com.example.coctails.ui.screens.fragments.glassview
+package com.example.coctails.ui.screens.fragments.glassdetails
 
 import android.content.Context
 import android.os.Bundle

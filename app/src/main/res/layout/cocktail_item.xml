@@ -16,20 +16,18 @@
         <ImageView
             android:id="@+id/cocktailsImageMV"
             android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+            android:layout_height="200dp" />
 
     </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/cocktailsNameMV"
-        android:layout_marginTop="10dp"
         android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="15dp"
-        android:textStyle="bold"
-        android:layout_height="wrap_content">
-
-    </TextView>
+        android:textStyle="bold" />
 
 </LinearLayout>

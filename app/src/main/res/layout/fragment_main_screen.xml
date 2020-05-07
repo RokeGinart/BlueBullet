@@ -253,7 +253,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:alpha="0.9"
-                    android:background="@color/pink">
+                    android:background="@color/purple3">
 
                 </View>
 
@@ -274,7 +274,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
                     android:orientation="vertical"
-                    android:padding="10dp">
+                    android:padding="5dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -288,6 +288,7 @@
                             app:cardCornerRadius="15dp">
 
                             <ImageView
+                                android:id="@+id/categoryTequila"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
@@ -320,11 +321,12 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="0dp"
                             android:layout_height="120dp"
-                            android:layout_marginStart="10dp"
+                            android:layout_marginStart="5dp"
                             android:layout_weight="2"
                             app:cardCornerRadius="15dp">
 
                             <ImageView
+                                android:id="@+id/categoryGin"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
@@ -358,7 +360,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <androidx.cardview.widget.CardView
@@ -368,6 +370,7 @@
                             app:cardCornerRadius="15dp">
 
                             <ImageView
+                                android:id="@+id/categoryWhiskey"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
@@ -399,11 +402,12 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="0dp"
                             android:layout_height="120dp"
-                            android:layout_marginStart="10dp"
+                            android:layout_marginStart="5dp"
                             android:layout_weight="2"
                             app:cardCornerRadius="15dp">
 
                             <ImageView
+                                android:id="@+id/categoryRum"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
@@ -437,7 +441,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <androidx.cardview.widget.CardView
@@ -447,6 +451,7 @@
                             app:cardCornerRadius="15dp">
 
                             <ImageView
+                                android:id="@+id/categoryBrandy"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
@@ -478,11 +483,12 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="0dp"
                             android:layout_height="120dp"
-                            android:layout_marginStart="10dp"
+                            android:layout_marginStart="5dp"
                             android:layout_weight="2"
                             app:cardCornerRadius="15dp">
 
                             <ImageView
+                                android:id="@+id/categoryVodka"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"

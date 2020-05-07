@@ -71,7 +71,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/grey2"
                             android:textSize="15dp" />
 
                     </LinearLayout>
@@ -94,7 +94,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/grey2"
                             android:textSize="15dp" />
 
                     </LinearLayout>
@@ -117,7 +117,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/grey2"
                             android:textSize="15dp" />
 
                     </LinearLayout>
@@ -140,13 +140,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/grey2"
                             android:textSize="15dp" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_marginTop="10dp"
+                        android:id="@+id/infoButton"
+                        android:layout_marginTop="20dp"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
@@ -158,9 +159,9 @@
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:padding="18dp"
+                                android:padding="12dp"
                                 android:layout_width="match_parent"
-                                android:layout_height="60dp"
+                                android:layout_height="50dp"
                                 android:src="@drawable/ic_info">
 
                             </ImageView>
@@ -168,6 +169,7 @@
                         </FrameLayout>
 
                         <FrameLayout
+                            android:id="@+id/favButton"
                             android:layout_weight="2"
                             android:layout_marginStart="1dp"
                             android:layout_width="0dp"
@@ -175,9 +177,10 @@
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:padding="18dp"
+                                android:id="@+id/favImage"
+                                android:padding="12dp"
                                 android:layout_width="match_parent"
-                                android:layout_height="60dp"
+                                android:layout_height="50dp"
                                 android:src="@drawable/ic_favorite_ns">
 
                             </ImageView>
@@ -258,8 +261,6 @@
 
                 </TextView>
             </FrameLayout>
-
-
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

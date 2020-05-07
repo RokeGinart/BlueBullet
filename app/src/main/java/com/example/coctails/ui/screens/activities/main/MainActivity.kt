@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.coctails.R
 import com.example.coctails.ui.screens.BaseActivity
-import com.example.coctails.ui.screens.fragments.favorites.WorkspaceFragment
+import com.example.coctails.ui.screens.fragments.workspace.WorkspaceFragment
 import com.example.coctails.ui.screens.fragments.mainscreen.MainScreenFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,7 +19,8 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
     private var backPressedTime: Long = 0
     private var fragmentList = mutableListOf<Fragment>()
     private val fragment1 = MainScreenFragment()
-    private val fragment2 = WorkspaceFragment()
+    private val fragment2 =
+        WorkspaceFragment()
     private var active = Fragment()
     private val fm = supportFragmentManager
 

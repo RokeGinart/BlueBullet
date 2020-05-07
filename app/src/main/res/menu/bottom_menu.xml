@@ -9,11 +9,11 @@
     <item
         android:id="@+id/action_workspace"
         android:icon="@drawable/ic_shaker"
-        android:title="@string/workspace" />
+        android:title="@string/kitchen" />
 
     <item
         android:id="@+id/action_favorites"
-        android:icon="@drawable/ic_favorite"
+        android:icon="@drawable/ic_heart_cocktail"
         android:title="@string/favorites" />
 
     <item

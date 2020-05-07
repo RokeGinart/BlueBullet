@@ -7,6 +7,9 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.View
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.coctails.R
@@ -14,13 +17,11 @@ import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
+import com.example.coctails.ui.screens.fragments.cocktail_info.CocktailsInfoFragment
 import com.example.coctails.ui.screens.fragments.cocktaildetails.adapters.IngredientsRecyclerAdapter
-import com.example.coctails.ui.screens.fragments.glassview.GlassFragment
+import com.example.coctails.ui.screens.fragments.glassdetails.GlassFragment
 import com.example.coctails.ui.screens.fragments.photoview.PhotoFragment
-import com.example.coctails.utils.COCKTAIL
-import com.example.coctails.utils.COCKTAIL_NAME
-import com.example.coctails.utils.COCKTAIL_PHOTO
-import com.example.coctails.utils.GLASS_ID
+import com.example.coctails.utils.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_cocktail_details.*
 
@@ -34,6 +35,7 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
     private var mLayoutManager: LinearLayoutManager? = null
     private var adapter: IngredientsRecyclerAdapter? = null
     private var cocktails: Cocktails? = null
+    private var favorite = false
 
     override fun providePresenter(): CocktailDetailsPresenter = CocktailDetailsPresenterImpl()
 
@@ -44,8 +46,12 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
         val bundle = arguments
         cocktails = bundle?.getSerializable(COCKTAIL) as Cocktails?
 
+        cocktails?.let { presenter.getFavorite(it.id, it.category?.category!! ) }
+
         setupRecycler()
         cocktailGlassCD.setOnClickListener(this)
+        favButton.setOnClickListener(this)
+        infoButton.setOnClickListener(this)
     }
 
     override fun onAttach(context: Context) {
@@ -67,15 +73,18 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
 
     }
 
+    override fun showFavorite(inFavorite: Boolean) {
+        if(inFavorite){
+            favImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_s))
+            favorite = true
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         commonToolbarBackPress.setOnClickListener { activity?.onBackPressed() }
         cocktailImage.setOnClickListener(this)
     }
-
-    override fun showResult(cocktails: Cocktails) {
-    }
-
 
     @SuppressLint("SetTextI18n")
     private fun setData(cocktails: Cocktails) {
@@ -122,6 +131,26 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
                 fragment.arguments = bundle
 
                 activity?.loadFragment(fragment, "GlassDetails", true)
+            }
+            R.id.infoButton -> {
+                val fragment = CocktailsInfoFragment()
+                val bundle = Bundle()
+
+                bundle.putSerializable(COCKTAIL_INFO, cocktails?.info)
+                fragment.arguments = bundle
+
+                activity?.loadFragment(fragment, "CocktailInfo", true)
+            }
+            R.id.favButton -> {
+                favorite = if(favorite){
+                    favImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_ns))
+                    false
+                }else{
+                    favImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_s))
+                    true
+                }
+
+                cocktails?.let { presenter.saveCocktailToFavorite(it.id, it.name, it.image, it.category?.category!!, favorite ) }
             }
         }
     }

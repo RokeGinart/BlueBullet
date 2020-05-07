@@ -11,6 +11,8 @@ data class Cocktails(
     var abv: Int = 0,
     var cooktime: Int = 0,
     var instruction: String = "",
+    var mainIngredient: String = "",
+    var info : Info? = null,
     var ingredients: List<Ingredients>? = null
 ) : Serializable {
 
@@ -30,4 +32,17 @@ data class Cocktails(
         var id: Int = 0,
         var name: String = ""
     ) : Serializable
+
+    data class Info(
+        var author: String = "",
+        var country: String = "",
+        var history: String = "",
+        var year: String = "",
+        var source: Source? = null
+    ) : Serializable
+
+    data class Source(
+        var link: String? = "",
+        var name: String? = ""
+    ): Serializable
 }

@@ -22,10 +22,7 @@ import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.cocktaildetails.CocktailDetails
 import com.example.coctails.ui.screens.fragments.cocktailscategory.adapters.CocktailsRecyclerAdapter
-import com.example.coctails.utils.CATEGORY
-import com.example.coctails.utils.COCKTAIL
-import com.example.coctails.utils.TOOLBAR_TITLE
-import com.example.coctails.utils.TranslitUtils
+import com.example.coctails.utils.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_cocktails_category.*
 import java.time.Duration
@@ -42,6 +39,7 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
     private var searchView: SearchView? = null
     private var category: String? = null
     private var titleTemp: String? = null
+    private var type = 0
     private var listPopupWindow: ListPopupWindow? = null
     private var selectedSort = 0
 
@@ -56,12 +54,17 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         val bundle = arguments
         category = bundle?.getString(CATEGORY)
         titleTemp = bundle?.getString(TOOLBAR_TITLE)
+        type = bundle?.getInt(CATEGORY_TYPE)!!
 
-        if (category.equals("all")) {
-            category?.let { presenter.getAllCocktails() }
+        if (type == 1) {
+            category?.let { presenter.getCocktailsByIngredient(it) }
         } else {
-            category?.let { presenter.getCocktailsByCategory(it) }
+            if (category.equals("all")) {
+                category?.let { presenter.getAllCocktails() }
+            } else {
+                category?.let { presenter.getCocktailsByCategory(it) }
 
+            }
         }
 
         hideFab(10)
@@ -80,9 +83,9 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         cocktailRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(-1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
+                if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     hideFab(300)
-                }else{
+                } else {
                     showFab()
                 }
             }
@@ -91,7 +94,6 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         backToTop.setOnClickListener {
             cocktailRecycler.run { cocktailRecycler.smoothScrollToPosition(0) }
         }
-
     }
 
     private fun showFab() {
@@ -104,7 +106,7 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         }
     }
 
-    private fun hideFab(duration : Long) {
+    private fun hideFab(duration: Long) {
         with(backToTop) {
             animate()
                 .translationY(0f)

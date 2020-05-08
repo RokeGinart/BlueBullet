@@ -23,6 +23,7 @@ import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.cocktaildetails.CocktailDetails
 import com.example.coctails.ui.screens.fragments.cocktailscategory.adapters.CocktailsRecyclerAdapter
 import com.example.coctails.utils.*
+import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_cocktails_category.*
 import java.time.Duration
@@ -68,7 +69,6 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         }
 
         hideFab(10)
-
         setupRecycler()
         setupPopupWindow()
     }
@@ -122,7 +122,7 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         adapter?.setSortedByNameList()
         cocktails = cocktailsList
 
-        progressCategory.visibility = View.GONE
+        commonProgressBar.visibility = View.GONE
     }
 
 

@@ -9,8 +9,7 @@ import com.example.coctails.R
 import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.network.models.firebase.drink.GlassDetails
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.cocktail_item.view.*
-import kotlinx.android.synthetic.main.glass_item.view.*
+import kotlinx.android.synthetic.main.recycler_glass_item.view.*
 
 class GlassRecyclerViewAdapter(private val onRecyclerItemClick: OnRecyclerItemClick) : RecyclerView.Adapter<GlassRecyclerViewAdapter.ViewHolder>(){
 
@@ -31,7 +30,7 @@ class GlassRecyclerViewAdapter(private val onRecyclerItemClick: OnRecyclerItemCl
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.glass_item, parent, false)
+        val view = layoutInflater.inflate(R.layout.recycler_glass_item, parent, false)
 
         val viewHolder = ViewHolder(view)
         viewHolder.onItemClick = onRecyclerItemClick

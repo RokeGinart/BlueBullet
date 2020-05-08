@@ -9,7 +9,7 @@ import com.example.coctails.R
 import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.network.models.firebase.drink.Cocktails
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.cocktail_item.view.*
+import kotlinx.android.synthetic.main.recycler_cocktail_item.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -43,7 +43,7 @@ class CocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemCl
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.cocktail_item, parent, false)
+        val view = layoutInflater.inflate(R.layout.recycler_cocktail_item, parent, false)
 
         val viewHolder = ViewHolder(view)
         viewHolder.onItemClick = onRecyclerItemClick

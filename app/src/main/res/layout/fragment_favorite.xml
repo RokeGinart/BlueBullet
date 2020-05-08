@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.screens.fragments.favorites.FavoriteFragment">
+
+    <include layout="@layout/common_toolbar" />
+
+    <TextView
+        android:id="@+id/favoriteMessage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:text="@string/fav_message"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:visibility="gone">
+
+    </TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favoriteRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        android:layout_marginBottom="?actionBarSize">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <include layout="@layout/common_progress_bar" />
+
+</FrameLayout>

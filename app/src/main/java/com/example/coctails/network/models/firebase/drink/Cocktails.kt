@@ -22,7 +22,6 @@ data class Cocktails(
         var category: String = ""
     ) : Serializable
 
-
     data class Category(
         var category: String = "",
         var name: String = ""

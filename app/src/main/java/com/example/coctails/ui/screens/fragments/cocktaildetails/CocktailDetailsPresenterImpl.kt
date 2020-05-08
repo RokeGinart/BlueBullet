@@ -28,9 +28,11 @@ class CocktailDetailsPresenterImpl : CocktailDetailsPresenter() {
         name: String,
         image: String,
         category: String,
+        abv: Int,
+        categoryName: String,
         favorite: Boolean
     ) {
-        val favoriteModel = FavoriteModel(cocktailId, name, image, category, favorite)
+        val favoriteModel = FavoriteModel(cocktailId, name, image, category, abv, categoryName, favorite)
 
         addToDispose(
             App.instanse?.dbFavorite?.favoriteDao()?.getCocktail(cocktailId, category)

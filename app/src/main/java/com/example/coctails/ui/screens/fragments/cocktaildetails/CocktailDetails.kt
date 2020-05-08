@@ -7,9 +7,6 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.View
-import android.webkit.WebChromeClient
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.coctails.R
@@ -20,6 +17,7 @@ import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.cocktail_info.CocktailsInfoFragment
 import com.example.coctails.ui.screens.fragments.cocktaildetails.adapters.IngredientsRecyclerAdapter
 import com.example.coctails.ui.screens.fragments.glassdetails.GlassFragment
+import com.example.coctails.ui.screens.fragments.ingredients_details.IngredientDetailsFragment
 import com.example.coctails.ui.screens.fragments.photoview.PhotoFragment
 import com.example.coctails.utils.*
 import kotlinx.android.synthetic.main.common_toolbar.*
@@ -70,7 +68,16 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
     }
 
     override fun onItemClick(position: Int) {
+        val fragment = IngredientDetailsFragment()
+        val bundle = Bundle()
 
+        val ingredient = adapter?.getAdapterList()?.get(position)
+
+        bundle.putString(INGREDIENT_CATEGORY, ingredient?.category)
+        bundle.putInt(INGREDIENT_ID, ingredient?.id!!)
+        fragment.arguments = bundle
+
+        activity?.loadFragment(fragment, "IngredientDetails", true)
     }
 
     override fun showFavorite(inFavorite: Boolean) {
@@ -150,7 +157,7 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
                     true
                 }
 
-                cocktails?.let { presenter.saveCocktailToFavorite(it.id, it.name, it.image, it.category?.category!!, favorite ) }
+                cocktails?.let { presenter.saveCocktailToFavorite(it.id, it.name, it.image, it.category?.category!!, it.abv, it.category?.name!!, favorite ) }
             }
         }
     }

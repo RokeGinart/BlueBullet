@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -9,8 +9,13 @@
 
     <include layout="@layout/common_toolbar"/>
 
+    <include layout="@layout/common_progress_bar"/>
+
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/glassDetailScroll"
+        android:layout_marginTop="?actionBarSize"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="match_parent">
 
         <LinearLayout
@@ -26,8 +31,54 @@
 
             </com.example.coctails.utils.imageviewzoom.ZoomView>
 
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:id="@+id/glassShop"
+                    android:layout_weight="2"
+                    android:layout_width="0dp"
+                    android:background="@drawable/info_back"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:padding="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_shop">
+
+                    </ImageView>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/glassTrolley"
+                    android:layout_weight="2"
+                    android:layout_marginStart="1dp"
+                    android:layout_width="0dp"
+                    android:background="@drawable/fav_back"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/trolleyImage"
+                        android:padding="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_grocery_trolley">
+
+                    </ImageView>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
             <FrameLayout
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -55,4 +106,4 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+</FrameLayout>

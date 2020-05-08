@@ -13,6 +13,7 @@ import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.glass.adapters.GlassRecyclerViewAdapter
 import com.example.coctails.ui.screens.fragments.glassdetails.GlassFragment
 import com.example.coctails.utils.GLASS_ID
+import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_glass_w.*
 
@@ -55,6 +56,7 @@ class GlassWSFragment : BaseFragment<GlassWSPresenter, GlassWSView>(), GlassWSVi
     }
 
     override fun showGlassList(glassList: List<GlassDetails>) {
+        commonProgressBar.visibility = View.GONE
         adapter?.setList(glassList)
     }
 

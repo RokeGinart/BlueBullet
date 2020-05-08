@@ -11,6 +11,8 @@ data class FavoriteModel(
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "image") var image: String,
     @ColumnInfo(name = "category") var category: String,
+    @ColumnInfo(name = "abv") var abv: Int,
+    @ColumnInfo(name = "category_name") var categoryName: String,
     @ColumnInfo(name = "favorite") var favorite: Boolean
 
 ) {

@@ -1,14 +1,12 @@
 package com.example.coctails.ui.screens.fragments.mainscreen
 
 import android.app.Dialog
-import android.app.SearchManager
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import com.example.coctails.R
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
@@ -18,7 +16,6 @@ import com.example.coctails.utils.CATEGORY_TYPE
 import com.example.coctails.utils.TOOLBAR_TITLE
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_main_screen.*
-import java.util.*
 
 class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), MainScreenView,
     View.OnClickListener, View.OnLongClickListener {
@@ -74,7 +71,7 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
     private fun showDialog(text: String) {
 
         val dialog = Dialog(context!!)
-        dialog.setContentView(R.layout.main_dialog_info)
+        dialog.setContentView(R.layout.custom_dialog_info)
         dialog.window?.setBackgroundDrawable(
             ColorDrawable(Color.TRANSPARENT)
         )

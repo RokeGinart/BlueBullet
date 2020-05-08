@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.coctails.R
 import com.example.coctails.ui.screens.BaseActivity
+import com.example.coctails.ui.screens.fragments.favorites.FavoriteFragment
 import com.example.coctails.ui.screens.fragments.workspace.WorkspaceFragment
 import com.example.coctails.ui.screens.fragments.mainscreen.MainScreenFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -19,8 +20,8 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
     private var backPressedTime: Long = 0
     private var fragmentList = mutableListOf<Fragment>()
     private val fragment1 = MainScreenFragment()
-    private val fragment2 =
-        WorkspaceFragment()
+    private val fragment2 = WorkspaceFragment()
+    private val fragment3 = FavoriteFragment()
     private var active = Fragment()
     private val fm = supportFragmentManager
 
@@ -29,22 +30,24 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
             when (item.itemId) {
                 R.id.action_bar -> {
 
-                    fm.beginTransaction().hide(active).show(fragment1).commit()
-                    active = fragment1
+                  /*  fm.beginTransaction().hide(active).show(fragment1).commit()
+                    active = fragment1*/
+                    fm.beginTransaction().replace(R.id.fragment_container, fragment1, "Main").commit()
                     return@OnNavigationItemSelectedListener true
                 }
 
 
                 R.id.action_workspace -> {
-                    fm.beginTransaction().hide(active).show(fragment2).commit()
-                    active = fragment2
+                   /* fm.beginTransaction().hide(active).show(fragment2).commit()
+                    active = fragment2*/
+                    fm.beginTransaction().replace(R.id.fragment_container, fragment2, "Workspace").commit()
                     return@OnNavigationItemSelectedListener true
                 }
 
                 R.id.action_favorites -> {
-                    /*   fm.beginTransaction().hide(active).show(fragment3).commit()
-
-                       active = fragment3*/
+              /*      fm.beginTransaction().hide(active).show(fragment3).commit()
+                    active = fragment3*/
+                    fm.beginTransaction().replace(R.id.fragment_container, fragment3, "Favorites").commit()
                     return@OnNavigationItemSelectedListener true
                 }
 
@@ -71,8 +74,9 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
 
         active = fragment1
 
-        fm.beginTransaction().add(R.id.fragment_container, fragment1, "Main").commit()
-        fm.beginTransaction().add(R.id.fragment_container, fragment2, "Favorites").hide(fragment2).commit()
+        fm.beginTransaction().replace(R.id.fragment_container, fragment1, "Main").commit()
+       /* fm.beginTransaction().add(R.id.fragment_container, fragment2, "Workspace").hide(fragment2).commit()
+        fm.beginTransaction().add(R.id.fragment_container, fragment3, "Favorites").hide(fragment3).commit()*/
     }
 
     fun loadFragment(fragment: Fragment, name: String, addToBackStackBoo: Boolean) {

@@ -51,4 +51,5 @@
     <string name="min">мин.</string>
     <string name="kitchen">Кухня</string>
     <string name="cocktailInfo">Информация</string>
+    <string name="fav_message">У вас нет избранных коктейлей</string>
 </resources>

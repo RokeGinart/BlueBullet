@@ -3,13 +3,14 @@ package com.example.coctails.ui.screens.activities.main
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.coctails.R
 import com.example.coctails.ui.screens.BaseActivity
 import com.example.coctails.ui.screens.fragments.favorites.FavoriteFragment
-import com.example.coctails.ui.screens.fragments.workspace.WorkspaceFragment
+import com.example.coctails.ui.screens.fragments.kitchen.KitchenFragment
 import com.example.coctails.ui.screens.fragments.mainscreen.MainScreenFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,10 +21,11 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
     private var backPressedTime: Long = 0
     private var fragmentList = mutableListOf<Fragment>()
     private val fragment1 = MainScreenFragment()
-    private val fragment2 = WorkspaceFragment()
+    private val fragment2 =
+        KitchenFragment()
     private val fragment3 = FavoriteFragment()
     private var active = Fragment()
-    private val fm = supportFragmentManager
+    val fm = supportFragmentManager
 
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -75,8 +77,6 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
         active = fragment1
 
         fm.beginTransaction().replace(R.id.fragment_container, fragment1, "Main").commit()
-       /* fm.beginTransaction().add(R.id.fragment_container, fragment2, "Workspace").hide(fragment2).commit()
-        fm.beginTransaction().add(R.id.fragment_container, fragment3, "Favorites").hide(fragment3).commit()*/
     }
 
     fun loadFragment(fragment: Fragment, name: String, addToBackStackBoo: Boolean) {
@@ -121,7 +121,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
             val t = System.currentTimeMillis()
             if (t - backPressedTime > 2000) {
                 backPressedTime = t
-                customToast("Нажмите назад, чтобы выйти")
+                customToast("Нажмите назад, чтобы выйти", 0)
             } else {
                 super.onBackPressed()
                 this.finish()
@@ -151,14 +151,23 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
         }
     }
 
-    fun customToast(text: String) {
+    fun customToast(text: String, action : Int) {
         val inflater = layoutInflater
         val layout: View =
             inflater.inflate(R.layout.custom_toast, findViewById(R.id.customToastLayout))
+
+        val ll = layout.findViewById(R.id.customToastLayout) as LinearLayout
         val tv = layout.findViewById(R.id.customToastMessage) as TextView
+
+        if(action == 1){
+            ll.setBackgroundDrawable(this.resources.getDrawable(R.drawable.toast_background_green))
+        } else if(action == 2){
+            ll.setBackgroundDrawable(this.resources.getDrawable(R.drawable.toast_background_red))
+        }
+
         tv.text = text
         val toast = Toast(applicationContext)
-        toast.setGravity(Gravity.BOTTOM, 0, 200)
+        toast.setGravity(Gravity.CENTER, 0, 0)
         toast.view = layout
         toast.show()
     }

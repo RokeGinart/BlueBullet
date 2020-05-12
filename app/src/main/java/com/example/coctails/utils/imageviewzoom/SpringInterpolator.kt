@@ -1,6 +1,6 @@
 package com.example.coctails.utils.imageviewzoom
 
-import android.view.animation.Interpolator;
+import android.view.animation.Interpolator
 
 class SpringInterpolator(private val factor: Float) : Interpolator {
     override fun getInterpolation(input: Float): Float {

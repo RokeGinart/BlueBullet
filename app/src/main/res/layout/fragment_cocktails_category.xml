@@ -29,7 +29,6 @@
 
     </TextView>
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/backToTop"
         android:layout_width="wrap_content"

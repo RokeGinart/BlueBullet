@@ -76,6 +76,8 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
             ColorDrawable(Color.TRANSPARENT)
         )
 
+      //  dialog.setCanceledOnTouchOutside(false)
+
         val dialogHome = dialog.findViewById<TextView>(R.id.dialogTextInfo)
         dialogHome.text = text
         dialogHome.setOnClickListener { dialog.dismiss() }

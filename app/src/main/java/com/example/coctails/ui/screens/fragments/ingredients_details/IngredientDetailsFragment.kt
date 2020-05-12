@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.Glide
 import com.example.coctails.R
@@ -55,6 +56,12 @@ class IngredientDetailsFragment : BaseFragment<IngredientDetailsPresenter, Ingre
 
         ingredientImageID.setOnClickListener(this)
         ingredientShopID.setOnClickListener(this)
+        ingredientShopID.setOnLongClickListener{
+            val browserIntent =
+                Intent(Intent.ACTION_VIEW, Uri.parse(ingredient?.link))
+            startActivity(browserIntent)
+            return@setOnLongClickListener true
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -87,9 +94,7 @@ class IngredientDetailsFragment : BaseFragment<IngredientDetailsPresenter, Ingre
             }
 
             R.id.ingredientShopID -> {
-                val browserIntent =
-                    Intent(Intent.ACTION_VIEW, Uri.parse(ingredient?.link))
-                startActivity(browserIntent)
+                activity?.customToast(getString(R.string.clickToShop), 1)
             }
         }
     }

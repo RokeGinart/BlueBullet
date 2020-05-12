@@ -151,9 +151,11 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
             R.id.favButton -> {
                 favorite = if(favorite){
                     favImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_ns))
+                    activity?.customToast("Коктейль " + cocktails?.name + " удален из избранного", 2)
                     false
                 }else{
                     favImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_s))
+                    activity?.customToast("Коктейль " + cocktails?.name + " добавлен в избранное", 1)
                     true
                 }
 

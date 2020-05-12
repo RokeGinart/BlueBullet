@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <FrameLayout
+        android:id="@+id/ingredientSelectViewWS"
+        android:layout_width="wrap_content"
+        android:layout_height="185dp"
+        android:background="@drawable/unselected_view">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ingredientImageWS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:maxWidth="100dp"
+                    android:layout_marginTop="30dp"
+                    android:padding="5dp"
+                    android:scaleType="centerCrop">
+
+                </ImageView>
+
+
+                <ImageView
+                    android:id="@+id/addIngredientsWS"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="end"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_add">
+
+                </ImageView>
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/ingredientNameWS"
+                android:layout_width="100dp"
+                android:padding="2dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:scrollHorizontally="true"
+                android:textColor="@color/white"
+                android:textSize="15dp">
+
+            </TextView>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

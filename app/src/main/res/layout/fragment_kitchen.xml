@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="vertical"
-    tools:context=".ui.screens.fragments.workspace.WorkspaceFragment">
+    tools:context=".ui.screens.fragments.kitchen.KitchenFragment">
 
     <include layout="@layout/common_toolbar" />
 
@@ -26,6 +26,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/workspaceView"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"

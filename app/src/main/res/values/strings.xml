@@ -52,4 +52,5 @@
     <string name="kitchen">Кухня</string>
     <string name="cocktailInfo">Информация</string>
     <string name="fav_message">У вас нет избранных коктейлей</string>
+    <string name="clickToShop">Зажмите, чтобы перейти на сайт-источник</string>
 </resources>

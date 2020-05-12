@@ -20,10 +20,6 @@ class IngredientsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItem
         notifyDataSetChanged()
     }
 
-    fun clearAdapter() {
-        ingredients.clear()
-    }
-
     fun getAdapterList() : ArrayList<Cocktails.Ingredients?> = ingredients
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,7 +34,6 @@ class IngredientsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItem
 
     override fun getItemCount(): Int {
         return ingredients.size
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

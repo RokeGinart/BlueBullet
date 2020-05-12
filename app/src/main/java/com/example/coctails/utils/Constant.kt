@@ -13,3 +13,6 @@ const val GLASS_ID = "GLASS_ID"
 
 const val INGREDIENT_CATEGORY = "INGREDIENT_CATEGORY"
 const val INGREDIENT_ID = "INGREDIENT_ID"
+
+const val ARG_SECTION_NUMBER = "section_number"
+

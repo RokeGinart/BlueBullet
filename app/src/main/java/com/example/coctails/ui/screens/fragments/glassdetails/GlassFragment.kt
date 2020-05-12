@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.Glide
 
@@ -55,15 +56,19 @@ class GlassFragment : BaseFragment<GlassPresenter, GlassView>(), GlassView{
         descriptionGD.text = glass?.description
 
         glassShop.setOnClickListener{
+            activity?.customToast(getString(R.string.clickToShop), 1)
+        }
+
+        glassShop.setOnLongClickListener{
             val browserIntent =
                 Intent(Intent.ACTION_VIEW, Uri.parse(glass?.link))
             startActivity(browserIntent)
+            return@setOnLongClickListener true
         }
 
         glassTrolley.setOnClickListener{
             trolleyImage.setImageDrawable(activity?.resources?.getDrawable(R.drawable.ic_grocery_trolley_selected))
         }
-
     }
 
     override fun onDestroyView() {

@@ -53,4 +53,7 @@
     <string name="cocktailInfo">Информация</string>
     <string name="fav_message">У вас нет избранных коктейлей</string>
     <string name="clickToShop">Зажмите, чтобы перейти на сайт-источник</string>
+
+    <string name="base_spirit">Базовый алкоголь</string>
+    <string name="see_more">Смотреть все >></string>
 </resources>

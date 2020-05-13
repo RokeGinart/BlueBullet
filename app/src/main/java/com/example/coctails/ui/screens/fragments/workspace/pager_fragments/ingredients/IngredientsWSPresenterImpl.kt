@@ -12,21 +12,18 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
     var database = FirebaseDatabase.getInstance()
     var myRef = database.getReference("ingredients")
 
-
     override fun getIngredientList() {
         myRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-                val responseList = mutableListOf<IngredientsModel>()
+                val allIngredientsList = mutableListOf<IngredientsModel>()
 
                 dataSnapshot.children.forEach {
-                /*    if (it.key == "alcohol") {*/
-                        it.children.forEach {alc ->
-                            responseList.add(alc.getValue(IngredientsModel::class.java)!!)
-                        }
-                  //  }
+                    it.children.forEach { alc ->
+                        allIngredientsList.add(alc.getValue(IngredientsModel::class.java)!!)
+                    }
                 }
 
-                screenView?.showResult(responseList)
+                screenView?.showResult(allIngredientsList)
             }
 
             override fun onCancelled(@NonNull databaseError: DatabaseError) {}

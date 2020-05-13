@@ -8,6 +8,12 @@
         <item name="colorAccent">@color/blue</item>
         <item name="android:navigationBarColor">@color/blue</item>
     </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/white</item>
+        <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="boxStrokeWidth">1dp</item>
+    </style>
 </resources>
 
 

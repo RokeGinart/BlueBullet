@@ -5,10 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.Glide
 import com.example.coctails.R
+import com.example.coctails.interfaces.OnIngredientDataChanged
 import com.example.coctails.network.models.firebase.drink.IngredientsModel
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
@@ -21,12 +23,13 @@ import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_ingredient_details.*
 
-class IngredientDetailsFragment : BaseFragment<IngredientDetailsPresenter, IngredientDetailsView>(), IngredientDetailsView, View.OnClickListener{
+class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredientDataChanged) : BaseFragment<IngredientDetailsPresenter, IngredientDetailsView>(), IngredientDetailsView, View.OnClickListener{
 
     private var activity: MainActivity? = null
     private var ingCategory: String? = null
     private var ingId: Int? = null
     private var ingredient : IngredientsModel? = null
+    private var isSelected = false
 
     override fun getLayoutId(): Int = R.layout.fragment_ingredient_details
 
@@ -47,6 +50,7 @@ class IngredientDetailsFragment : BaseFragment<IngredientDetailsPresenter, Ingre
 
         if(ingCategory != null && ingId != null){
             presenter.getIngredientsData(ingCategory!!, ingId!!)
+            presenter.getIngredientFromDB(ingCategory!!, ingId!!)
         }
     }
 
@@ -56,6 +60,8 @@ class IngredientDetailsFragment : BaseFragment<IngredientDetailsPresenter, Ingre
 
         ingredientImageID.setOnClickListener(this)
         ingredientShopID.setOnClickListener(this)
+        favoriteIngredient.setOnClickListener(this)
+
         ingredientShopID.setOnLongClickListener{
             val browserIntent =
                 Intent(Intent.ACTION_VIEW, Uri.parse(ingredient?.link))
@@ -80,6 +86,20 @@ class IngredientDetailsFragment : BaseFragment<IngredientDetailsPresenter, Ingre
         Glide.with(this).load(ingredientModel.image).into(ingredientImageID)
     }
 
+    override fun showDatabaseResult(isSelected: Boolean) {
+        favoriteSelection(isSelected)
+    }
+
+    private fun favoriteSelection(selection: Boolean){
+        isSelected = if(selection){
+            favoriteIngredient.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_s))
+            false
+        } else {
+            favoriteIngredient.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_ns))
+            true
+        }
+    }
+
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.ingredientImageID -> {
@@ -95,6 +115,11 @@ class IngredientDetailsFragment : BaseFragment<IngredientDetailsPresenter, Ingre
 
             R.id.ingredientShopID -> {
                 activity?.customToast(getString(R.string.clickToShop), 1)
+            }
+            R.id.favoriteIngredient -> {
+                favoriteSelection(isSelected)
+                presenter.setIngredientToDB(ingCategory!!, ingId!!)
+                onIngredientDataChanged.dataIsChanged(!isSelected, ingredient?.id!!, ingredient?.category?.category!!)
             }
         }
     }

@@ -6,21 +6,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coctails.R
 import com.example.coctails.interfaces.OnRecyclerItemClick
-import com.example.coctails.network.models.firebase.drink.Cocktails
+import com.example.coctails.ui.screens.fragments.cocktaildetails.model.IngredientModelCD
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_ingredients_item.view.*
 
 class IngredientsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemClick) :
     RecyclerView.Adapter<IngredientsRecyclerAdapter.ViewHolder>() {
 
-    private val ingredients = ArrayList<Cocktails.Ingredients?>()
+    private val ingredients = ArrayList<IngredientModelCD?>()
 
-    fun setList(stList: List<Cocktails.Ingredients?>) {
+    fun setList(stList: List<IngredientModelCD?>) {
         ingredients.addAll(stList)
         notifyDataSetChanged()
     }
 
-    fun getAdapterList() : ArrayList<Cocktails.Ingredients?> = ingredients
+    fun updateItem(position: Int, isSelection: Boolean){
+        ingredients[position]?.isSelected = isSelection
+    }
+
+    fun getAdapterList() : ArrayList<IngredientModelCD?> = ingredients
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -38,7 +42,7 @@ class IngredientsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItem
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val ingredient = ingredients[position]
-            holder.bind(ingredient)
+            holder.bind(ingredient!!)
     }
 
     class ViewHolder(itemView: View) :
@@ -49,14 +53,14 @@ class IngredientsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItem
 
         lateinit var onItemClick: OnRecyclerItemClick
 
-        fun bind(ingredients: Cocktails.Ingredients?) {
+        fun bind(ingredients: IngredientModelCD) {
             itemView.setOnClickListener { onItemClick.onItemClick(adapterPosition) }
 
-            if(ingredients?.id?.rem(2) == 0){
+            if(ingredients.isSelected){
                 itemView.ingredientImage.setImageDrawable(itemView.context.getDrawable(R.drawable.ic_check_box_ch))
             }
 
-            itemView.ingredientName.text = ingredients?.name
+            itemView.ingredientName.text = ingredients.name
         }
     }
 }

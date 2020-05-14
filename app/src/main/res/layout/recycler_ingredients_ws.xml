@@ -36,8 +36,10 @@
                     android:id="@+id/addIngredientsWS"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_gravity="end"
-                    android:padding="10dp"
+                    android:padding="13dp"
                     android:src="@drawable/ic_add">
 
                 </ImageView>

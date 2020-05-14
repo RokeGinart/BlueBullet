@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/background_image"
     tools:context=".ui.screens.fragments.workspace.pager_fragments.ingredients.IngredientsWSFragment">
 
     <include layout="@layout/common_progress_bar" />
@@ -19,8 +19,7 @@
             android:id="@+id/allIngredientsRecycler"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp">
+            android:layout_gravity="center_horizontal">
 
         </androidx.recyclerview.widget.RecyclerView>
 

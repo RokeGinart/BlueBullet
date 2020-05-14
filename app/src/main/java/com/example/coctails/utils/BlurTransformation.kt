@@ -30,6 +30,6 @@ class BlurTransformation {
 
     /*   val originalBitmap = BitmapFactory.decodeResource(resources, R.drawable.second)
       val blurredBitmap: Bitmap? = BlurTransformation().blur(context, originalBitmap)
-      categoryCocktails.background = BitmapDrawable(resources, blurredBitmap)*/
+      categoryCocktails.background_image = BitmapDrawable(resources, blurredBitmap)*/
 
 }

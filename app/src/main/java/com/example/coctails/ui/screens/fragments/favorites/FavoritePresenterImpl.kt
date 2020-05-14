@@ -18,7 +18,7 @@ class FavoritePresenterImpl : FavoritePresenter() {
 
     override fun getFavoriteList() {
         addToDispose(
-            App.instanse?.dbFavorite?.favoriteDao()?.getAllFavorite()?.subscribeOn(Schedulers.io())
+            App.instanse?.database?.favoriteDao()?.getAllFavorite()?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.map {
                     val favoriteList = ArrayList<FavoriteModel>()
@@ -51,6 +51,6 @@ class FavoritePresenterImpl : FavoritePresenter() {
     }
 
     override fun setFavoriteStatus(favorite: Boolean, cocktailId: Int, category: String) {
-        App.instanse?.dbFavorite?.favoriteDao()?.setFavorite(favorite, cocktailId, category)
+        App.instanse?.database?.favoriteDao()?.setFavorite(favorite, cocktailId, category)
     }
 }

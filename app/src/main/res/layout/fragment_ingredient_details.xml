@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/background_image"
     tools:context=".ui.screens.fragments.ingredients_details.IngredientDetailsFragment">
 
     <include layout="@layout/common_toolbar" />
@@ -13,9 +13,9 @@
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/ingredientScrollID"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:layout_marginTop="?actionBarSize">
 
         <LinearLayout
@@ -165,7 +165,7 @@
                             android:background="@drawable/ing_back">
 
                             <ImageView
-
+                                android:id="@+id/favoriteIngredient"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
                                 android:padding="12dp"

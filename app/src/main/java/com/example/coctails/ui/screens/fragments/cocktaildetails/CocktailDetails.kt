@@ -10,12 +10,14 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.coctails.R
+import com.example.coctails.interfaces.OnIngredientDataChanged
 import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.cocktail_info.CocktailsInfoFragment
 import com.example.coctails.ui.screens.fragments.cocktaildetails.adapters.IngredientsRecyclerAdapter
+import com.example.coctails.ui.screens.fragments.cocktaildetails.model.IngredientModelCD
 import com.example.coctails.ui.screens.fragments.glassdetails.GlassFragment
 import com.example.coctails.ui.screens.fragments.ingredients_details.IngredientDetailsFragment
 import com.example.coctails.ui.screens.fragments.photoview.PhotoFragment
@@ -25,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_cocktail_details.*
 
 
 class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsView>(),
-    CocktailDetailsView, OnRecyclerItemClick, View.OnClickListener{
+    CocktailDetailsView, OnRecyclerItemClick, View.OnClickListener, OnIngredientDataChanged{
 
     override fun getLayoutId(): Int = R.layout.fragment_cocktail_details
 
@@ -44,7 +46,10 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
         val bundle = arguments
         cocktails = bundle?.getSerializable(COCKTAIL) as Cocktails?
 
-        cocktails?.let { presenter.getFavorite(it.id, it.category?.category!! ) }
+        cocktails?.let {
+            presenter.getFavorite(it.id, it.category?.category!!)
+            presenter.getIngredientDetail(it)
+        }
 
         setupRecycler()
         cocktailGlassCD.setOnClickListener(this)
@@ -68,13 +73,13 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
     }
 
     override fun onItemClick(position: Int) {
-        val fragment = IngredientDetailsFragment()
+        val fragment = IngredientDetailsFragment(this)
         val bundle = Bundle()
 
         val ingredient = adapter?.getAdapterList()?.get(position)
 
         bundle.putString(INGREDIENT_CATEGORY, ingredient?.category)
-        bundle.putInt(INGREDIENT_ID, ingredient?.id!!)
+        bundle.putInt(INGREDIENT_ID, ingredient?.ingredientId!!)
         fragment.arguments = bundle
 
         activity?.loadFragment(fragment, "IngredientDetails", true)
@@ -115,7 +120,19 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
 
         commonToolbarTitle.text = cocktails.name
 
-        adapter?.setList(cocktails.ingredients!!.subList(1, cocktails.ingredients!!.size))
+    }
+
+    override fun showIngredientResult(ingredientsList: List<IngredientModelCD>) {
+        adapter?.setList(ingredientsList)
+    }
+
+    override fun dataIsChanged(isChanged: Boolean, ingredientId: Int, category: String) {
+        adapter?.getAdapterList()?.forEachIndexed{ index, element->
+            if(category == element?.category && ingredientId == element.ingredientId && element.isSelected != isChanged){
+                adapter?.updateItem(index, isChanged)
+                adapter?.notifyItemChanged(index)
+            }
+        }
     }
 
     override fun onClick(v: View?) {

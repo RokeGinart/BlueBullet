@@ -2,5 +2,4 @@ package com.example.coctails.ui.screens.fragments.workspace.pager_fragments.cock
 
 import com.example.coctails.ui.BasePresenter
 
-abstract class CocktailsWSPresenter : BasePresenter<CocktailsWSView>(){
-}
+abstract class CocktailsWSPresenter : BasePresenter<CocktailsWSView>()

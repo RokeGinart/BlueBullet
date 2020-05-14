@@ -6,4 +6,5 @@ import com.example.coctails.ui.BaseView
 interface IngredientDetailsView : BaseView {
 
     fun showIngredientResult(ingredientModel: IngredientsModel)
+    fun showDatabaseResult(isSelected : Boolean)
 }

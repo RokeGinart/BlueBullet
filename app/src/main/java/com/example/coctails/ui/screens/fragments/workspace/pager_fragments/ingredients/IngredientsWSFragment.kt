@@ -15,20 +15,22 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coctails.R
+import com.example.coctails.interfaces.OnIngredientDataChanged
+import com.example.coctails.interfaces.OnRecyclerIconClick
 import com.example.coctails.interfaces.OnRecyclerItemClick
-import com.example.coctails.network.models.firebase.drink.IngredientsModel
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.ingredients_details.IngredientDetailsFragment
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.adapters.AllIngredientRecyclerAdapter
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.adapters.SearchIngredientRecyclerView
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.interfaces.OnSearchItemClick
+import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.model.IngredientModelSelection
 import com.example.coctails.utils.*
 import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.fragment_ingredients_w.*
 
 class IngredientsWSFragment : BaseFragment<IngredientsWSPresenter, IngredientsWSView>(),
-    IngredientsWSView, OnRecyclerItemClick, OnSearchItemClick {
+    IngredientsWSView, OnRecyclerItemClick, OnSearchItemClick, OnRecyclerIconClick, OnIngredientDataChanged {
 
     private var activity: MainActivity? = null
     private var mLayoutManager: GridLayoutManager? = null
@@ -77,7 +79,7 @@ class IngredientsWSFragment : BaseFragment<IngredientsWSPresenter, IngredientsWS
         mLayoutManager = GridLayoutManager(context, 3)
         allIngredientsRecycler.layoutManager = mLayoutManager
         allIngredientsRecycler.setHasFixedSize(true)
-        adapter = AllIngredientRecyclerAdapter(this)
+        adapter = AllIngredientRecyclerAdapter(this, this)
         allIngredientsRecycler.adapter = adapter
 
         allIngredientsRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -123,24 +125,19 @@ class IngredientsWSFragment : BaseFragment<IngredientsWSPresenter, IngredientsWS
         }
     }
 
-    override fun showResult(ingredientList: List<IngredientsModel>) {
+    override fun showResult(ingredientList: List<IngredientModelSelection>) {
         adapter?.setList(ingredientList)
         mainFab.visibility = View.VISIBLE
         commonProgressBar.visibility = View.GONE
     }
 
     override fun onItemClick(position: Int) {
-        val fragment = IngredientDetailsFragment()
-        val bundle = Bundle()
+        startDetailsFragment(adapter?.getAdapterList()?.get(position)!!)
+    }
 
+    override fun onIconClick(position: Int, status: Boolean) {
         val ingredient = adapter?.getAdapterList()?.get(position)
-
-        bundle.putString(INGREDIENT_CATEGORY, ingredient?.category?.category)
-        bundle.putInt(INGREDIENT_ID, ingredient?.id!!)
-
-        fragment.arguments = bundle
-
-        activity?.loadFragment(fragment, "IngredientDetails", true)
+        presenter.setIngredientToDB(ingredient?.ingredientId!!, ingredient.category)
     }
 
     private fun openSearchDialog() {
@@ -168,7 +165,7 @@ class IngredientsWSFragment : BaseFragment<IngredientsWSPresenter, IngredientsWS
             override fun afterTextChanged(s: Editable) {
                 if (s.length > 1) {
                     val query = TranslitUtils().cyr2lat(s.toString().toLowerCase().trim())
-                    val searchList = mutableListOf<IngredientsModel>()
+                    val searchList = mutableListOf<IngredientModelSelection>()
                     adapter?.getAdapterList()?.forEach {
                         if (it.name.toLowerCase().trim().contains(query!!)) {
                             searchList.add(it)
@@ -181,22 +178,39 @@ class IngredientsWSFragment : BaseFragment<IngredientsWSPresenter, IngredientsWS
     }
 
     override fun onSearchItemClick(position: Int) {
-        val fragment = IngredientDetailsFragment()
-        val bundle = Bundle()
-
-        val ingredient = searchAdapter?.getAdapterList()?.get(position)
-
-        bundle.putString(INGREDIENT_CATEGORY, ingredient?.category?.category)
-        bundle.putInt(INGREDIENT_ID, ingredient?.id!!)
-        fragment.arguments = bundle
-
-        activity?.loadFragment(fragment, "IngredientDetails", true)
-
+        startDetailsFragment(searchAdapter?.getAdapterList()?.get(position)!!)
         searchDialog?.dismiss()
     }
 
-    override fun onSearchIconClick(position: Int) {
+    private fun startDetailsFragment(ingredient: IngredientModelSelection){
+        val fragment = IngredientDetailsFragment(this)
+        val bundle = Bundle()
 
+        bundle.putString(INGREDIENT_CATEGORY, ingredient.category)
+        bundle.putInt(INGREDIENT_ID, ingredient.ingredientId)
+        fragment.arguments = bundle
+
+        activity?.loadFragment(fragment, "IngredientDetails", true)
+    }
+
+    override fun onSearchIconClick(position: Int) {
+        val ingredient = searchAdapter?.getAdapterList()?.get(position)
+        presenter.setIngredientToDB(ingredient?.ingredientId!!, ingredient.category)
+        adapter?.getAdapterList()?.forEachIndexed{ index, element->
+            if(ingredient.category == element.category && ingredient.ingredientId == element.ingredientId){
+                adapter?.resetDataItem(index)
+                adapter?.notifyItemChanged(index)
+            }
+        }
+    }
+
+    override fun dataIsChanged(isChanged: Boolean, ingredientId: Int, category: String) {
+        adapter?.getAdapterList()?.forEachIndexed{ index, element->
+            if(category == element.category && ingredientId == element.ingredientId && element.isSelected != isChanged){
+                adapter?.resetDataItemByInterface(index, isChanged)
+                adapter?.notifyItemChanged(index)
+            }
+        }
     }
 
     fun newInstance(index: Int): IngredientsWSFragment {

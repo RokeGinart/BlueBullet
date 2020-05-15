@@ -7,8 +7,9 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.example.coctails.R
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.cocktails.CocktailsWSFragment
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.IngredientsWSFragment
+import com.example.coctails.utils.PublisherSubject
 
-class PageAdapter(private val context: Context, fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class PageAdapter(private val context: Context, fm: FragmentManager, private val subject: PublisherSubject) : FragmentPagerAdapter(fm) {
 
     private val TAB_TITLES = arrayOf(
         R.string.ingredients,
@@ -17,9 +18,9 @@ class PageAdapter(private val context: Context, fm: FragmentManager) : FragmentP
 
     override fun getItem(position: Int): Fragment {
         return if (position == 0) {
-            IngredientsWSFragment().newInstance(position + 1)
+            IngredientsWSFragment(subject).newInstance(position + 1, subject)
         } else {
-            CocktailsWSFragment().newInstance(position + 1)
+            CocktailsWSFragment(subject).newInstance(position + 1, subject)
         }
     }
 

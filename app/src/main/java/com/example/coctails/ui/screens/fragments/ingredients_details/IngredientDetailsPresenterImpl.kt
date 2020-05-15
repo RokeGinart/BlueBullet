@@ -52,6 +52,8 @@ class IngredientDetailsPresenterImpl : IngredientDetailsPresenter() {
                     } else {
                         App.instanse?.database?.ingredientDao()?.insert(ingredientsDBModel)
                     }
+
+                    screenView?.successChange()
                 })
     }
 }

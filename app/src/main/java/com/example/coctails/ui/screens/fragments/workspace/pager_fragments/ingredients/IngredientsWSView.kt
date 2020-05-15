@@ -5,4 +5,5 @@ import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingre
 
 interface IngredientsWSView : BaseView{
     fun showResult(ingredientList : List<IngredientModelSelection>)
+    fun successChanges()
 }

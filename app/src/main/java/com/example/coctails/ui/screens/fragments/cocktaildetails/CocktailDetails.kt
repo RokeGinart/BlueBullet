@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -36,6 +37,7 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
     private var adapter: IngredientsRecyclerAdapter? = null
     private var cocktails: Cocktails? = null
     private var favorite = false
+    private var subject : PublisherSubject? = null
 
     override fun providePresenter(): CocktailDetailsPresenter = CocktailDetailsPresenterImpl()
 
@@ -45,6 +47,7 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
 
         val bundle = arguments
         cocktails = bundle?.getSerializable(COCKTAIL) as Cocktails?
+        subject = bundle?.getSerializable(INGREDIENT_INTERFACE) as PublisherSubject?
 
         cocktails?.let {
             presenter.getFavorite(it.id, it.category?.category!!)
@@ -131,6 +134,10 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
             if(category == element?.category && ingredientId == element.ingredientId && element.isSelected != isChanged){
                 adapter?.updateItem(index, isChanged)
                 adapter?.notifyItemChanged(index)
+
+                if(subject != null){
+                    subject?.publish(CHANGED_FROM_INGREDIENT)
+                }
             }
         }
     }

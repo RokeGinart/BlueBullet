@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.coctails.R
-import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.interfaces.OnSearchItemClick
+import com.example.coctails.ui.screens.fragments.workspace.intefraces.OnSearchItemClick
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.model.IngredientModelSelection
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_search_ingredients.view.*

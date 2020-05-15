@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -23,14 +24,18 @@ import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.ingredients_details.IngredientDetailsFragment
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.adapters.AllIngredientRecyclerAdapter
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.adapters.SearchIngredientRecyclerView
-import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.interfaces.OnSearchItemClick
+import com.example.coctails.ui.screens.fragments.workspace.intefraces.OnSearchItemClick
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.model.IngredientModelSelection
 import com.example.coctails.utils.*
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.fragment_ingredients_w.*
 
-class IngredientsWSFragment : BaseFragment<IngredientsWSPresenter, IngredientsWSView>(),
-    IngredientsWSView, OnRecyclerItemClick, OnSearchItemClick, OnRecyclerIconClick, OnIngredientDataChanged {
+class IngredientsWSFragment(private val subject: PublisherSubject) :
+    BaseFragment<IngredientsWSPresenter, IngredientsWSView>(),
+    IngredientsWSView, OnRecyclerItemClick,
+    OnSearchItemClick, OnRecyclerIconClick, OnIngredientDataChanged {
 
     private var activity: MainActivity? = null
     private var mLayoutManager: GridLayoutManager? = null
@@ -73,6 +78,8 @@ class IngredientsWSFragment : BaseFragment<IngredientsWSPresenter, IngredientsWS
         fabCloseAnim = AnimationUtils.loadAnimation(context, R.anim.fab_close)
         forwardAnim = AnimationUtils.loadAnimation(context, R.anim.rotate_forward)
         backwardAnim = AnimationUtils.loadAnimation(context, R.anim.rotate_backward)
+
+        subject.listen().subscribe(getInputObserver())
     }
 
     private fun setupRecycler() {
@@ -125,6 +132,21 @@ class IngredientsWSFragment : BaseFragment<IngredientsWSPresenter, IngredientsWS
         }
     }
 
+    private fun getInputObserver(): Observer<String> {
+        return object : Observer<String> {
+            override fun onComplete() {}
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(t: String) {
+                if(t == CHANGED_FROM_INGREDIENT){
+                    presenter.getIngredientListFromDB()
+                }
+            }
+
+            override fun onError(e: Throwable) {}
+        }
+    }
+
     override fun showResult(ingredientList: List<IngredientModelSelection>) {
         adapter?.setList(ingredientList)
         mainFab.visibility = View.VISIBLE
@@ -138,6 +160,10 @@ class IngredientsWSFragment : BaseFragment<IngredientsWSPresenter, IngredientsWS
     override fun onIconClick(position: Int, status: Boolean) {
         val ingredient = adapter?.getAdapterList()?.get(position)
         presenter.setIngredientToDB(ingredient?.ingredientId!!, ingredient.category)
+    }
+
+    override fun successChanges() {
+        subject.publish(CHANGED_FROM_ALL)
     }
 
     private fun openSearchDialog() {
@@ -182,7 +208,7 @@ class IngredientsWSFragment : BaseFragment<IngredientsWSPresenter, IngredientsWS
         searchDialog?.dismiss()
     }
 
-    private fun startDetailsFragment(ingredient: IngredientModelSelection){
+    private fun startDetailsFragment(ingredient: IngredientModelSelection) {
         val fragment = IngredientDetailsFragment(this)
         val bundle = Bundle()
 
@@ -196,8 +222,8 @@ class IngredientsWSFragment : BaseFragment<IngredientsWSPresenter, IngredientsWS
     override fun onSearchIconClick(position: Int) {
         val ingredient = searchAdapter?.getAdapterList()?.get(position)
         presenter.setIngredientToDB(ingredient?.ingredientId!!, ingredient.category)
-        adapter?.getAdapterList()?.forEachIndexed{ index, element->
-            if(ingredient.category == element.category && ingredient.ingredientId == element.ingredientId){
+        adapter?.getAdapterList()?.forEachIndexed { index, element ->
+            if (ingredient.category == element.category && ingredient.ingredientId == element.ingredientId) {
                 adapter?.resetDataItem(index)
                 adapter?.notifyItemChanged(index)
             }
@@ -205,16 +231,16 @@ class IngredientsWSFragment : BaseFragment<IngredientsWSPresenter, IngredientsWS
     }
 
     override fun dataIsChanged(isChanged: Boolean, ingredientId: Int, category: String) {
-        adapter?.getAdapterList()?.forEachIndexed{ index, element->
-            if(category == element.category && ingredientId == element.ingredientId && element.isSelected != isChanged){
+        adapter?.getAdapterList()?.forEachIndexed { index, element ->
+            if (category == element.category && ingredientId == element.ingredientId && element.isSelected != isChanged) {
                 adapter?.resetDataItemByInterface(index, isChanged)
                 adapter?.notifyItemChanged(index)
             }
         }
     }
 
-    fun newInstance(index: Int): IngredientsWSFragment {
-        val fragment = IngredientsWSFragment()
+    fun newInstance(index: Int, subject: PublisherSubject): IngredientsWSFragment {
+        val fragment = IngredientsWSFragment(subject)
         val bundle = Bundle()
         bundle.putInt(ARG_SECTION_NUMBER, index)
         fragment.arguments = bundle

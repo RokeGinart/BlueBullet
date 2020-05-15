@@ -1,4 +1,4 @@
-package com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.interfaces
+package com.example.coctails.ui.screens.fragments.workspace.intefraces
 
 interface OnSearchItemClick {
 

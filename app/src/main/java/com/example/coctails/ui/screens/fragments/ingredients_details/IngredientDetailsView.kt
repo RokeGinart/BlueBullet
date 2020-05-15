@@ -7,4 +7,5 @@ interface IngredientDetailsView : BaseView {
 
     fun showIngredientResult(ingredientModel: IngredientsModel)
     fun showDatabaseResult(isSelected : Boolean)
+    fun successChange()
 }

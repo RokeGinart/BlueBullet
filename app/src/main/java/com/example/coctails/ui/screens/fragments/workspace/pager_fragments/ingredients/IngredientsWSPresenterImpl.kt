@@ -1,5 +1,6 @@
 package com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients
 
+import android.util.Log
 import androidx.annotation.NonNull
 import com.example.coctails.core.App
 import com.example.coctails.core.room.entity.IngredientDBModel
@@ -20,9 +21,9 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
     val allIngredientsList = mutableListOf<IngredientsModel>()
 
     override fun getIngredientList() {
+        allIngredientsList.clear()
         myRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-                allIngredientsList.clear()
                 dataSnapshot.children.forEach {
                     it.children.forEach { alc ->
                         allIngredientsList.add(alc.getValue(IngredientsModel::class.java)!!)
@@ -80,6 +81,8 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
                     } else {
                         App.instanse?.database?.ingredientDao()?.insert(ingredientsDBModel)
                     }
+
+                    screenView?.successChanges()
                 })
     }
 }

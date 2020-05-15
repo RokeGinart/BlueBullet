@@ -7,10 +7,11 @@ import com.example.coctails.R
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.workspace.adapters.PageAdapter
+import com.example.coctails.utils.PublisherSubject
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_work_space.*
 
-class WorkSpaceFragment : BaseFragment<WorkSpacePresenter, WorkSpaceView>(), WorkSpaceView {
+class WorkSpaceFragment : BaseFragment<WorkSpacePresenter, WorkSpaceView>(), WorkSpaceView{
 
     private var activity: MainActivity? = null
 
@@ -35,7 +36,8 @@ class WorkSpaceFragment : BaseFragment<WorkSpacePresenter, WorkSpaceView>(), Wor
             activity?.onBackPressed()
         }
 
-        kitchenViewPager.adapter = PageAdapter(context!!, childFragmentManager)
+
+        kitchenViewPager.adapter = PageAdapter(context!!, childFragmentManager, PublisherSubject().getInstance()!!)
         kitchenTabs.setupWithViewPager(kitchenViewPager)
     }
 

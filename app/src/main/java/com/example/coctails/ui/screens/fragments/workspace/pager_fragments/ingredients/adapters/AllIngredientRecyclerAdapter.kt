@@ -1,6 +1,5 @@
 package com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.adapters
 
-import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +25,7 @@ class AllIngredientRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerIt
 
     fun setList(stList: List<IngredientModelSelection>) {
         ingredientsList.clear()
+        sparseArray.clear()
         ingredientsList.addAll(stList)
         setSortedByNameList()
     }

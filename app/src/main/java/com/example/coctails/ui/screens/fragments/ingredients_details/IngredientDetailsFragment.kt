@@ -119,9 +119,12 @@ class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredien
             R.id.favoriteIngredient -> {
                 favoriteSelection(isSelected)
                 presenter.setIngredientToDB(ingCategory!!, ingId!!)
-                onIngredientDataChanged.dataIsChanged(!isSelected, ingredient?.id!!, ingredient?.category?.category!!)
             }
         }
+    }
+
+    override fun successChange() {
+        onIngredientDataChanged.dataIsChanged(!isSelected, ingredient?.id!!, ingredient?.category?.category!!)
     }
 
     override fun onDestroyView() {

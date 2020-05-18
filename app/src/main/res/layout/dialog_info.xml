@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/view_borders"
+        android:background="@drawable/view_borders_blue"
         android:padding="20dp">
 
         <TextView

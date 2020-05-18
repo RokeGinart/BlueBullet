@@ -12,7 +12,7 @@
         android:id="@+id/toolbarCA"
         layout="@layout/common_toolbar" />
 
-    <include layout="@layout/common_progress_bar"/>
+    <include layout="@layout/common_progress_bar" />
 
 
     <TextView
@@ -37,9 +37,11 @@
         android:layout_marginBottom="15dp"
         android:backgroundTint="@color/purple"
         android:src="@drawable/ic_top_arrow_com"
+        app:backgroundTint="@color/purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="@color/purple1" />
+        app:rippleColor="@color/purple1"
+        app:tint="@color/white" />
 
     <LinearLayout
         android:id="@+id/cocktailsCategoryLayout"

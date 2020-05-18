@@ -33,7 +33,6 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
         setupClicks()
     }
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activity = context as MainActivity
@@ -71,12 +70,10 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
     private fun showDialog(text: String) {
 
         val dialog = Dialog(context!!)
-        dialog.setContentView(R.layout.custom_dialog_info)
+        dialog.setContentView(R.layout.dialog_info)
         dialog.window?.setBackgroundDrawable(
             ColorDrawable(Color.TRANSPARENT)
         )
-
-      //  dialog.setCanceledOnTouchOutside(false)
 
         val dialogHome = dialog.findViewById<TextView>(R.id.dialogTextInfo)
         dialogHome.text = text
@@ -101,8 +98,8 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
         super.onResume()
         activity?.setSupportActionBar(commonToolbar)
         activity?.supportActionBar?.title = null
-        commonToolbarTitle.text = getString(R.string.bar)
-        commonToolbarBackPress.visibility = View.GONE
+        commonToolbarTitle?.text = getString(R.string.bar)
+        commonToolbarBackPress?.visibility = View.GONE
     }
 
     override fun onDestroyView() {

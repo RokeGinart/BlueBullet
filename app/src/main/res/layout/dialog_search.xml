@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="20dp"
-    android:background="@drawable/view_borders"
+    android:background="@drawable/view_borders_blue"
     android:orientation="vertical"
     android:padding="10dp">
 

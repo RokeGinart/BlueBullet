@@ -64,7 +64,7 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
                         }
                     }
 
-                    screenView?.showResult(ingredientList)
+                    screenView?.showResult(ingredientList, t1?.size!!)
                 }
         )
     }

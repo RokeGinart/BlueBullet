@@ -25,6 +25,11 @@ class SearchIngredientRecyclerView(private val onRecyclerItemClick: OnSearchItem
         notifyDataSetChanged()
     }
 
+    fun clearList(){
+        ingredientsList.clear()
+        notifyDataSetChanged()
+    }
+
     fun getAdapterList() : List<IngredientModelSelection> = ingredientsList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -75,7 +80,7 @@ class SearchIngredientRecyclerView(private val onRecyclerItemClick: OnSearchItem
                 selectView(status)
                 addToSpare(position, status)
                 ingredient.isSelected = status
-                onItemClick.onSearchIconClick(adapterPosition)
+                onItemClick.onSearchIconClick(adapterPosition, status)
             }
 
 

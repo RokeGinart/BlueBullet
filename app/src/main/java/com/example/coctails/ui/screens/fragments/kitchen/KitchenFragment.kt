@@ -37,8 +37,8 @@ class KitchenFragment : BaseFragment<KitchenPresenter, KitchenView>(),
 
     override fun onResume() {
         super.onResume()
-        commonToolbarBackPress.visibility = View.GONE
-        commonToolbarTitle.text = activity?.getString(R.string.kitchen)
+        commonToolbarBackPress?.visibility = View.GONE
+        commonToolbarTitle?.text = activity?.getString(R.string.kitchen)
     }
 
     override fun onClick(v: View?) {

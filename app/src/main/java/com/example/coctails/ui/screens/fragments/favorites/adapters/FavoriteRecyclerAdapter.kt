@@ -1,6 +1,8 @@
 package com.example.coctails.ui.screens.fragments.favorites.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
+import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +19,11 @@ class FavoriteRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemCli
                               private val onRecyclerIconClick: OnRecyclerIconClick) : RecyclerView.Adapter<FavoriteRecyclerAdapter.ViewHolder>(){
 
     private val favoriteModel = ArrayList<FavoriteModel?>()
+    private var sparseArray : SparseBooleanArray? = null
 
     fun setList(stList: List<FavoriteModel?>) {
         favoriteModel.clear()
+        sparseArray = SparseBooleanArray()
         favoriteModel.addAll(stList)
         notifyDataSetChanged()
     }
@@ -41,10 +45,23 @@ class FavoriteRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemCli
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val favorite = favoriteModel[position]
-        holder.bind(favorite)
+
+        if(favorite?.favorite!!){
+            sparseArray?.put(position, true)
+        }
+
+        holder.bind(favorite, sparseArray?.get(position)!!)
     }
 
-    class ViewHolder(itemView: View) :
+    private fun addToSpare(position: Int, isSelected: Boolean) {
+        if (isSelected) {
+            sparseArray?.put(position, !sparseArray?.get(position)!!)
+        } else {
+            sparseArray?.put(position, isSelected)
+        }
+    }
+
+    inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView), LayoutContainer {
 
         override val containerView: View?
@@ -54,18 +71,17 @@ class FavoriteRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemCli
         lateinit var onIconClick: OnRecyclerIconClick
 
         @SuppressLint("SetTextI18n")
-        fun bind(favoriteItem: FavoriteModel?) {
-            var status = true
+        fun bind(favoriteItem: FavoriteModel?, isSelected: Boolean) {
+            var status = isSelected
+
+            selectView(status)
 
             itemView.setOnClickListener { onItemClick.onItemClick(adapterPosition) }
             itemView.favoriteIcon.setOnClickListener {
-                status = if(status) {
-                    itemView.favoriteIcon.setImageDrawable(itemView.context.getDrawable(R.drawable.ic_favorite_ns))
-                    false
-                } else {
-                    itemView.favoriteIcon.setImageDrawable(itemView.context.getDrawable(R.drawable.ic_favorite_s))
-                    true
-                }
+                status = !status
+                selectView(status)
+                addToSpare(adapterPosition, status)
+                favoriteItem?.favorite = status
 
                 onIconClick.onIconClick(adapterPosition, status)
             }
@@ -77,6 +93,14 @@ class FavoriteRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemCli
             itemView.favoriteName.text = favoriteItem?.name
             itemView.favoriteCategory.text = favoriteItem?.categoryName
             itemView.abvCategory.text =  favoriteItem?.abv.toString() + itemView.context.getString(R.string.percent)
+        }
+
+        private fun selectView(isSelected: Boolean) {
+            if (isSelected) {
+                itemView.favoriteIcon.setImageDrawable(itemView.context.getDrawable(R.drawable.ic_favorite_s))
+            } else {
+                itemView.favoriteIcon.setImageDrawable(itemView.context.getDrawable(R.drawable.ic_favorite_ns))
+            }
         }
     }
 }

@@ -16,7 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?actionBarSize"
-        android:layout_marginBottom="?actionBarSize"
         android:clipToPadding="true">
 
         <LinearLayout
@@ -247,6 +246,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="?actionBarSize"
                 android:layout_margin="5dp">
 
                 <View

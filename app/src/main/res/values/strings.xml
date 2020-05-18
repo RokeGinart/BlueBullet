@@ -25,6 +25,7 @@
     <string name="receipt">Рецепт</string>
     <string name="time">Время:</string>
     <string name="cocktails">Коктейли</string>
+    <string name="canCook">Можно приготовить</string>
     <string name="tequila">Текила</string>
     <string name="gin">Джин</string>
     <string name="whiskey">Виски</string>
@@ -53,8 +54,11 @@
     <string name="cocktailInfo">Информация</string>
     <string name="fav_message">У вас нет избранных коктейлей</string>
     <string name="clickToShop">Зажмите, чтобы перейти на сайт-источник</string>
-    <string name="readyMessage">Пока нет рецептов с вашими ингедиентами</string>
+    <string name="readyMessage">Пока нет рецептов с вашими ингредиентами</string>
 
     <string name="base_spirit">Базовый алкоголь</string>
     <string name="see_more">Смотреть все >></string>
+    <string name="message_cocktail">Коктейль «</string>
+    <string name="message_delete_cocktail">» удален из избранного</string>
+    <string name="message_added_cocktail">» добавлен в избранное</string>
 </resources>

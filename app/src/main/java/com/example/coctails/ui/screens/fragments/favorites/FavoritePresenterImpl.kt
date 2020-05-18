@@ -20,19 +20,12 @@ class FavoritePresenterImpl : FavoritePresenter() {
         addToDispose(
             App.instanse?.database?.favoriteDao()?.getAllFavorite()?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
-                ?.map {
-                    val favoriteList = ArrayList<FavoriteModel>()
-                    it.forEach { model ->
-                        if (model.favorite) {
-                            favoriteList.add(model)
-                        }
-                    }
-                    return@map favoriteList
-                }?.subscribe { t1 ->
+                ?.subscribe { t1 ->
                     if (t1 != null) {
                         if (t1.isNotEmpty()) {
                             screenView?.showFavoriteList(t1)
                         } else {
+                            screenView?.showFavoriteList(t1)
                             screenView?.showMessage()
                         }
                     }
@@ -50,7 +43,19 @@ class FavoritePresenterImpl : FavoritePresenter() {
             })
     }
 
-    override fun setFavoriteStatus(favorite: Boolean, cocktailId: Int, category: String) {
-        App.instanse?.database?.favoriteDao()?.setFavorite(favorite, cocktailId, category)
+    override fun setFavoriteStatus(cocktailId: Int, name: String, image: String, category: String, abv: Int, categoryName: String, favorite: Boolean) {
+        val favoriteModel = FavoriteModel(cocktailId, name, image, category, abv, categoryName, favorite)
+
+        addToDispose(
+            App.instanse?.database?.favoriteDao()?.getCocktail(cocktailId, category)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    if (t1 == null) {
+                        App.instanse?.database?.favoriteDao()?.insert(favoriteModel)
+                    } else {
+                        App.instanse?.database?.favoriteDao()?.delete(t1)
+                    }
+                })
     }
 }

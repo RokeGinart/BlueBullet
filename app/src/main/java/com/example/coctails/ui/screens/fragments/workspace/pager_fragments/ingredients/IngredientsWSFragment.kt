@@ -7,11 +7,12 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,15 +23,17 @@ import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.ingredients_details.IngredientDetailsFragment
+import com.example.coctails.ui.screens.fragments.workspace.intefraces.OnSearchItemClick
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.adapters.AllIngredientRecyclerAdapter
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.adapters.SearchIngredientRecyclerView
-import com.example.coctails.ui.screens.fragments.workspace.intefraces.OnSearchItemClick
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.model.IngredientModelSelection
 import com.example.coctails.utils.*
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.fragment_ingredients_w.*
+import kotlinx.android.synthetic.main.fragment_work_space.*
+
 
 class IngredientsWSFragment(private val subject: PublisherSubject) :
     BaseFragment<IngredientsWSPresenter, IngredientsWSView>(),
@@ -43,6 +46,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
     private var adapter: AllIngredientRecyclerAdapter? = null
     private var searchAdapter: SearchIngredientRecyclerView? = null
     private var searchDialog: Dialog? = null
+    private var sortDialog: Dialog? = null
 
     private var fabOpenAnim: Animation? = null
     private var fabCloseAnim: Animation? = null
@@ -50,6 +54,8 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
     private var backwardAnim: Animation? = null
 
     private var isOpenFab = false
+
+    private var count = 0
 
     override fun getLayoutId(): Int = R.layout.fragment_ingredients_w
 
@@ -65,13 +71,20 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         presenter.bindView(this)
         presenter.getIngredientList()
 
+        openSearchDialog()
+        openSortDialog()
+
         setupRecycler()
         mainFab.setOnClickListener {
             openFabAnimation()
         }
 
         searchIngredients.setOnClickListener {
-            openSearchDialog()
+            searchDialog?.show()
+        }
+
+        sortIngredient.setOnClickListener {
+            sortDialog?.show()
         }
 
         fabOpenAnim = AnimationUtils.loadAnimation(context, R.anim.fab_open)
@@ -138,7 +151,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
             override fun onSubscribe(d: Disposable) {}
 
             override fun onNext(t: String) {
-                if(t == CHANGED_FROM_INGREDIENT){
+                if (t == CHANGED_FROM_INGREDIENT) {
                     presenter.getIngredientListFromDB()
                 }
             }
@@ -147,10 +160,13 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         }
     }
 
-    override fun showResult(ingredientList: List<IngredientModelSelection>) {
+    override fun showResult(ingredientList: List<IngredientModelSelection>, size: Int) {
         adapter?.setList(ingredientList)
         mainFab.visibility = View.VISIBLE
         commonProgressBar.visibility = View.GONE
+        count = size
+
+        setBadgeNumber()
     }
 
     override fun onItemClick(position: Int) {
@@ -160,6 +176,24 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
     override fun onIconClick(position: Int, status: Boolean) {
         val ingredient = adapter?.getAdapterList()?.get(position)
         presenter.setIngredientToDB(ingredient?.ingredientId!!, ingredient.category)
+
+        if (status) {
+            count++
+        } else {
+            count--
+        }
+
+        setBadgeNumber()
+    }
+
+    private fun setBadgeNumber() {
+        if (count > 0) {
+            activity?.kitchenTabs?.getTabAt(0)?.orCreateBadge?.badgeTextColor =
+                ContextCompat.getColor(context!!, R.color.white)
+            activity?.kitchenTabs?.getTabAt(0)?.orCreateBadge?.number = count
+        } else {
+            activity?.kitchenTabs?.getTabAt(0)?.removeBadge()
+        }
     }
 
     override fun successChanges() {
@@ -174,7 +208,15 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         val searchEditText = searchDialog?.findViewById<EditText>(R.id.searchEditText)
         val searchRecyclerView = searchDialog?.findViewById<RecyclerView>(R.id.searchRecyclerView)
         searchFun(searchEditText!!, searchRecyclerView!!)
-        searchDialog?.show()
+    }
+
+    private fun openSortDialog() {
+        sortDialog = Dialog(context!!)
+        sortDialog?.setContentView(R.layout.dialog_sort_ingredient)
+        val width = ViewGroup.LayoutParams.MATCH_PARENT
+        val height = ViewGroup.LayoutParams.MATCH_PARENT
+        sortDialog?.window?.setLayout(width, height)
+        sortDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private fun searchFun(editText: EditText, recyclerView: RecyclerView) {
@@ -198,6 +240,8 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
                         }
                     }
                     searchAdapter?.setList(searchList)
+                } else {
+                    searchAdapter?.clearList()
                 }
             }
         })
@@ -219,13 +263,21 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         activity?.loadFragment(fragment, "IngredientDetails", true)
     }
 
-    override fun onSearchIconClick(position: Int) {
+    override fun onSearchIconClick(position: Int, status: Boolean) {
         val ingredient = searchAdapter?.getAdapterList()?.get(position)
         presenter.setIngredientToDB(ingredient?.ingredientId!!, ingredient.category)
         adapter?.getAdapterList()?.forEachIndexed { index, element ->
             if (ingredient.category == element.category && ingredient.ingredientId == element.ingredientId) {
                 adapter?.resetDataItem(index)
                 adapter?.notifyItemChanged(index)
+
+                if (status) {
+                    count++
+                } else {
+                    count--
+                }
+
+                setBadgeNumber()
             }
         }
     }
@@ -235,6 +287,16 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
             if (category == element.category && ingredientId == element.ingredientId && element.isSelected != isChanged) {
                 adapter?.resetDataItemByInterface(index, isChanged)
                 adapter?.notifyItemChanged(index)
+
+                subject.publish(CHANGED_FROM_ALL)
+
+                if (isChanged) {
+                    count++
+                } else {
+                    count--
+                }
+
+                setBadgeNumber()
             }
         }
     }

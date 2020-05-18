@@ -2,11 +2,10 @@ package com.example.coctails.ui.screens.fragments.workspace.pager_fragments.cock
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.coctails.R
-import com.example.coctails.interfaces.OnIngredientDataChanged
 import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.ui.screens.BaseFragment
@@ -17,6 +16,7 @@ import com.example.coctails.utils.*
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_cocktails_ws.*
+import kotlinx.android.synthetic.main.fragment_work_space.*
 
 class CocktailsWSFragment(private val subject: PublisherSubject) :
     BaseFragment<CocktailsWSPresenter, CocktailsWSView>(), CocktailsWSView,
@@ -57,6 +57,12 @@ class CocktailsWSFragment(private val subject: PublisherSubject) :
     override fun showResult(cocktails: List<Cocktails>) {
         readyCocktailMessage.visibility = View.GONE
         adapter?.setList(cocktails)
+        if (cocktails.isNotEmpty()) {
+            activity?.kitchenTabs?.getTabAt(1)?.orCreateBadge?.badgeTextColor = getColor(context!!, R.color.white)
+            activity?.kitchenTabs?.getTabAt(1)?.orCreateBadge?.number = cocktails.size
+        } else {
+            activity?.kitchenTabs?.getTabAt(1)?.removeBadge()
+        }
     }
 
     override fun showMessage() {
@@ -80,7 +86,7 @@ class CocktailsWSFragment(private val subject: PublisherSubject) :
             override fun onSubscribe(d: Disposable) {}
 
             override fun onNext(t: String) {
-                if(t == CHANGED_FROM_ALL || t == CHANGED_FROM_INGREDIENT){
+                if (t == CHANGED_FROM_ALL || t == CHANGED_FROM_INGREDIENT) {
                     presenter.showReadyCocktails()
                 }
             }

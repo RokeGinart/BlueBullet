@@ -27,6 +27,7 @@ class TranslitUtils {
             'x' -> "х"
             'y' -> "у"
             'z' -> "з"
+            'ё' -> "е"
             else -> ch.toString()
         }
     }

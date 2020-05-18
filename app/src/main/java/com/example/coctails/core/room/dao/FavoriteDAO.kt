@@ -16,9 +16,6 @@ interface FavoriteDAO {
     @Query("SELECT * FROM favorite_model WHERE cocktail_id = :cocktailId AND category = :category")
     fun getCocktail(cocktailId : Int, category : String): Single<FavoriteModel>
 
-    @Query("UPDATE favorite_model SET favorite = :favorite WHERE cocktail_id = :cocktailId AND category = :category")
-    fun setFavorite(favorite : Boolean, cocktailId : Int, category : String)
-
     @Insert
     fun insert(favoriteList: FavoriteModel)
 

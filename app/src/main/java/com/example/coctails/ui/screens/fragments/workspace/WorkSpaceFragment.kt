@@ -3,6 +3,8 @@ package com.example.coctails.ui.screens.fragments.workspace
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import com.example.coctails.R
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity

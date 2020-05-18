@@ -42,6 +42,10 @@ class FavoriteFragment : BaseFragment<FavoritePresenter, FavoriteView>(), Favori
         presenter.getFavoriteList()
 
         setupRecycler()
+
+        favoriteRefresh.setOnRefreshListener{
+            presenter.getFavoriteList()
+        }
     }
 
     private fun setupRecycler() {
@@ -54,19 +58,21 @@ class FavoriteFragment : BaseFragment<FavoritePresenter, FavoriteView>(), Favori
 
     override fun onResume() {
         super.onResume()
-        commonToolbarBackPress.visibility = View.GONE
-        commonToolbarTitle.text = getString(R.string.favorites)
+        commonToolbarBackPress?.visibility = View.GONE
+        commonToolbarTitle?.text = getString(R.string.favorites)
     }
 
     override fun showFavoriteList(favoriteModel: List<FavoriteModel>) {
         commonProgressBar.visibility = View.GONE
         favoriteMessage.visibility = View.GONE
+        favoriteRefresh.isRefreshing = false
         adapter?.setList(favoriteModel.reversed())
     }
 
     override fun showMessage() {
         commonProgressBar.visibility = View.GONE
         favoriteMessage.visibility = View.VISIBLE
+        favoriteRefresh.isRefreshing = false
     }
 
     override fun onItemClick(position: Int) {
@@ -79,7 +85,7 @@ class FavoriteFragment : BaseFragment<FavoritePresenter, FavoriteView>(), Favori
 
     override fun onIconClick(position: Int, status: Boolean) {
         val favoriteModel = adapter?.getAdapterList()?.get(position)
-        presenter.setFavoriteStatus(status, favoriteModel?.cocktailId!!, favoriteModel.category)
+        presenter.setFavoriteStatus(favoriteModel?.cocktailId!!, favoriteModel.name, favoriteModel.image, favoriteModel.category, favoriteModel.abv, favoriteModel.categoryName, favoriteModel.favorite)
     }
 
     override fun getCocktail(cocktails: Cocktails) {

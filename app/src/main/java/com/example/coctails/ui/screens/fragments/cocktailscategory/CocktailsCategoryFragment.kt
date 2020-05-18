@@ -1,17 +1,15 @@
 package com.example.coctails.ui.screens.fragments.cocktailscategory
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.app.SearchManager
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
+import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.appcompat.widget.ListPopupWindow
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +24,6 @@ import com.example.coctails.utils.*
 import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_cocktails_category.*
-import java.time.Duration
 
 
 class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, CocktailsCategoryView>(),
@@ -41,8 +38,8 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
     private var category: String? = null
     private var titleTemp: String? = null
     private var type = 0
-    private var listPopupWindow: ListPopupWindow? = null
     private var selectedSort = 0
+    private var sortDialog: Dialog? = null
 
     override fun getLayoutId(): Int = R.layout.fragment_cocktails_category
 
@@ -70,7 +67,7 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
 
         hideFab(10)
         setupRecycler()
-        setupPopupWindow()
+        setupSortDialog()
     }
 
     private fun setupRecycler() {
@@ -171,7 +168,7 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
             })
 
             menuSort.setOnMenuItemClickListener {
-                listPopupWindow?.show()
+                sortDialog?.show()
                 return@setOnMenuItemClickListener true
             }
 
@@ -214,26 +211,23 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
         }
     }
 
-    @SuppressLint("InflateParams")
-    private fun setupPopupWindow() {
-        listPopupWindow = activity?.let { ListPopupWindow(it) }
+    private fun setupSortDialog() {
+        sortDialog = Dialog(context!!, R.style.CustomDialog)
+        sortDialog?.setContentView(R.layout.dialog_sort)
+        val width = ViewGroup.LayoutParams.MATCH_PARENT
+        val height = ViewGroup.LayoutParams.WRAP_CONTENT
+        sortDialog?.window?.setLayout(width, height)
+        sortDialog?.window?.setGravity(Gravity.TOP)
+        sortDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val metrics = DisplayMetrics()
-        activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
-        listPopupWindow?.anchorView = commonToolbarPoint
-        listPopupWindow?.width = metrics.widthPixels
-        listPopupWindow?.height = ListPopupWindow.WRAP_CONTENT
-        listPopupWindow?.isModal = true
+        val nameSelected = sortDialog?.findViewById(R.id.sortByName) as LinearLayout
+        val alcSelected = sortDialog?.findViewById(R.id.sortByAlcohol) as LinearLayout
+        val timeSelected = sortDialog?.findViewById(R.id.sortByTime) as LinearLayout
 
-        val filterLayout: View = layoutInflater.inflate(R.layout.custom_popup_menu, null)
-
-        val nameSelected = filterLayout.findViewById(R.id.sortByName) as LinearLayout
-        val alcSelected = filterLayout.findViewById(R.id.sortByAlcohol) as LinearLayout
-        val timeSelected = filterLayout.findViewById(R.id.sortByTime) as LinearLayout
-
-        val timeCheck = filterLayout.findViewById(R.id.timeCheck) as ImageView
-        val nameCheck = filterLayout.findViewById(R.id.nameCheck) as ImageView
-        val alcCheck = filterLayout.findViewById(R.id.alcCheck) as ImageView
+        val timeCheck = sortDialog?.findViewById(R.id.timeCheck) as ImageView
+        val nameCheck = sortDialog?.findViewById(R.id.nameCheck) as ImageView
+        val alcCheck = sortDialog?.findViewById(R.id.alcCheck) as ImageView
+        val closeDialog = sortDialog?.findViewById(R.id.closeSortDialog) as ImageView
 
         nameSelected.setOnClickListener {
             nameSelected.background = activity?.getDrawable(R.drawable.view_borders)
@@ -274,7 +268,9 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
             adapter?.setSortedByTime()
         }
 
-        listPopupWindow?.setPromptView(filterLayout)
+        closeDialog.setOnClickListener{
+            sortDialog?.dismiss()
+        }
     }
 
     private fun setSortedList(sort: Int) {

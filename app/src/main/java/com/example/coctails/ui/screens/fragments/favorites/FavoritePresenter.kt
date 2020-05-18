@@ -6,5 +6,5 @@ abstract class FavoritePresenter : BasePresenter<FavoriteView>(){
 
     abstract fun getFavoriteList()
     abstract fun getSelectedCocktail(category : String, id : Int)
-    abstract fun setFavoriteStatus (favorite: Boolean, cocktailId : Int, category : String)
+    abstract fun setFavoriteStatus (cocktailId: Int, name: String, image: String, category: String, abv: Int, categoryName: String, favorite: Boolean)
 }

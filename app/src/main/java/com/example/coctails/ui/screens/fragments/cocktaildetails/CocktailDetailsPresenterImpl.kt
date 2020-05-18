@@ -44,7 +44,7 @@ class CocktailDetailsPresenterImpl : CocktailDetailsPresenter() {
                     if (t1 == null) {
                         App.instanse?.database?.favoriteDao()?.insert(favoriteModel)
                     } else {
-                        App.instanse?.database?.favoriteDao()?.setFavorite(favorite, cocktailId, category)
+                        App.instanse?.database?.favoriteDao()?.delete(t1)
                     }
                 })
     }

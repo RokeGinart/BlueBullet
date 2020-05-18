@@ -17,6 +17,10 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/kitchenTabs"
             app:tabTextColor="@color/white"
+            app:tabTextAppearance="@style/CustomTabText"
+            app:tabIndicatorColor="@color/white"
+            app:tabRippleColor="@color/blue1"
+            android:background="@color/blue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

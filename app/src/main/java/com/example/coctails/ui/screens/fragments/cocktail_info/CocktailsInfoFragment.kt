@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.util.Log
 import android.view.View
 import com.example.coctails.R
 import com.example.coctails.network.models.firebase.drink.Cocktails
@@ -39,7 +40,6 @@ class CocktailsInfoFragment : BaseFragment<CocktailsInfoPresenter, CocktailsInfo
 
         val bundle = arguments
         information = bundle?.getSerializable(COCKTAIL_INFO) as Cocktails.Info?
-
         information?.let { setInfo(it) }
     }
 

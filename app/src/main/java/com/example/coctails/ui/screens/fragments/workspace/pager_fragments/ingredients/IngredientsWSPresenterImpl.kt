@@ -1,6 +1,5 @@
 package com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients
 
-import android.util.Log
 import androidx.annotation.NonNull
 import com.example.coctails.core.App
 import com.example.coctails.core.room.entity.IngredientDBModel
@@ -50,21 +49,105 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
                             it.id,
                             it.category?.category!!,
                             it.name,
+                            it.abv,
                             it.image,
                             false
                         )
                         ingredientList.add(ingredientModelSelection)
                     }
 
-                    t1?.forEach{ dbIng ->
-                        ingredientList.forEach{ing ->
-                            if(dbIng.ingredientId == ing.ingredientId && dbIng.category == ing.category){
+                    t1?.forEach { dbIng ->
+                        ingredientList.forEach { ing ->
+                            if (dbIng.ingredientId == ing.ingredientId && dbIng.category == ing.category) {
                                 ing.isSelected = true
                             }
                         }
                     }
 
                     screenView?.showResult(ingredientList, t1?.size!!)
+                }
+        )
+    }
+
+
+    override fun getSortItems(sort: Int) {
+        addToDispose(
+            App.instanse?.database?.ingredientDao()?.getAllIngredient()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    val ingredientList = mutableListOf<IngredientModelSelection>()
+                    val selectedItems = mutableListOf<IngredientModelSelection>()
+                    val unselectedItems = mutableListOf<IngredientModelSelection>()
+
+                    allIngredientsList.forEach {
+                        val ingredientModelSelection = IngredientModelSelection(
+                            it.id,
+                            it.category?.category!!,
+                            it.name,
+                            it.abv,
+                            it.image,
+                            false
+                        )
+                        ingredientList.add(ingredientModelSelection)
+                    }
+
+                    t1?.forEach { dbIng ->
+                        ingredientList.forEach { ing ->
+                            if (dbIng.ingredientId == ing.ingredientId && dbIng.category == ing.category) {
+                                ing.isSelected = true
+                            }
+                        }
+                    }
+
+                    ingredientList.forEach {
+                        if (it.isSelected) {
+                            selectedItems.add(it)
+                        } else {
+                            unselectedItems.add(it)
+                        }
+                    }
+
+                    if(sort == 1){
+                        screenView?.showSortResult(selectedItems)
+                    } else {
+                        screenView?.showSortResult(unselectedItems)
+                    }
+                }
+        )
+
+
+    }
+
+    override fun getListForSearch() {
+        addToDispose(
+            App.instanse?.database?.ingredientDao()?.getAllIngredient()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    val ingredientList = mutableListOf<IngredientModelSelection>()
+
+                    allIngredientsList.forEach {
+                        val ingredientModelSelection = IngredientModelSelection(
+                            it.id,
+                            it.category?.category!!,
+                            it.name,
+                            it.abv,
+                            it.image,
+                            false
+                        )
+                        ingredientList.add(ingredientModelSelection)
+                    }
+
+                    t1?.forEach { dbIng ->
+                        ingredientList.forEach { ing ->
+                            if (dbIng.ingredientId == ing.ingredientId && dbIng.category == ing.category) {
+                                ing.isSelected = true
+                            }
+                        }
+                    }
+
+                    screenView?.showListForSearch(ingredientList)
                 }
         )
     }

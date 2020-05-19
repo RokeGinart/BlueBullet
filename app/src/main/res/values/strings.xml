@@ -43,6 +43,7 @@
     <string name="percent">%</string>
     <string name="tild">~</string>
     <string name="sort_title">Отсортировать по:</string>
+    <string name="sort_filter">Фильтры</string>
     <string name="cancel">Отменить</string>
     <string name="apply">Применить</string>
     <string name="sort_name">Названию</string>
@@ -61,4 +62,21 @@
     <string name="message_cocktail">Коктейль «</string>
     <string name="message_delete_cocktail">» удален из избранного</string>
     <string name="message_added_cocktail">» добавлен в избранное</string>
+
+    <string name="alcohol">Алкоголь</string>
+    <string name="other">Другое</string>
+    <string name="juice_soda">Соки &amp; Напитки</string>
+    <string name="liqueur_syrup">Ликеры &amp; Сиропы</string>
+    <string name="decoration_spice">Украшения &amp; Специи</string>
+    <string name="fruits_vegetable">Фрукты &amp; Овощи</string>
+
+
+    <string name="show_only">Показать только: </string>
+    <string name="all_ingredients">Все ингредиенты</string>
+    <string name="my_ingredients">Мои ингредиенты</string>
+    <string name="not_selected">Не выбранные ингредиенты</string>
+
+
+    <string name="reset">Сбросить</string>
+    <string name="find">Найдено:</string>
 </resources>

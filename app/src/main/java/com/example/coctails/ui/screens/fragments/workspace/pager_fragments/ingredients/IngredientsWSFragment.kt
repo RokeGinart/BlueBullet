@@ -12,6 +12,9 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,6 +50,8 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
     private var searchAdapter: SearchIngredientRecyclerView? = null
     private var searchDialog: Dialog? = null
     private var sortDialog: Dialog? = null
+    private var filterResult: TextView? = null
+    private var searchResList = mutableListOf<IngredientModelSelection>()
 
     private var fabOpenAnim: Animation? = null
     private var fabCloseAnim: Animation? = null
@@ -54,6 +59,9 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
     private var backwardAnim: Animation? = null
 
     private var isOpenFab = false
+
+    private var selectedSort = 1
+    private var selectedShown = 1
 
     private var count = 0
 
@@ -80,7 +88,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         }
 
         searchIngredients.setOnClickListener {
-            searchDialog?.show()
+            presenter.getListForSearch()
         }
 
         sortIngredient.setOnClickListener {
@@ -152,7 +160,11 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
 
             override fun onNext(t: String) {
                 if (t == CHANGED_FROM_INGREDIENT) {
-                    presenter.getIngredientListFromDB()
+                    if (selectedShown > 0) {
+                        presenter.getSortItems(selectedShown)
+                    } else {
+                        presenter.getIngredientListFromDB()
+                    }
                 }
             }
 
@@ -167,6 +179,24 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         count = size
 
         setBadgeNumber()
+
+        if (selectedSort == 2) {
+            adapter?.setSortedByAbvList()
+        }
+
+        filterResult?.text = ingredientList.size.toString()
+    }
+
+    override fun showSortResult(showResult: List<IngredientModelSelection>) {
+        adapter?.setList(showResult)
+        mainFab.visibility = View.VISIBLE
+        commonProgressBar.visibility = View.GONE
+
+        if (selectedSort == 2) {
+            adapter?.setSortedByAbvList()
+        }
+
+        filterResult?.text = showResult.size.toString()
     }
 
     override fun onItemClick(position: Int) {
@@ -211,13 +241,133 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
     }
 
     private fun openSortDialog() {
-        sortDialog = Dialog(context!!)
+        sortDialog = Dialog(context!!, R.style.CustomDialog)
         sortDialog?.setContentView(R.layout.dialog_sort_ingredient)
         val width = ViewGroup.LayoutParams.MATCH_PARENT
         val height = ViewGroup.LayoutParams.MATCH_PARENT
         sortDialog?.window?.setLayout(width, height)
         sortDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val filterCancel = sortDialog?.findViewById(R.id.filterCancel) as ImageView
+        val filterApply = sortDialog?.findViewById(R.id.filterApply) as ImageView
+        val filterReset = sortDialog?.findViewById(R.id.filterReset) as TextView
+        filterResult = sortDialog?.findViewById(R.id.filterResult) as TextView
+
+        filterCancel.setOnClickListener {
+            sortDialog?.dismiss()
+        }
+
+        filterApply.setOnClickListener {
+            sortDialog?.dismiss()
+        }
+
+        val filterAlcohol = sortDialog?.findViewById(R.id.filterAlcohol) as TextView
+        val filterDecoration = sortDialog?.findViewById(R.id.filterDecoration) as TextView
+        val filterFruits = sortDialog?.findViewById(R.id.filterFruits) as TextView
+        val filterLiqueur = sortDialog?.findViewById(R.id.filterLiqueur) as TextView
+        val filterJuice = sortDialog?.findViewById(R.id.filterJuice) as TextView
+        val filterOther = sortDialog?.findViewById(R.id.filterOther) as TextView
+
+        selectedView(filterAlcohol)
+        selectedView(filterLiqueur)
+        selectedView(filterFruits)
+        selectedView(filterJuice)
+        selectedView(filterDecoration)
+        selectedView(filterOther)
+
+        val filterAllIngredient = sortDialog?.findViewById(R.id.filterAllIngredient) as LinearLayout
+        val filterOnlyMy = sortDialog?.findViewById(R.id.filterOnlyMy) as LinearLayout
+        val filterNotSelected = sortDialog?.findViewById(R.id.filterNotSelected) as LinearLayout
+
+        val filterAllCheck = sortDialog?.findViewById(R.id.filterAllCheck) as ImageView
+        val filterMyCheck = sortDialog?.findViewById(R.id.filterMyCheck) as ImageView
+        val filterNotSelectedCheck =
+            sortDialog?.findViewById(R.id.filterNotSelectedCheck) as ImageView
+
+        val showList = mutableMapOf<View, View>()
+        showList[filterAllIngredient] = filterAllCheck
+        showList[filterOnlyMy] = filterMyCheck
+        showList[filterNotSelected] = filterNotSelectedCheck
+
+
+        filterAllIngredient.setOnClickListener {
+            sortSelected(showList, filterAllIngredient)
+            presenter.getIngredientListFromDB()
+            selectedShown = 0
+        }
+
+        filterOnlyMy.setOnClickListener {
+            sortSelected(showList, filterOnlyMy)
+            selectedShown = 1
+            presenter.getSortItems(selectedShown)
+
+        }
+
+        filterNotSelected.setOnClickListener {
+            sortSelected(showList, filterNotSelected)
+            selectedShown = 2
+            presenter.getSortItems(selectedShown)
+        }
+
+        val filterSortName = sortDialog?.findViewById(R.id.filterSortName) as LinearLayout
+        val filterSortAbv = sortDialog?.findViewById(R.id.filterSortAbv) as LinearLayout
+
+        val sortNameCheck = sortDialog?.findViewById(R.id.sortNameCheck) as ImageView
+        val sortAbvCheck = sortDialog?.findViewById(R.id.sortAbvCheck) as ImageView
+
+        val sortList = mutableMapOf<View, View>()
+        sortList[filterSortName] = sortNameCheck
+        sortList[filterSortAbv] = sortAbvCheck
+
+        filterSortName.setOnClickListener {
+            sortSelected(sortList, filterSortName)
+            adapter?.setSortedByNameList()
+            selectedSort = 1
+        }
+
+        filterSortAbv.setOnClickListener {
+            sortSelected(sortList, filterSortAbv)
+            adapter?.setSortedByAbvList()
+            selectedSort = 2
+        }
+
+        filterReset.setOnClickListener {
+            sortSelected(sortList, filterSortName)
+            selectedSort = 1
+
+            sortSelected(showList, filterAllIngredient)
+            selectedShown = 0
+
+            presenter.getIngredientListFromDB()
+        }
     }
+
+
+    private fun selectedView(view: View) {
+        var isSelected = false
+        view.setOnClickListener {
+            if (!isSelected) {
+                view.background = activity?.getDrawable(R.drawable.view_borders)
+                isSelected = true
+            } else {
+                view.background = activity?.getDrawable(R.drawable.white_borders)
+                isSelected = false
+            }
+        }
+    }
+
+    private fun sortSelected(viewList: Map<View, View>, selectedView: View) {
+        viewList.forEach { (view, image) ->
+            if (view == selectedView) {
+                view.background = activity?.getDrawable(R.drawable.view_borders)
+                image.visibility = View.VISIBLE
+            } else {
+                view.background = null
+                image.visibility = View.INVISIBLE
+            }
+        }
+    }
+
 
     private fun searchFun(editText: EditText, recyclerView: RecyclerView) {
         mSearchLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -234,7 +384,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
                 if (s.length > 1) {
                     val query = TranslitUtils().cyr2lat(s.toString().toLowerCase().trim())
                     val searchList = mutableListOf<IngredientModelSelection>()
-                    adapter?.getAdapterList()?.forEach {
+                    searchResList.forEach {
                         if (it.name.toLowerCase().trim().contains(query!!)) {
                             searchList.add(it)
                         }
@@ -245,6 +395,12 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
                 }
             }
         })
+    }
+
+    override fun showListForSearch(searchResult: List<IngredientModelSelection>) {
+        searchResList.clear()
+        searchResList.addAll(searchResult)
+        searchDialog?.show()
     }
 
     override fun onSearchItemClick(position: Int) {
@@ -266,9 +422,10 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
     override fun onSearchIconClick(position: Int, status: Boolean) {
         val ingredient = searchAdapter?.getAdapterList()?.get(position)
         presenter.setIngredientToDB(ingredient?.ingredientId!!, ingredient.category)
+
         adapter?.getAdapterList()?.forEachIndexed { index, element ->
             if (ingredient.category == element.category && ingredient.ingredientId == element.ingredientId) {
-                adapter?.resetDataItem(index)
+                adapter?.resetDataItem(index, status)
                 adapter?.notifyItemChanged(index)
 
                 if (status) {
@@ -285,7 +442,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
     override fun dataIsChanged(isChanged: Boolean, ingredientId: Int, category: String) {
         adapter?.getAdapterList()?.forEachIndexed { index, element ->
             if (category == element.category && ingredientId == element.ingredientId && element.isSelected != isChanged) {
-                adapter?.resetDataItemByInterface(index, isChanged)
+                adapter?.resetDataItem(index, isChanged)
                 adapter?.notifyItemChanged(index)
 
                 subject.publish(CHANGED_FROM_ALL)

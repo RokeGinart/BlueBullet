@@ -4,6 +4,7 @@ data class IngredientModelSelection(
     var ingredientId : Int,
     var category : String,
     var name : String,
+    var abv : Int,
     var image : String,
     var isSelected: Boolean
 )

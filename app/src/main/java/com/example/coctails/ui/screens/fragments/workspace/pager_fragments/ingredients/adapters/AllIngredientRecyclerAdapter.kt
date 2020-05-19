@@ -19,7 +19,7 @@ class AllIngredientRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerIt
 ) :
     RecyclerView.Adapter<AllIngredientRecyclerAdapter.ViewHolder>() {
 
-    private val ingredientsList = ArrayList<IngredientModelSelection>()
+    private var ingredientsList = ArrayList<IngredientModelSelection>()
 
     private val sparseArray = SparseBooleanArray()
 
@@ -30,8 +30,7 @@ class AllIngredientRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerIt
         setSortedByNameList()
     }
 
-
-    private fun setSortedByNameList() {
+    fun setSortedByNameList() {
         ingredientsList.sortWith(Comparator { firstName, secondName ->
             firstName.name.compareTo(
                 secondName.name
@@ -40,11 +39,16 @@ class AllIngredientRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerIt
         notifyDataSetChanged()
     }
 
-    fun resetDataItem(position: Int){
-        sparseArray.put(position, ingredientsList[position].isSelected)
+    fun setSortedByAbvList() {
+        ingredientsList.sortWith(Comparator { firstName, secondName ->
+            firstName.abv.compareTo(
+                secondName.abv
+            )
+        })
+        notifyDataSetChanged()
     }
 
-    fun resetDataItemByInterface(position: Int, isSelected: Boolean){
+    fun resetDataItem(position: Int, isSelected: Boolean){
         ingredientsList[position].isSelected = isSelected
         sparseArray.put(position, ingredientsList[position].isSelected)
     }

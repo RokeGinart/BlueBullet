@@ -7,5 +7,7 @@ abstract class IngredientsWSPresenter : BasePresenter<IngredientsWSView>() {
     abstract fun getIngredientListFromDB()
     abstract fun setIngredientToDB(ingredientId: Int, category: String)
     abstract fun getSortItems(sort : Int)
+    abstract fun addCategorySort(categorySelected : Int)
+    abstract fun removeCategorySort(categorySelected : Int)
     abstract fun getListForSearch()
 }

@@ -17,7 +17,11 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
     var database = FirebaseDatabase.getInstance()
     var myRef = database.getReference("ingredients")
 
-    val allIngredientsList = mutableListOf<IngredientsModel>()
+    private var selecredSort = 0
+
+    private val allIngredientsList = mutableListOf<IngredientsModel>()
+    private val tempIngredientList = mutableListOf<IngredientModelSelection>()
+    private val ingredientsByCategoryList = mutableListOf<IngredientModelSelection>()
 
     override fun getIngredientList() {
         allIngredientsList.clear()
@@ -37,6 +41,7 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
     }
 
     override fun getIngredientListFromDB() {
+        tempIngredientList.clear()
         addToDispose(
             App.instanse?.database?.ingredientDao()?.getAllIngredient()
                 ?.subscribeOn(Schedulers.io())
@@ -63,60 +68,97 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
                             }
                         }
                     }
+
+                    tempIngredientList.addAll(ingredientList)
+                    getSortItems(selecredSort)
 
                     screenView?.showResult(ingredientList, t1?.size!!)
                 }
         )
     }
 
+    override fun addCategorySort(categorySelected: Int) {
+        when (categorySelected) {
+            0 -> addCategory("alcohol")
+            1 -> addCategory("liqueur")
+            2 -> addCategory("fruits")
+            3 -> addCategory("juice")
+            4 -> addCategory("decoration")
+            5 -> removeCategory("other")
+        }
+    }
+
+    private fun addCategory(category: String) {
+        tempIngredientList.forEach {
+            if (it.category == category) {
+                ingredientsByCategoryList.add(it)
+            }
+        }
+
+        screenView?.showSortResult(ingredientsByCategoryList)
+    }
+
+    override fun removeCategorySort(categorySelected: Int) {
+        when (categorySelected) {
+            0 -> removeCategory("alcohol")
+            1 -> removeCategory("liqueur")
+            2 -> removeCategory("fruits")
+            3 -> removeCategory("juice")
+            4 -> removeCategory("decoration")
+            5 -> removeCategory("other")
+            6 -> {
+                ingredientsByCategoryList.clear()
+                checkListSize()
+            }
+        }
+    }
+
+    private fun removeCategory(category: String) {
+        val removeItemsList = mutableListOf<IngredientModelSelection>()
+        ingredientsByCategoryList.forEach { item ->
+            if (item.category == category) {
+                removeItemsList.add(item)
+            }
+        }
+
+        ingredientsByCategoryList.removeAll(removeItemsList)
+        checkListSize()
+    }
+
+    private fun checkListSize() {
+        if (ingredientsByCategoryList.isNotEmpty()) {
+            screenView?.showSortResult(ingredientsByCategoryList)
+        } else {
+            ingredientsByCategoryList.clear()
+            getIngredientListFromDB()
+        }
+    }
 
     override fun getSortItems(sort: Int) {
-        addToDispose(
-            App.instanse?.database?.ingredientDao()?.getAllIngredient()
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe { t1, t2 ->
-                    val ingredientList = mutableListOf<IngredientModelSelection>()
-                    val selectedItems = mutableListOf<IngredientModelSelection>()
-                    val unselectedItems = mutableListOf<IngredientModelSelection>()
+        selecredSort = sort
+        val allItems = mutableListOf<IngredientModelSelection>()
+        val selectedItems = mutableListOf<IngredientModelSelection>()
+        val unselectedItems = mutableListOf<IngredientModelSelection>()
 
-                    allIngredientsList.forEach {
-                        val ingredientModelSelection = IngredientModelSelection(
-                            it.id,
-                            it.category?.category!!,
-                            it.name,
-                            it.abv,
-                            it.image,
-                            false
-                        )
-                        ingredientList.add(ingredientModelSelection)
-                    }
+        if(ingredientsByCategoryList.isEmpty()){
+            allItems.addAll(tempIngredientList)
+        }else{
+            allItems.addAll(ingredientsByCategoryList)
+        }
 
-                    t1?.forEach { dbIng ->
-                        ingredientList.forEach { ing ->
-                            if (dbIng.ingredientId == ing.ingredientId && dbIng.category == ing.category) {
-                                ing.isSelected = true
-                            }
-                        }
-                    }
+        allItems.forEach {
+            if (it.isSelected) {
+                selectedItems.add(it)
+            } else {
+                unselectedItems.add(it)
+            }
+        }
 
-                    ingredientList.forEach {
-                        if (it.isSelected) {
-                            selectedItems.add(it)
-                        } else {
-                            unselectedItems.add(it)
-                        }
-                    }
-
-                    if(sort == 1){
-                        screenView?.showSortResult(selectedItems)
-                    } else {
-                        screenView?.showSortResult(unselectedItems)
-                    }
-                }
-        )
-
-
+        when (sort) {
+            0 -> screenView?.showSortResult(allItems)
+            1 -> screenView?.showSortResult(selectedItems)
+            2 -> screenView?.showSortResult(unselectedItems)
+        }
     }
 
     override fun getListForSearch() {

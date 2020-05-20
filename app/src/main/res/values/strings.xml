@@ -26,20 +26,25 @@
     <string name="time">Время:</string>
     <string name="cocktails">Коктейли</string>
     <string name="canCook">Можно приготовить</string>
+
+    <string name="main_ingredients">Базовый ингредиент</string>
     <string name="tequila">Текила</string>
     <string name="gin">Джин</string>
     <string name="whiskey">Виски</string>
     <string name="rum">Ром</string>
     <string name="brandy">Бренди</string>
     <string name="vodka">Водка</string>
+
     <string name="shots">Шоты</string>
     <string name="shorts">Средние</string>
     <string name="nonalcohol">Безалкогольные</string>
     <string name="longs">Лонги</string>
+
     <string name="short_desc">Средние (Short drinks).\n\nПодаются в бокалах объемом 60–160 мл, крепость варьируется от 17 до 45 градусов.</string>
     <string name="long_desc">Лонги (Long drinks).\n\nПьют из высоких стаканов объемом 160–300 мл, крепость редко превышает 17 градусов.</string>
     <string name="shot_desc">Шоты (Shot drinks).\n\nСервируются в стопках объемом 40–60 мл, выпиваются залпом.\nМогут быть слоеными, крепкими, слабыми, некоторые поджигают.</string>
     <string name="nonalco_desc">Безалкогольные.\n\nНапитки не содержащие алкоголя.</string>
+
     <string name="percent">%</string>
     <string name="tild">~</string>
     <string name="sort_title">Отсортировать по:</string>
@@ -49,7 +54,6 @@
     <string name="sort_name">Названию</string>
     <string name="sort_alcohol">Содержанию алкоголя</string>
     <string name="sort_time">Время приготовления</string>
-    <string name="main_ingredients">Базовый ингредиент</string>
     <string name="min">мин.</string>
     <string name="kitchen">Кухня</string>
     <string name="cocktailInfo">Информация</string>
@@ -70,12 +74,10 @@
     <string name="decoration_spice">Украшения &amp; Специи</string>
     <string name="fruits_vegetable">Фрукты &amp; Овощи</string>
 
-
-    <string name="show_only">Показать только: </string>
+    <string name="show_only">Отобразить: </string>
     <string name="all_ingredients">Все ингредиенты</string>
     <string name="my_ingredients">Мои ингредиенты</string>
     <string name="not_selected">Не выбранные ингредиенты</string>
-
 
     <string name="reset">Сбросить</string>
     <string name="find">Найдено:</string>

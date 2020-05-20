@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/blue"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -21,9 +22,7 @@
                 android:layout_gravity="start"
                 android:layout_marginStart="5dp"
                 android:padding="12dp"
-                android:src="@drawable/ic_close">
-
-            </ImageView>
+                android:src="@drawable/ic_close" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -32,7 +31,7 @@
                 android:gravity="center"
                 android:text="@string/sort_filter"
                 android:textColor="@color/white"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
 
@@ -73,7 +72,7 @@
                 android:gravity="bottom"
                 android:text="@string/categories"
                 android:textColor="@color/white_text"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold">
 
             </TextView>
@@ -96,7 +95,7 @@
                     android:padding="10dp"
                     android:text="@string/alcohol"
                     android:textColor="@color/white"
-                    android:textSize="15dp">
+                    android:textSize="15sp">
 
                 </TextView>
 
@@ -111,7 +110,7 @@
                     android:padding="10dp"
                     android:text="@string/liqueur_syrup"
                     android:textColor="@color/white"
-                    android:textSize="15dp">
+                    android:textSize="15sp">
 
                 </TextView>
             </LinearLayout>
@@ -134,7 +133,7 @@
                     android:padding="10dp"
                     android:text="@string/fruits_vegetable"
                     android:textColor="@color/white"
-                    android:textSize="15dp">
+                    android:textSize="15sp">
 
                 </TextView>
 
@@ -149,7 +148,7 @@
                     android:padding="10dp"
                     android:text="@string/juice_soda"
                     android:textColor="@color/white"
-                    android:textSize="15dp">
+                    android:textSize="15sp">
 
                 </TextView>
             </LinearLayout>
@@ -172,7 +171,7 @@
                     android:padding="10dp"
                     android:text="@string/decoration_spice"
                     android:textColor="@color/white"
-                    android:textSize="15dp">
+                    android:textSize="15sp">
 
                 </TextView>
 
@@ -187,7 +186,7 @@
                     android:padding="10dp"
                     android:text="@string/other"
                     android:textColor="@color/white"
-                    android:textSize="15dp">
+                    android:textSize="15sp">
 
                 </TextView>
             </LinearLayout>
@@ -205,7 +204,7 @@
                     android:layout_marginTop="20dp"
                     android:text="@string/show_only"
                     android:textColor="@color/white_text"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textStyle="bold">
 
                 </TextView>
@@ -242,7 +241,7 @@
                             android:layout_marginEnd="30dp"
                             android:text="@string/all_ingredients"
                             android:textColor="@color/white"
-                            android:textSize="15dp">
+                            android:textSize="15sp">
 
                         </TextView>
 
@@ -273,7 +272,7 @@
                             android:layout_marginEnd="30dp"
                             android:text="@string/my_ingredients"
                             android:textColor="@color/white"
-                            android:textSize="15dp">
+                            android:textSize="15sp">
 
                         </TextView>
 
@@ -293,9 +292,7 @@
                             android:layout_height="20dp"
                             android:layout_marginStart="20dp"
                             android:src="@drawable/ic_check"
-                            android:visibility="invisible">
-
-                        </ImageView>
+                            android:visibility="invisible" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -304,7 +301,7 @@
                             android:layout_marginEnd="30dp"
                             android:text="@string/not_selected"
                             android:textColor="@color/white"
-                            android:textSize="15dp">
+                            android:textSize="15sp">
 
                         </TextView>
 
@@ -321,7 +318,7 @@
                     android:gravity="bottom"
                     android:text="@string/sort_title"
                     android:textColor="@color/white_text"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
 
@@ -357,7 +354,7 @@
                             android:layout_marginEnd="30dp"
                             android:text="@string/sort_name"
                             android:textColor="@color/white"
-                            android:textSize="15dp">
+                            android:textSize="15sp">
 
                         </TextView>
 
@@ -377,9 +374,7 @@
                             android:layout_height="20dp"
                             android:layout_marginStart="20dp"
                             android:src="@drawable/ic_check"
-                            android:visibility="invisible">
-
-                        </ImageView>
+                            android:visibility="invisible" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -388,24 +383,22 @@
                             android:layout_marginEnd="30dp"
                             android:text="@string/sort_alcohol"
                             android:textColor="@color/white"
-                            android:textSize="15dp">
-
-                        </TextView>
+                            android:textSize="15sp" />
 
                     </LinearLayout>
-
                 </LinearLayout>
-
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
+        android:id="@+id/filterResetLayout"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_gravity="bottom"
         android:background="@color/blue"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <View
             android:layout_width="match_parent"
@@ -425,7 +418,7 @@
                 android:gravity="start|center_vertical"
                 android:text="@string/reset"
                 android:textColor="@color/white_text"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="bold">
 
             </TextView>
@@ -442,7 +435,7 @@
                     android:gravity="start|center_vertical"
                     android:text="@string/find"
                     android:textColor="@color/white_text"
-                    android:textSize="15dp">
+                    android:textSize="15sp">
 
                 </TextView>
 
@@ -455,7 +448,7 @@
                     android:layout_marginEnd="20dp"
                     android:gravity="start|center_vertical"
                     android:textColor="@color/white_text"
-                    android:textSize="15dp">
+                    android:textSize="15sp">
 
                 </TextView>
 

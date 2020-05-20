@@ -1,5 +1,6 @@
 package com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -7,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -37,7 +39,6 @@ import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.fragment_ingredients_w.*
 import kotlinx.android.synthetic.main.fragment_work_space.*
 
-
 class IngredientsWSFragment(private val subject: PublisherSubject) :
     BaseFragment<IngredientsWSPresenter, IngredientsWSView>(),
     IngredientsWSView, OnRecyclerItemClick,
@@ -51,6 +52,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
     private var searchDialog: Dialog? = null
     private var sortDialog: Dialog? = null
     private var filterResult: TextView? = null
+    private var filterResetLayout: LinearLayout? = null
     private var searchResList = mutableListOf<IngredientModelSelection>()
 
     private var fabOpenAnim: Animation? = null
@@ -61,7 +63,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
     private var isOpenFab = false
 
     private var selectedSort = 1
-    private var selectedShown = 1
+    private var selectedShown = 0
 
     private var count = 0
 
@@ -160,11 +162,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
 
             override fun onNext(t: String) {
                 if (t == CHANGED_FROM_INGREDIENT) {
-                    if (selectedShown > 0) {
-                        presenter.getSortItems(selectedShown)
-                    } else {
-                        presenter.getIngredientListFromDB()
-                    }
+                    presenter.getIngredientListFromDB()
                 }
             }
 
@@ -185,6 +183,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         }
 
         filterResult?.text = ingredientList.size.toString()
+        presenter.getSortItems(selectedShown)
     }
 
     override fun showSortResult(showResult: List<IngredientModelSelection>) {
@@ -268,16 +267,46 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         val filterJuice = sortDialog?.findViewById(R.id.filterJuice) as TextView
         val filterOther = sortDialog?.findViewById(R.id.filterOther) as TextView
 
-        selectedView(filterAlcohol)
-        selectedView(filterLiqueur)
-        selectedView(filterFruits)
-        selectedView(filterJuice)
-        selectedView(filterDecoration)
-        selectedView(filterOther)
+        var isSelectedAlc = false
+        filterAlcohol.setOnClickListener {
+            selectedView(filterAlcohol, 0, isSelectedAlc)
+            isSelectedAlc = !isSelectedAlc
+        }
+
+        var isSelectedLiq = false
+        filterLiqueur.setOnClickListener {
+            selectedView(filterLiqueur, 1, isSelectedLiq)
+            isSelectedLiq = !isSelectedLiq
+        }
+
+        var isSelectedFruit = false
+        filterFruits.setOnClickListener {
+            selectedView(filterFruits, 2, isSelectedFruit)
+            isSelectedFruit = !isSelectedFruit
+        }
+
+        var isSelectedJuice = false
+        filterJuice.setOnClickListener {
+            selectedView(filterJuice, 3, isSelectedJuice)
+            isSelectedJuice = !isSelectedJuice
+        }
+
+        var isSelectedDecoration = false
+        filterDecoration.setOnClickListener {
+            selectedView(filterDecoration, 4, isSelectedDecoration)
+            isSelectedDecoration = !isSelectedDecoration
+        }
+
+        var isSelectedOther = false
+        filterOther.setOnClickListener {
+            selectedView(filterOther, 5, isSelectedOther)
+            isSelectedOther = !isSelectedOther
+        }
 
         val filterAllIngredient = sortDialog?.findViewById(R.id.filterAllIngredient) as LinearLayout
         val filterOnlyMy = sortDialog?.findViewById(R.id.filterOnlyMy) as LinearLayout
         val filterNotSelected = sortDialog?.findViewById(R.id.filterNotSelected) as LinearLayout
+        filterResetLayout = sortDialog?.findViewById(R.id.filterResetLayout) as LinearLayout
 
         val filterAllCheck = sortDialog?.findViewById(R.id.filterAllCheck) as ImageView
         val filterMyCheck = sortDialog?.findViewById(R.id.filterMyCheck) as ImageView
@@ -292,8 +321,8 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
 
         filterAllIngredient.setOnClickListener {
             sortSelected(showList, filterAllIngredient)
-            presenter.getIngredientListFromDB()
             selectedShown = 0
+            presenter.getSortItems(selectedShown)
         }
 
         filterOnlyMy.setOnClickListener {
@@ -332,28 +361,52 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         }
 
         filterReset.setOnClickListener {
+            resetView(filterAlcohol)
+            isSelectedAlc = false
+
+            resetView(filterDecoration)
+            isSelectedDecoration = false
+
+            resetView(filterFruits)
+            isSelectedFruit = false
+
+            resetView(filterLiqueur)
+            isSelectedLiq = false
+
+            resetView(filterJuice)
+            isSelectedJuice = false
+
+            resetView(filterOther)
+            isSelectedOther = false
+
             sortSelected(sortList, filterSortName)
             selectedSort = 1
 
             sortSelected(showList, filterAllIngredient)
             selectedShown = 0
 
-            presenter.getIngredientListFromDB()
+            presenter.removeCategorySort(6)
+
+            filterResetLayout?.visibility = View.GONE
         }
     }
 
+    private fun resetView(view: View) {
+        view.background = activity?.getDrawable(R.drawable.white_borders)
+    }
 
-    private fun selectedView(view: View) {
-        var isSelected = false
-        view.setOnClickListener {
-            if (!isSelected) {
-                view.background = activity?.getDrawable(R.drawable.view_borders)
-                isSelected = true
-            } else {
-                view.background = activity?.getDrawable(R.drawable.white_borders)
-                isSelected = false
-            }
+    private fun selectedView(view: View, position: Int, isSelected: Boolean) {
+        if (!isSelected) {
+            view.background = activity?.getDrawable(R.drawable.view_borders)
+            presenter.addCategorySort(position)
+            presenter.getSortItems(selectedShown)
+        } else {
+            view.background = activity?.getDrawable(R.drawable.white_borders)
+            presenter.removeCategorySort(position)
+            presenter.getSortItems(selectedShown)
         }
+
+        filterResetLayout?.visibility = View.VISIBLE
     }
 
     private fun sortSelected(viewList: Map<View, View>, selectedView: View) {
@@ -366,6 +419,8 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
                 image.visibility = View.INVISIBLE
             }
         }
+
+        filterResetLayout?.visibility = View.VISIBLE
     }
 
 
@@ -380,6 +435,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
+            @SuppressLint("DefaultLocale")
             override fun afterTextChanged(s: Editable) {
                 if (s.length > 1) {
                     val query = TranslitUtils().cyr2lat(s.toString().toLowerCase().trim())

@@ -2,6 +2,7 @@ package com.example.coctails.ui.screens.fragments.workspace.pager_fragments.cock
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.GridLayoutManager
@@ -58,6 +59,7 @@ class CocktailsWSFragment(private val subject: PublisherSubject) :
         readyCocktailMessage.visibility = View.GONE
         adapter?.setList(cocktails)
         if (cocktails.isNotEmpty()) {
+            Log.d("TAGS", "tab")
             activity?.kitchenTabs?.getTabAt(1)?.orCreateBadge?.badgeTextColor = getColor(context!!, R.color.white)
             activity?.kitchenTabs?.getTabAt(1)?.orCreateBadge?.number = cocktails.size
         } else {

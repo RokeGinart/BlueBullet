@@ -17,7 +17,7 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
     var database = FirebaseDatabase.getInstance()
     var myRef = database.getReference("ingredients")
 
-    private var selecredSort = 0
+    private var selectedSort = 0
 
     private val allIngredientsList = mutableListOf<IngredientsModel>()
     private val tempIngredientList = mutableListOf<IngredientModelSelection>()
@@ -70,7 +70,8 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
                     }
 
                     tempIngredientList.addAll(ingredientList)
-                    getSortItems(selecredSort)
+
+                    getSortItems(selectedSort, true)
 
                     screenView?.showResult(ingredientList, t1?.size!!)
                 }
@@ -134,16 +135,28 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
         }
     }
 
-    override fun getSortItems(sort: Int) {
-        selecredSort = sort
+    override fun getSortItems(sort: Int, change: Boolean) {
+        selectedSort = sort
         val allItems = mutableListOf<IngredientModelSelection>()
+        val local = tempIngredientList
         val selectedItems = mutableListOf<IngredientModelSelection>()
         val unselectedItems = mutableListOf<IngredientModelSelection>()
 
-        if(ingredientsByCategoryList.isEmpty()){
+        if (ingredientsByCategoryList.isEmpty()) {
             allItems.addAll(tempIngredientList)
-        }else{
+        } else {
             allItems.addAll(ingredientsByCategoryList)
+        }
+
+        if (change) {
+            local.forEach { dbIng ->
+                allItems.forEach { all ->
+                    if (all.category == dbIng.category && all.ingredientId == dbIng.ingredientId && all.isSelected != dbIng.isSelected) {
+                        allItems.remove(all)
+                        allItems.add(dbIng)
+                    }
+                }
+            }
         }
 
         allItems.forEach {

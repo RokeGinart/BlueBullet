@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.example.coctails.R
 import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.network.models.firebase.drink.Cocktails
+import com.example.coctails.utils.clickWithDebounce
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_cocktail_item.view.*
 import java.util.*
@@ -29,7 +30,7 @@ class ReadyCocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerI
         notifyDataSetChanged()
     }
 
-    fun setSortedByAlcoholList() {
+  /*  fun setSortedByAlcoholList() {
         cocktails.sortWith(compareBy { it.abv })
         notifyDataSetChanged()
     }
@@ -37,7 +38,7 @@ class ReadyCocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerI
     fun setSortedByTime() {
         cocktails.sortWith(compareBy { it.cooktime })
         notifyDataSetChanged()
-    }
+    }*/
 
     fun getAdapterList(): List<Cocktails> = cocktails
 
@@ -69,7 +70,7 @@ class ReadyCocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerI
         lateinit var onItemClick: OnRecyclerItemClick
 
         fun bind(cocktails: Cocktails) {
-            itemView.setOnClickListener { onItemClick.onItemClick(adapterPosition) }
+            itemView.clickWithDebounce { onItemClick.onItemClick(adapterPosition) }
 
             Glide.with(itemView.context)
                 .load(cocktails.image)

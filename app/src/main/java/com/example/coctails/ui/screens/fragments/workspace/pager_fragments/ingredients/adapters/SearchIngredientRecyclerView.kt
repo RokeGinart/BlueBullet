@@ -10,6 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.coctails.R
 import com.example.coctails.ui.screens.fragments.workspace.intefraces.OnSearchItemClick
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.model.IngredientModelSelection
+import com.example.coctails.utils.clickWithDebounce
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_search_ingredients.view.*
 
@@ -69,13 +70,13 @@ class SearchIngredientRecyclerView(private val onRecyclerItemClick: OnSearchItem
         lateinit var onItemClick: OnSearchItemClick
 
         fun bind(ingredient: IngredientModelSelection, position: Int, isSelected: Boolean){
-            itemView.setOnClickListener { onItemClick.onSearchItemClick(adapterPosition) }
+            itemView.clickWithDebounce { onItemClick.onSearchItemClick(adapterPosition) }
 
             var status = isSelected
 
             selectView(status)
 
-            itemView.addIngredientsSI.setOnClickListener{
+            itemView.addIngredientsSI.clickWithDebounce{
                 status = !status
                 selectView(status)
                 addToSpare(position, status)

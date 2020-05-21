@@ -1,7 +1,6 @@
 package com.example.coctails.ui.screens.fragments.favorites.adapters
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +11,7 @@ import com.example.coctails.R
 import com.example.coctails.core.room.entity.FavoriteModel
 import com.example.coctails.interfaces.OnRecyclerIconClick
 import com.example.coctails.interfaces.OnRecyclerItemClick
+import com.example.coctails.utils.clickWithDebounce
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_favorite_item.view.*
 
@@ -76,8 +76,8 @@ class FavoriteRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemCli
 
             selectView(status)
 
-            itemView.setOnClickListener { onItemClick.onItemClick(adapterPosition) }
-            itemView.favoriteIcon.setOnClickListener {
+            itemView.clickWithDebounce { onItemClick.onItemClick(adapterPosition) }
+            itemView.favoriteIcon.clickWithDebounce {
                 status = !status
                 selectView(status)
                 addToSpare(adapterPosition, status)

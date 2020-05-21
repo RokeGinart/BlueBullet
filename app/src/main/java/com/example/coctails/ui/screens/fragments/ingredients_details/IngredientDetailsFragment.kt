@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.Glide
 import com.example.coctails.R
@@ -15,15 +13,12 @@ import com.example.coctails.network.models.firebase.drink.IngredientsModel
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.photoview.PhotoFragment
-import com.example.coctails.utils.COCKTAIL_NAME
-import com.example.coctails.utils.COCKTAIL_PHOTO
-import com.example.coctails.utils.INGREDIENT_CATEGORY
-import com.example.coctails.utils.INGREDIENT_ID
+import com.example.coctails.utils.*
 import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_ingredient_details.*
 
-class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredientDataChanged) : BaseFragment<IngredientDetailsPresenter, IngredientDetailsView>(), IngredientDetailsView, View.OnClickListener{
+class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredientDataChanged) : BaseFragment<IngredientDetailsPresenter, IngredientDetailsView>(), IngredientDetailsView{
 
     private var activity: MainActivity? = null
     private var ingCategory: String? = null
@@ -58,10 +53,6 @@ class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredien
         super.onResume()
         commonToolbarBackPress.setOnClickListener{activity?.onBackPressed()}
 
-        ingredientImageID.setOnClickListener(this)
-        ingredientShopID.setOnClickListener(this)
-        favoriteIngredient.setOnClickListener(this)
-
         ingredientShopID.setOnLongClickListener{
             val browserIntent =
                 Intent(Intent.ACTION_VIEW, Uri.parse(ingredient?.link))
@@ -84,6 +75,8 @@ class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredien
         ingredientDescriptionID.text = ingredientModel.description
 
         Glide.with(this).load(ingredientModel.image).into(ingredientImageID)
+
+        viewClicked()
     }
 
     override fun showDatabaseResult(isSelected: Boolean) {
@@ -100,26 +93,25 @@ class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredien
         }
     }
 
-    override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.ingredientImageID -> {
-                val fragment = PhotoFragment()
-                val bundle = Bundle()
+    private fun viewClicked(){
+        ingredientImageID.clickWithDebounce {
+            val fragment = PhotoFragment()
+            val bundle = Bundle()
 
-                bundle.putString(COCKTAIL_PHOTO, ingredient?.image)
-                bundle.putString(COCKTAIL_NAME, ingredient?.name)
-                fragment.arguments = bundle
+            bundle.putString(COCKTAIL_PHOTO, ingredient?.image)
+            bundle.putString(COCKTAIL_NAME, ingredient?.name)
+            fragment.arguments = bundle
 
-                activity?.loadPhotoFragment(fragment, "IngredientPhoto")
-            }
+            activity?.loadPhotoFragment(fragment, "IngredientPhoto")
+        }
 
-            R.id.ingredientShopID -> {
-                activity?.customToast(getString(R.string.clickToShop), 1)
-            }
-            R.id.favoriteIngredient -> {
-                favoriteSelection(isSelected)
-                presenter.setIngredientToDB(ingCategory!!, ingId!!)
-            }
+        ingredientShopID.clickWithDebounce {
+            activity?.customToast(getString(R.string.clickToShop), 1)
+        }
+
+        favoriteIngredient.clickWithDebounce {
+            favoriteSelection(isSelected)
+            presenter.setIngredientToDB(ingCategory!!, ingId!!)
         }
     }
 

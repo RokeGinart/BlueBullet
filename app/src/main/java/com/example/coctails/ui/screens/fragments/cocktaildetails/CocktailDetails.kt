@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -26,9 +25,8 @@ import com.example.coctails.utils.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_cocktail_details.*
 
-
 class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsView>(),
-    CocktailDetailsView, OnRecyclerItemClick, View.OnClickListener, OnIngredientDataChanged{
+    CocktailDetailsView, OnRecyclerItemClick, OnIngredientDataChanged{
 
     override fun getLayoutId(): Int = R.layout.fragment_cocktail_details
 
@@ -55,9 +53,6 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
         }
 
         setupRecycler()
-        cocktailGlassCD.setOnClickListener(this)
-        favButton.setOnClickListener(this)
-        infoButton.setOnClickListener(this)
     }
 
     override fun onAttach(context: Context) {
@@ -98,7 +93,6 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
     override fun onResume() {
         super.onResume()
         commonToolbarBackPress.setOnClickListener { activity?.onBackPressed() }
-        cocktailImage.setOnClickListener(this)
     }
 
     @SuppressLint("SetTextI18n")
@@ -123,6 +117,57 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
 
         commonToolbarTitle.text = cocktails.name
 
+        viewClicked()
+    }
+
+    private fun viewClicked(){
+        cocktailImage.clickWithDebounce {
+            val fragment = PhotoFragment()
+            val bundle = Bundle()
+
+            bundle.putString(COCKTAIL_PHOTO, cocktails?.image)
+            bundle.putString(COCKTAIL_NAME, cocktails?.name)
+            fragment.arguments = bundle
+
+            activity?.loadPhotoFragment(fragment, "CocktailPhoto")
+        }
+
+        cocktailGlassCD.clickWithDebounce {
+            val fragment = GlassFragment()
+            val bundle = Bundle()
+
+            bundle.putInt(GLASS_ID, cocktails?.glass?.id!!)
+            fragment.arguments = bundle
+
+            activity?.loadFragment(fragment, "GlassDetails", true)
+        }
+
+        infoButton.clickWithDebounce {
+            val fragment = CocktailsInfoFragment()
+            val bundle = Bundle()
+
+            bundle.putSerializable(COCKTAIL_INFO, cocktails?.info)
+            fragment.arguments = bundle
+
+            activity?.loadFragment(fragment, "CocktailInfo", true)
+        }
+
+        favButton.clickWithDebounce {
+            favorite = if(favorite){
+                favImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_ns))
+                activity?.customToast(getString(R.string.message_cocktail) + cocktails?.name + getString(
+                    R.string.message_delete_cocktail), 2)
+                false
+            }else{
+                favImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_s))
+                activity?.customToast(getString(R.string.message_cocktail) + cocktails?.name + getString(
+                    R.string.message_added_cocktail), 1)
+                true
+            }
+
+            cocktails?.let { presenter.saveCocktailToFavorite(it.id, it.name, it.image, it.category?.category!!, it.abv, it.category?.name!!, favorite ) }
+        }
+
     }
 
     override fun showIngredientResult(ingredientsList: List<IngredientModelCD>) {
@@ -138,54 +183,6 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
                 if(subject != null){
                     subject?.publish(CHANGED_FROM_INGREDIENT)
                 }
-            }
-        }
-    }
-
-    override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.cocktailImage -> {
-                val fragment = PhotoFragment()
-                val bundle = Bundle()
-
-                bundle.putString(COCKTAIL_PHOTO, cocktails?.image)
-                bundle.putString(COCKTAIL_NAME, cocktails?.name)
-                fragment.arguments = bundle
-
-                activity?.loadPhotoFragment(fragment, "CocktailPhoto")
-            }
-            R.id.cocktailGlassCD -> {
-                val fragment = GlassFragment()
-                val bundle = Bundle()
-
-                bundle.putInt(GLASS_ID, cocktails?.glass?.id!!)
-                fragment.arguments = bundle
-
-                activity?.loadFragment(fragment, "GlassDetails", true)
-            }
-            R.id.infoButton -> {
-                val fragment = CocktailsInfoFragment()
-                val bundle = Bundle()
-
-                bundle.putSerializable(COCKTAIL_INFO, cocktails?.info)
-                fragment.arguments = bundle
-
-                activity?.loadFragment(fragment, "CocktailInfo", true)
-            }
-            R.id.favButton -> {
-                favorite = if(favorite){
-                    favImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_ns))
-                    activity?.customToast(getString(R.string.message_cocktail) + cocktails?.name + getString(
-                                            R.string.message_delete_cocktail), 2)
-                    false
-                }else{
-                    favImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_s))
-                    activity?.customToast(getString(R.string.message_cocktail) + cocktails?.name + getString(
-                                            R.string.message_added_cocktail), 1)
-                    true
-                }
-
-                cocktails?.let { presenter.saveCocktailToFavorite(it.id, it.name, it.image, it.category?.category!!, it.abv, it.category?.name!!, favorite ) }
             }
         }
     }

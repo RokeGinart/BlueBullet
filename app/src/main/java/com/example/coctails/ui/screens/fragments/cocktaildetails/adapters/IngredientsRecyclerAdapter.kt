@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.coctails.R
 import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.ui.screens.fragments.cocktaildetails.model.IngredientModelCD
+import com.example.coctails.utils.clickWithDebounce
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_ingredients_item.view.*
 
@@ -54,7 +55,7 @@ class IngredientsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItem
         lateinit var onItemClick: OnRecyclerItemClick
 
         fun bind(ingredients: IngredientModelCD) {
-            itemView.setOnClickListener { onItemClick.onItemClick(adapterPosition) }
+            itemView.clickWithDebounce { onItemClick.onItemClick(adapterPosition) }
 
             if(ingredients.isSelected){
                 itemView.ingredientImage.setImageDrawable(itemView.context.getDrawable(R.drawable.ic_check_box_ch))

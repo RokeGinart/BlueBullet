@@ -9,11 +9,12 @@ import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.glass.GlassWSFragment
 import com.example.coctails.ui.screens.fragments.workspace.WorkSpaceFragment
+import com.example.coctails.utils.clickWithDebounce
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_kitchen.*
 
 class KitchenFragment : BaseFragment<KitchenPresenter, KitchenView>(),
-    KitchenView, View.OnClickListener {
+    KitchenView {
 
     private var activity: MainActivity? = null
 
@@ -31,27 +32,25 @@ class KitchenFragment : BaseFragment<KitchenPresenter, KitchenView>(),
         super.onViewCreated(view, savedInstanceState)
         presenter.bindView(this)
 
-        glassWS.setOnClickListener(this)
-        workspaceView.setOnClickListener(this)
+        viewClicked()
+    }
+
+    private fun viewClicked(){
+        glassWS.clickWithDebounce{
+            val fragment = GlassWSFragment()
+            activity?.loadFragment(fragment, "glass", true)
+        }
+
+        workspaceView.clickWithDebounce{
+            val fragment = WorkSpaceFragment()
+            activity?.loadFragment(fragment, "workspace", true)
+        }
     }
 
     override fun onResume() {
         super.onResume()
         commonToolbarBackPress?.visibility = View.GONE
         commonToolbarTitle?.text = activity?.getString(R.string.kitchen)
-    }
-
-    override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.glassWS -> {
-                val fragment = GlassWSFragment()
-                activity?.loadFragment(fragment, "glass", true)
-            }
-            R.id.workspaceView -> {
-                val fragment = WorkSpaceFragment()
-                activity?.loadFragment(fragment, "workspace", true)
-            }
-        }
     }
 
     override fun onDestroyView() {

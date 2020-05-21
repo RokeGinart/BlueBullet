@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.example.coctails.R
 import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.network.models.firebase.drink.GlassDetails
+import com.example.coctails.utils.clickWithDebounce
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_glass_item.view.*
 
@@ -52,7 +53,7 @@ class GlassRecyclerViewAdapter(private val onRecyclerItemClick: OnRecyclerItemCl
         lateinit var onItemClick: OnRecyclerItemClick
 
         fun bind(glassDetails: GlassDetails){
-            itemView.setOnClickListener { onItemClick.onItemClick(adapterPosition) }
+            itemView.clickWithDebounce { onItemClick.onItemClick(adapterPosition) }
 
             Glide.with(itemView.context)
                 .load(glassDetails.image)

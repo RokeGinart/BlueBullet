@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.Glide
 
@@ -15,9 +14,7 @@ import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.utils.GLASS_ID
 import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.common_toolbar.*
-import kotlinx.android.synthetic.main.fragment_cocktails_info.*
 import kotlinx.android.synthetic.main.fragment_glass.*
-
 
 class GlassFragment : BaseFragment<GlassPresenter, GlassView>(), GlassView{
 
@@ -67,7 +64,7 @@ class GlassFragment : BaseFragment<GlassPresenter, GlassView>(), GlassView{
         }
 
         glassTrolley.setOnClickListener{
-            trolleyImage.setImageDrawable(activity?.resources?.getDrawable(R.drawable.ic_grocery_trolley_selected))
+            trolleyImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_grocery_trolley_selected))
         }
     }
 

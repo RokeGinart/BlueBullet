@@ -11,14 +11,12 @@ import com.example.coctails.R
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.cocktailscategory.CocktailsCategoryFragment
-import com.example.coctails.utils.CATEGORY
-import com.example.coctails.utils.CATEGORY_TYPE
-import com.example.coctails.utils.TOOLBAR_TITLE
+import com.example.coctails.utils.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_main_screen.*
 
 class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), MainScreenView,
-    View.OnClickListener, View.OnLongClickListener {
+    View.OnLongClickListener {
 
     private var activity: MainActivity? = null
 
@@ -31,6 +29,7 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
         presenter.bindView(this)
 
         setupClicks()
+        viewClicked()
     }
 
     override fun onAttach(context: Context) {
@@ -38,22 +37,20 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
         activity = context as MainActivity
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.categoryShots -> startCocktailsFragment("shots", getString(R.string.shots), 0)
-            R.id.categoryCocktails -> startCocktailsFragment("longs", getString(R.string.longs), 0)
-            R.id.categoryNonAlcohol -> startCocktailsFragment("nonalcohol", getString(R.string.nonalcohol), 0)
-            R.id.categoryShort -> startCocktailsFragment("shorts", getString(R.string.shorts), 0)
+    private fun viewClicked() {
+        categoryCocktails.clickWithDebounce { startCocktailsFragment("longs", getString(R.string.longs), 0) }
+        categoryShots.clickWithDebounce { startCocktailsFragment("shots", getString(R.string.shots), 0) }
+        categoryShort.clickWithDebounce { startCocktailsFragment("shorts", getString(R.string.shorts), 0) }
+        categoryNonAlcohol.clickWithDebounce { startCocktailsFragment("nonalcohol", getString(R.string.nonalcohol), 0) }
 
-            R.id.allCocktails -> startCocktailsFragment("all", getString(R.string.cocktails), 0)
+        allCocktails.clickWithDebounce { startCocktailsFragment("all", getString(R.string.cocktails), 0)}
 
-            R.id.categoryTequila -> startCocktailsFragment("tequila", getString(R.string.tequila), 1)
-            R.id.categoryGin -> startCocktailsFragment("gin", getString(R.string.gin), 1)
-            R.id.categoryWhiskey -> startCocktailsFragment("whiskey", getString(R.string.whiskey), 1)
-            R.id.categoryRum -> startCocktailsFragment("rum", getString(R.string.rum), 1)
-            R.id.categoryBrandy -> startCocktailsFragment("brandy", getString(R.string.brandy), 1)
-            R.id.categoryVodka -> startCocktailsFragment("vodka", getString(R.string.vodka), 1)
-        }
+        categoryTequila.clickWithDebounce { startCocktailsFragment("tequila", getString(R.string.tequila), 1) }
+        categoryGin.clickWithDebounce { startCocktailsFragment("gin", getString(R.string.gin), 1)}
+        categoryWhiskey.clickWithDebounce { startCocktailsFragment("whiskey", getString(R.string.whiskey), 1) }
+        categoryRum.clickWithDebounce { startCocktailsFragment("rum", getString(R.string.rum), 1)}
+        categoryBrandy.clickWithDebounce { startCocktailsFragment("brandy", getString(R.string.brandy), 1) }
+        categoryVodka.clickWithDebounce { startCocktailsFragment("vodka", getString(R.string.vodka), 1) }
     }
 
     override fun onLongClick(v: View?): Boolean {
@@ -68,7 +65,6 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
     }
 
     private fun showDialog(text: String) {
-
         val dialog = Dialog(context!!)
         dialog.setContentView(R.layout.dialog_info)
         dialog.window?.setBackgroundDrawable(
@@ -107,24 +103,11 @@ class MainScreenFragment : BaseFragment<MainScreenPresenter, MainScreenView>(), 
         presenter.unbindView()
     }
 
-    private fun setupClicks(){
-        categoryCocktails.setOnClickListener(this)
-        categoryShots.setOnClickListener(this)
-        categoryShort.setOnClickListener(this)
-        categoryNonAlcohol.setOnClickListener(this)
-        allCocktails.setOnClickListener(this)
-
+    private fun setupClicks() {
         categoryCocktails.setOnLongClickListener(this)
         categoryShots.setOnLongClickListener(this)
         categoryShort.setOnLongClickListener(this)
         categoryNonAlcohol.setOnLongClickListener(this)
-
-        categoryTequila.setOnClickListener(this)
-        categoryGin.setOnClickListener(this)
-        categoryWhiskey.setOnClickListener(this)
-        categoryRum.setOnClickListener(this)
-        categoryBrandy.setOnClickListener(this)
-        categoryVodka.setOnClickListener(this)
     }
 }
 

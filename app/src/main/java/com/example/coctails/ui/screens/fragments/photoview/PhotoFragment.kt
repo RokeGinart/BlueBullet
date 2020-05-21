@@ -3,6 +3,7 @@ package com.example.coctails.ui.screens.fragments.photoview
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.coctails.R
 import com.example.coctails.ui.screens.BaseFragment
@@ -41,8 +42,8 @@ class PhotoFragment : BaseFragment<PhotoFragmentPresenter, PhotoFragmentView>(),
 
     override fun onResume() {
         super.onResume()
-        activity?.window?.navigationBarColor = resources.getColor(R.color.black)
-        activity?.window?.statusBarColor = resources.getColor(R.color.black)
+        activity?.window?.navigationBarColor = context?.let { ContextCompat.getColor(it, R.color.black) }!!
+        activity?.window?.statusBarColor = context?.let { ContextCompat.getColor(it, R.color.black) }!!
         exitFromImageView.setOnClickListener{ activity?.onBackPressed() }
 
         photoLayout.setOnClickListener(null)

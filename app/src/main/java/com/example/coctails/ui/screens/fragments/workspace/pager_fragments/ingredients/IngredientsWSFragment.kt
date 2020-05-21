@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -183,7 +182,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         }
 
         filterResult?.text = ingredientList.size.toString()
-        presenter.getSortItems(selectedShown)
+        presenter.getSortItems(selectedShown, false)
     }
 
     override fun showSortResult(showResult: List<IngredientModelSelection>) {
@@ -322,20 +321,20 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         filterAllIngredient.setOnClickListener {
             sortSelected(showList, filterAllIngredient)
             selectedShown = 0
-            presenter.getSortItems(selectedShown)
+            presenter.getSortItems(selectedShown, false)
         }
 
         filterOnlyMy.setOnClickListener {
             sortSelected(showList, filterOnlyMy)
             selectedShown = 1
-            presenter.getSortItems(selectedShown)
+            presenter.getSortItems(selectedShown, false)
 
         }
 
         filterNotSelected.setOnClickListener {
             sortSelected(showList, filterNotSelected)
             selectedShown = 2
-            presenter.getSortItems(selectedShown)
+            presenter.getSortItems(selectedShown, false)
         }
 
         val filterSortName = sortDialog?.findViewById(R.id.filterSortName) as LinearLayout
@@ -399,11 +398,11 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         if (!isSelected) {
             view.background = activity?.getDrawable(R.drawable.view_borders)
             presenter.addCategorySort(position)
-            presenter.getSortItems(selectedShown)
+            presenter.getSortItems(selectedShown, false)
         } else {
             view.background = activity?.getDrawable(R.drawable.white_borders)
             presenter.removeCategorySort(position)
-            presenter.getSortItems(selectedShown)
+            presenter.getSortItems(selectedShown, false)
         }
 
         filterResetLayout?.visibility = View.VISIBLE

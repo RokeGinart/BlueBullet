@@ -94,22 +94,26 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
     }
 
     private fun showFab() {
-        with(backToTop) {
-            visibility = View.VISIBLE
-            animate()
-                .translationYBy(300f)
-                .translationY(0f)
-                .duration = 300
+        if (backToTop != null) {
+            with(backToTop) {
+                visibility = View.VISIBLE
+                animate()
+                    .translationYBy(300f)
+                    .translationY(0f)
+                    .duration = 300
+            }
         }
     }
 
     private fun hideFab(duration: Long) {
-        with(backToTop) {
-            animate()
-                .translationY(0f)
-                .translationYBy(300f)
-                .withEndAction { visibility = View.GONE }
-                .duration = duration
+        if (backToTop != null) {
+            with(backToTop) {
+                animate()
+                    .translationY(0f)
+                    .translationYBy(300f)
+                    .withEndAction { visibility = View.GONE }
+                    .duration = duration
+            }
         }
     }
 
@@ -268,7 +272,7 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
             adapter?.setSortedByTime()
         }
 
-        closeDialog.setOnClickListener{
+        closeDialog.setOnClickListener {
             sortDialog?.dismiss()
         }
     }

@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.coctails.R
 import com.example.coctails.ui.screens.BaseActivity
@@ -14,7 +15,6 @@ import com.example.coctails.ui.screens.fragments.kitchen.KitchenFragment
 import com.example.coctails.ui.screens.fragments.mainscreen.MainScreenFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-
 
 class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
 
@@ -25,7 +25,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
         KitchenFragment()
     private val fragment3 = FavoriteFragment()
     private var active = Fragment()
-    val fm = supportFragmentManager
+    private val fm = supportFragmentManager
 
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -115,8 +115,8 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
                 showBottomNavigation()
             }
 
-           window?.navigationBarColor = resources.getColor(R.color.blue)
-           window?.statusBarColor = resources.getColor(R.color.blue)
+           window?.navigationBarColor = ContextCompat.getColor(this, R.color.blue)
+           window?.statusBarColor = ContextCompat.getColor(this, R.color.blue)
         } else {
             val t = System.currentTimeMillis()
             if (t - backPressedTime > 2000) {
@@ -160,9 +160,9 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
         val tv = layout.findViewById(R.id.customToastMessage) as TextView
 
         if(action == 1){
-            ll.setBackgroundDrawable(this.resources.getDrawable(R.drawable.toast_background_green))
+            ll.setBackgroundResource(R.drawable.toast_background_green)
         } else if(action == 2){
-            ll.setBackgroundDrawable(this.resources.getDrawable(R.drawable.toast_background_red))
+            ll.setBackgroundResource(R.drawable.toast_background_red)
         }
 
         tv.text = text

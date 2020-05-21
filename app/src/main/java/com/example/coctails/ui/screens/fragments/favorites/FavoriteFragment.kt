@@ -14,7 +14,6 @@ import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.cocktaildetails.CocktailDetails
 import com.example.coctails.ui.screens.fragments.favorites.adapters.FavoriteRecyclerAdapter
 import com.example.coctails.utils.COCKTAIL
-import com.google.android.material.badge.BadgeDrawable
 import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_favorite.*

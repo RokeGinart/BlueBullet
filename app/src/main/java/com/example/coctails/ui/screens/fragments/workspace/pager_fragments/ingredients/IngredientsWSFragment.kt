@@ -26,6 +26,7 @@ import com.example.coctails.interfaces.OnRecyclerIconClick
 import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
+import com.example.coctails.ui.screens.fragments.cocktaildetails.model.IngredientModelCD
 import com.example.coctails.ui.screens.fragments.ingredients_details.IngredientDetailsFragment
 import com.example.coctails.ui.screens.fragments.workspace.intefraces.OnSearchItemClick
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.adapters.AllIngredientRecyclerAdapter
@@ -101,7 +102,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         forwardAnim = AnimationUtils.loadAnimation(context, R.anim.rotate_forward)
         backwardAnim = AnimationUtils.loadAnimation(context, R.anim.rotate_backward)
 
-        subject.listen().subscribe(getInputObserver())
+        subject.listenChange().subscribe(getInputObserver())
     }
 
     private fun setupRecycler() {
@@ -113,18 +114,20 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
 
         allIngredientsRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0 && mainFab.isShown) {
-                    mainFab.hide()
-                    if (isOpenFab) {
-                        openFabAnimation()
+                if (mainFab != null) {
+                    if (dy > 0 && mainFab.isShown) {
+                        mainFab?.hide()
+                        if (isOpenFab) {
+                            openFabAnimation()
+                        }
+                        mainFab.isClickable = false
+                    } else {
+                        mainFab.show()
+                        mainFab.isClickable = true
                     }
-                    mainFab.isClickable = false
-                } else {
-                    mainFab.show()
-                    mainFab.isClickable = true
-                }
 
-                super.onScrolled(recyclerView, dx, dy)
+                    super.onScrolled(recyclerView, dx, dy)
+                }
             }
         })
     }
@@ -154,14 +157,19 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         }
     }
 
-    private fun getInputObserver(): Observer<String> {
-        return object : Observer<String> {
+    private fun getInputObserver(): Observer<IngredientModelCD> {
+        return object : Observer<IngredientModelCD> {
             override fun onComplete() {}
             override fun onSubscribe(d: Disposable) {}
 
-            override fun onNext(t: String) {
-                if (t == CHANGED_FROM_INGREDIENT) {
-                    presenter.getIngredientListFromDB()
+            override fun onNext(ingredient: IngredientModelCD) {
+                adapter?.getAdapterList()?.forEachIndexed{ index, item ->
+                    if(item.category == ingredient.category && item.ingredientId == ingredient.ingredientId){
+                        adapter?.resetDataItem(index, ingredient.isSelected)
+                        adapter?.notifyItemChanged(index)
+
+                        openSearchDialog()
+                    }
                 }
             }
 

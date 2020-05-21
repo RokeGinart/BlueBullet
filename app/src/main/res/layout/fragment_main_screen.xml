@@ -285,7 +285,7 @@
                             android:layout_width="0dp"
                             android:layout_height="120dp"
                             android:layout_weight="2"
-                            app:cardCornerRadius="15dp">
+                            app:cardCornerRadius="10dp">
 
                             <ImageView
                                 android:id="@+id/categoryTequila"
@@ -323,7 +323,7 @@
                             android:layout_height="120dp"
                             android:layout_marginStart="5dp"
                             android:layout_weight="2"
-                            app:cardCornerRadius="15dp">
+                            app:cardCornerRadius="10dp">
 
                             <ImageView
                                 android:id="@+id/categoryGin"
@@ -367,7 +367,7 @@
                             android:layout_width="0dp"
                             android:layout_height="120dp"
                             android:layout_weight="2"
-                            app:cardCornerRadius="15dp">
+                            app:cardCornerRadius="10dp">
 
                             <ImageView
                                 android:id="@+id/categoryWhiskey"
@@ -404,7 +404,7 @@
                             android:layout_height="120dp"
                             android:layout_marginStart="5dp"
                             android:layout_weight="2"
-                            app:cardCornerRadius="15dp">
+                            app:cardCornerRadius="10dp">
 
                             <ImageView
                                 android:id="@+id/categoryRum"
@@ -448,7 +448,7 @@
                             android:layout_width="0dp"
                             android:layout_height="120dp"
                             android:layout_weight="2"
-                            app:cardCornerRadius="15dp">
+                            app:cardCornerRadius="10dp">
 
                             <ImageView
                                 android:id="@+id/categoryBrandy"
@@ -485,7 +485,7 @@
                             android:layout_height="120dp"
                             android:layout_marginStart="5dp"
                             android:layout_weight="2"
-                            app:cardCornerRadius="15dp">
+                            app:cardCornerRadius="10dp">
 
                             <ImageView
                                 android:id="@+id/categoryVodka"

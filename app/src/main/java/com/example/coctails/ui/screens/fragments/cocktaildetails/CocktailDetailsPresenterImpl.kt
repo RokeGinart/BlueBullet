@@ -46,6 +46,8 @@ class CocktailDetailsPresenterImpl : CocktailDetailsPresenter() {
                     } else {
                         App.instanse?.database?.favoriteDao()?.delete(t1)
                     }
+
+                    screenView?.success()
                 })
     }
 

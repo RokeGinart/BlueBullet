@@ -13,14 +13,16 @@ import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.cocktaildetails.CocktailDetails
 import com.example.coctails.ui.screens.fragments.favorites.adapters.FavoriteRecyclerAdapter
+import com.example.coctails.ui.screens.fragments.favorites.interfaces.OnFavoriteChange
 import com.example.coctails.utils.COCKTAIL
+import com.example.coctails.utils.FAVORITE_INTERFACE
 import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_favorite.*
 
 
 class FavoriteFragment : BaseFragment<FavoritePresenter, FavoriteView>(), FavoriteView,
-    OnRecyclerItemClick, OnRecyclerIconClick {
+    OnRecyclerItemClick, OnRecyclerIconClick, OnFavoriteChange {
 
     private var activity: MainActivity? = null
     private var mLayoutManager: LinearLayoutManager? = null
@@ -82,6 +84,15 @@ class FavoriteFragment : BaseFragment<FavoritePresenter, FavoriteView>(), Favori
         )
     }
 
+    override fun favoriteStatusChange(category: String, id: Int, isSelected : Boolean) {
+        adapter?.getAdapterList()?.forEachIndexed{ index, item ->
+            if(item?.cocktailId == id && item.category == category){
+                adapter?.resetDataItem(index, isSelected)
+                adapter?.notifyItemChanged(index)
+            }
+        }
+    }
+
     override fun onIconClick(position: Int, status: Boolean) {
         val favoriteModel = adapter?.getAdapterList()?.get(position)
         presenter.setFavoriteStatus(favoriteModel?.cocktailId!!, favoriteModel.name, favoriteModel.image, favoriteModel.category, favoriteModel.abv, favoriteModel.categoryName, favoriteModel.favorite)
@@ -94,6 +105,7 @@ class FavoriteFragment : BaseFragment<FavoritePresenter, FavoriteView>(), Favori
         val bundle = Bundle()
 
         bundle.putSerializable(COCKTAIL, cocktails)
+        bundle.putSerializable(FAVORITE_INTERFACE, this as OnFavoriteChange)
         fragment.arguments = bundle
 
         activity?.loadFragment(fragment, "CocktailDetails", true)

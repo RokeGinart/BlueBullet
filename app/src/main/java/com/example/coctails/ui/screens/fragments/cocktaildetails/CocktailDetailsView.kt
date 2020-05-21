@@ -6,4 +6,5 @@ import com.example.coctails.ui.screens.fragments.cocktaildetails.model.Ingredien
 interface CocktailDetailsView : BaseView {
     fun showFavorite(inFavorite: Boolean)
     fun showIngredientResult(ingredientsList: List<IngredientModelCD>)
+    fun success()
 }

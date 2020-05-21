@@ -138,7 +138,6 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
     override fun getSortItems(sort: Int, change: Boolean) {
         selectedSort = sort
         val allItems = mutableListOf<IngredientModelSelection>()
-        val local = tempIngredientList
         val selectedItems = mutableListOf<IngredientModelSelection>()
         val unselectedItems = mutableListOf<IngredientModelSelection>()
 
@@ -146,17 +145,6 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
             allItems.addAll(tempIngredientList)
         } else {
             allItems.addAll(ingredientsByCategoryList)
-        }
-
-        if (change) {
-            local.forEach { dbIng ->
-                allItems.forEach { all ->
-                    if (all.category == dbIng.category && all.ingredientId == dbIng.ingredientId && all.isSelected != dbIng.isSelected) {
-                        allItems.remove(all)
-                        allItems.add(dbIng)
-                    }
-                }
-            }
         }
 
         allItems.forEach {

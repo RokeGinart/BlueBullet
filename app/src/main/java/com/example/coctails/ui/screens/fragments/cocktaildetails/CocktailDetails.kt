@@ -18,15 +18,17 @@ import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.cocktail_info.CocktailsInfoFragment
 import com.example.coctails.ui.screens.fragments.cocktaildetails.adapters.IngredientsRecyclerAdapter
 import com.example.coctails.ui.screens.fragments.cocktaildetails.model.IngredientModelCD
+import com.example.coctails.ui.screens.fragments.favorites.interfaces.OnFavoriteChange
 import com.example.coctails.ui.screens.fragments.glassdetails.GlassFragment
 import com.example.coctails.ui.screens.fragments.ingredients_details.IngredientDetailsFragment
 import com.example.coctails.ui.screens.fragments.photoview.PhotoFragment
+import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.model.IngredientModelSelection
 import com.example.coctails.utils.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_cocktail_details.*
 
 class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsView>(),
-    CocktailDetailsView, OnRecyclerItemClick, OnIngredientDataChanged{
+    CocktailDetailsView, OnRecyclerItemClick, OnIngredientDataChanged {
 
     override fun getLayoutId(): Int = R.layout.fragment_cocktail_details
 
@@ -35,7 +37,8 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
     private var adapter: IngredientsRecyclerAdapter? = null
     private var cocktails: Cocktails? = null
     private var favorite = false
-    private var subject : PublisherSubject? = null
+    private var subject: PublisherSubject? = null
+    private var onFavoriteChange: OnFavoriteChange? = null
 
     override fun providePresenter(): CocktailDetailsPresenter = CocktailDetailsPresenterImpl()
 
@@ -46,6 +49,7 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
         val bundle = arguments
         cocktails = bundle?.getSerializable(COCKTAIL) as Cocktails?
         subject = bundle?.getSerializable(INGREDIENT_INTERFACE) as PublisherSubject?
+        onFavoriteChange = bundle?.getSerializable(FAVORITE_INTERFACE) as OnFavoriteChange?
 
         cocktails?.let {
             presenter.getFavorite(it.id, it.category?.category!!)
@@ -84,7 +88,7 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
     }
 
     override fun showFavorite(inFavorite: Boolean) {
-        if(inFavorite){
+        if (inFavorite) {
             favImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_s))
             favorite = true
         }
@@ -106,10 +110,11 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
 
         cocktailGlassCD.text = glass
 
-        if(cocktails.abv == 0){
+        if (cocktails.abv == 0) {
             cocktailIbaCD.text = cocktails.abv.toString() + getString(R.string.percent)
-        }else{
-            cocktailIbaCD.text = getString(R.string.tild) + cocktails.abv + getString(R.string.percent)
+        } else {
+            cocktailIbaCD.text =
+                getString(R.string.tild) + cocktails.abv + getString(R.string.percent)
         }
 
         instructionCD.text = cocktails.instruction
@@ -120,7 +125,7 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
         viewClicked()
     }
 
-    private fun viewClicked(){
+    private fun viewClicked() {
         cocktailImage.clickWithDebounce {
             val fragment = PhotoFragment()
             val bundle = Bundle()
@@ -153,21 +158,46 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
         }
 
         favButton.clickWithDebounce {
-            favorite = if(favorite){
+            favorite = if (favorite) {
                 favImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_ns))
-                activity?.customToast(getString(R.string.message_cocktail) + cocktails?.name + getString(
-                    R.string.message_delete_cocktail), 2)
+                activity?.customToast(
+                    getString(R.string.message_cocktail) + cocktails?.name + getString(
+                        R.string.message_delete_cocktail
+                    ), 2
+                )
                 false
-            }else{
+            } else {
                 favImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_s))
-                activity?.customToast(getString(R.string.message_cocktail) + cocktails?.name + getString(
-                    R.string.message_added_cocktail), 1)
+                activity?.customToast(
+                    getString(R.string.message_cocktail) + cocktails?.name + getString(
+                        R.string.message_added_cocktail
+                    ), 1
+                )
                 true
             }
 
-            cocktails?.let { presenter.saveCocktailToFavorite(it.id, it.name, it.image, it.category?.category!!, it.abv, it.category?.name!!, favorite ) }
+            cocktails?.let {
+                presenter.saveCocktailToFavorite(
+                    it.id,
+                    it.name,
+                    it.image,
+                    it.category?.category!!,
+                    it.abv,
+                    it.category?.name!!,
+                    favorite
+                )
+            }
         }
+    }
 
+    override fun success() {
+        if (onFavoriteChange != null) {
+            onFavoriteChange?.favoriteStatusChange(
+                cocktails?.category?.category!!,
+                cocktails?.id!!,
+                favorite
+            )
+        }
     }
 
     override fun showIngredientResult(ingredientsList: List<IngredientModelCD>) {
@@ -175,12 +205,13 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
     }
 
     override fun dataIsChanged(isChanged: Boolean, ingredientId: Int, category: String) {
-        adapter?.getAdapterList()?.forEachIndexed{ index, element->
-            if(category == element?.category && ingredientId == element.ingredientId && element.isSelected != isChanged){
+        adapter?.getAdapterList()?.forEachIndexed { index, element ->
+            if (category == element?.category && ingredientId == element.ingredientId && element.isSelected != isChanged) {
                 adapter?.updateItem(index, isChanged)
                 adapter?.notifyItemChanged(index)
 
-                if(subject != null){
+                if (subject != null) {
+                    subject?.publishIngredient(element)
                     subject?.publish(CHANGED_FROM_INGREDIENT)
                 }
             }

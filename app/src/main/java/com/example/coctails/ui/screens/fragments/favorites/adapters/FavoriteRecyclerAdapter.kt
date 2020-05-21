@@ -39,6 +39,11 @@ class FavoriteRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemCli
         return viewHolder
     }
 
+    fun resetDataItem(position: Int, isSelected: Boolean){
+        favoriteModel[position]?.favorite = isSelected
+        sparseArray?.put(position, favoriteModel[position]?.favorite!!)
+    }
+
     fun getAdapterList() : ArrayList<FavoriteModel?> = favoriteModel
 
     override fun getItemCount(): Int = favoriteModel.size

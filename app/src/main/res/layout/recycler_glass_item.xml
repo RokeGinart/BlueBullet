@@ -8,8 +8,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_height="200dp"
         card_view:cardBackgroundColor="@color/purple"
         card_view:cardCornerRadius="15dp">
 
@@ -30,11 +29,11 @@
 
     <TextView
         android:id="@+id/glassNameGV"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="@color/white_text"
         android:textSize="15dp"
         android:textStyle="bold" />
 

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_image"
+    tools:context=".ui.screens.fragments.guide_detail.GuideDetailsFragment">
+
+    <include layout="@layout/common_toolbar" />
+
+    <include layout="@layout/common_progress_bar" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/guideScroll"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/guideTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white_text"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:text="@string/show_video">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/guideSource"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/cream"
+                    android:textSize="15sp">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/guideStepsRecycler"
+                android:layout_marginTop="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

@@ -20,12 +20,15 @@
     <string name="year">Год создания:</string>
     <string name="country">Страна:</string>
     <string name="glass_ws">Посуда</string>
+    <string name="equipment">Оборудование</string>
     <string name="alc">Алкоголь:</string>
     <string name="ingredients">Ингредиенты</string>
     <string name="receipt">Рецепт</string>
     <string name="time">Время:</string>
     <string name="cocktails">Коктейли</string>
     <string name="canCook">Можно приготовить</string>
+    <string name="guide">Гайд</string>
+    <string name="show_video">Смотреть:</string>
 
     <string name="main_ingredients">Базовый ингредиент</string>
     <string name="tequila">Текила</string>

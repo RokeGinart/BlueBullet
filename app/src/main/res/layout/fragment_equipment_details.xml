@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_image"
+    tools:context=".ui.screens.fragments.glassdetails.GlassFragment">
+
+    <include layout="@layout/common_toolbar"/>
+
+    <include layout="@layout/common_progress_bar"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/equipmentDetailScroll"
+        android:layout_marginTop="?actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.example.coctails.utils.imageviewzoom.ZoomView
+                android:id="@+id/imageED"
+                android:layout_width="match_parent"
+                android:layout_height="300dp">
+
+            </com.example.coctails.utils.imageviewzoom.ZoomView>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:id="@+id/equipmentShop"
+                    android:layout_weight="2"
+                    android:layout_width="0dp"
+                    android:background="@drawable/info_back"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:padding="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_shop">
+
+                    </ImageView>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/guideIntent"
+                    android:layout_weight="2"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="1dp"
+                    android:background="@drawable/ing_back"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:padding="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_guide">
+
+                    </ImageView>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/equipmentTrolley"
+                    android:layout_weight="2"
+                    android:layout_marginStart="1dp"
+                    android:layout_width="0dp"
+                    android:background="@drawable/fav_back"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/trolleyImage"
+                        android:padding="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_grocery_trolley">
+
+                    </ImageView>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:alpha="0.9"
+                    android:background="@drawable/recycler_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </View>
+
+
+                <TextView
+                    android:id="@+id/descriptionED"
+                    android:padding="20dp"
+                    android:layout_width="match_parent"
+                    android:textSize="15dp"
+                    android:textColor="@color/white"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+            </FrameLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</FrameLayout>

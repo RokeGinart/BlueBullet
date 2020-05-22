@@ -102,6 +102,7 @@
                     android:layout_weight="2">
 
                     <ImageView
+                        android:id="@+id/equipmentWS"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:scaleType="centerCrop"

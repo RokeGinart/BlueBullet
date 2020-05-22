@@ -168,8 +168,8 @@
                                 android:id="@+id/favoriteIngredient"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
-                                android:padding="12dp"
-                                android:src="@drawable/ic_favorite_ns">
+                                android:padding="10dp"
+                                android:src="@drawable/ic_add_white">
 
                             </ImageView>
                         </FrameLayout>

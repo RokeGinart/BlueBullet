@@ -7,6 +7,7 @@ import android.view.View
 import com.example.coctails.R
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
+import com.example.coctails.ui.screens.fragments.equipment.EquipmentFragment
 import com.example.coctails.ui.screens.fragments.glass.GlassWSFragment
 import com.example.coctails.ui.screens.fragments.workspace.WorkSpaceFragment
 import com.example.coctails.utils.clickWithDebounce
@@ -38,12 +39,17 @@ class KitchenFragment : BaseFragment<KitchenPresenter, KitchenView>(),
     private fun viewClicked(){
         glassWS.clickWithDebounce{
             val fragment = GlassWSFragment()
-            activity?.loadFragment(fragment, "glass", true)
+            activity?.loadFragment(fragment, "Glass", true)
         }
 
         workspaceView.clickWithDebounce{
             val fragment = WorkSpaceFragment()
-            activity?.loadFragment(fragment, "workspace", true)
+            activity?.loadFragment(fragment, "Workspace", true)
+        }
+
+        equipmentWS.clickWithDebounce{
+            val fragment = EquipmentFragment()
+            activity?.loadFragment(fragment, "Equipment", true)
         }
     }
 

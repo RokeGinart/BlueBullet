@@ -85,10 +85,10 @@ class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredien
 
     private fun favoriteSelection(selection: Boolean){
         isSelected = if(selection){
-            favoriteIngredient.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_s))
+            favoriteIngredient.setImageDrawable(activity?.getDrawable(R.drawable.ic_delete))
             false
         } else {
-            favoriteIngredient.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_ns))
+            favoriteIngredient.setImageDrawable(activity?.getDrawable(R.drawable.ic_add_white))
             true
         }
     }

@@ -80,18 +80,60 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
 
     override fun addCategorySort(categorySelected: Int) {
         when (categorySelected) {
-            0 -> addCategory("alcohol")
-            1 -> addCategory("liqueur")
-            2 -> addCategory("fruits")
-            3 -> addCategory("juice")
-            4 -> addCategory("decoration")
-            5 -> removeCategory("other")
+            0 -> addCategory()
+            1 -> addTwoCategories(1)
+            2 -> addTwoCategories(2)
+            3 -> addTwoCategories(3)
+            4 -> addTwoCategories(4)
+            5 -> addOtherCategory()
         }
     }
 
-    private fun addCategory(category: String) {
+    private fun addCategory() {
         tempIngredientList.forEach {
-            if (it.category == category) {
+            if (it.category == "alcohol") {
+                ingredientsByCategoryList.add(it)
+            }
+        }
+
+        screenView?.showSortResult(ingredientsByCategoryList)
+    }
+
+    private fun addOtherCategory() {
+        tempIngredientList.forEach {
+            if (it.category == "ice" || it.category == "coffee" || it.category == "other" || it.category == "sauce") {
+                ingredientsByCategoryList.add(it)
+            }
+        }
+
+        screenView?.showSortResult(ingredientsByCategoryList)
+    }
+
+    private fun addTwoCategories(select : Int) {
+        var firstCategory = ""
+        var secondCategory = ""
+
+        when (select) {
+            1 -> {
+                firstCategory = "liqueur"
+                secondCategory = "syrup"
+            }
+            2 -> {
+                firstCategory = "fruits"
+                secondCategory = "vegetable"
+            }
+            3 -> {
+                firstCategory = "juice"
+                secondCategory = "soda"
+            }
+            4 -> {
+                firstCategory = "decoration"
+                secondCategory = "flavor"
+            }
+        }
+
+        tempIngredientList.forEach {
+            if (it.category == firstCategory || it.category == secondCategory) {
                 ingredientsByCategoryList.add(it)
             }
         }
@@ -101,12 +143,12 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
 
     override fun removeCategorySort(categorySelected: Int) {
         when (categorySelected) {
-            0 -> removeCategory("alcohol")
-            1 -> removeCategory("liqueur")
-            2 -> removeCategory("fruits")
-            3 -> removeCategory("juice")
-            4 -> removeCategory("decoration")
-            5 -> removeCategory("other")
+            0 -> removeCategory()
+            1 -> removeTwoCategory(1)
+            2 -> removeTwoCategory(2)
+            3 -> removeTwoCategory(3)
+            4 -> removeTwoCategory(4)
+            5 -> removeOtherCategory()
             6 -> {
                 ingredientsByCategoryList.clear()
                 checkListSize()
@@ -114,10 +156,56 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
         }
     }
 
-    private fun removeCategory(category: String) {
+    private fun removeOtherCategory() {
         val removeItemsList = mutableListOf<IngredientModelSelection>()
         ingredientsByCategoryList.forEach { item ->
-            if (item.category == category) {
+            if (item.category == "ice" || item.category == "coffee" || item.category == "other" || item.category == "sauce") {
+                removeItemsList.add(item)
+            }
+        }
+
+        ingredientsByCategoryList.removeAll(removeItemsList)
+        checkListSize()
+    }
+
+    private fun removeCategory() {
+        val removeItemsList = mutableListOf<IngredientModelSelection>()
+        ingredientsByCategoryList.forEach { item ->
+            if (item.category == "alcohol") {
+                removeItemsList.add(item)
+            }
+        }
+
+        ingredientsByCategoryList.removeAll(removeItemsList)
+        checkListSize()
+    }
+
+    private fun removeTwoCategory(select: Int) {
+        var firstCategory = ""
+        var secondCategory = ""
+
+        when (select) {
+            1 -> {
+                firstCategory = "liqueur"
+                secondCategory = "syrup"
+            }
+            2 -> {
+                firstCategory = "fruits"
+                secondCategory = "vegetable"
+            }
+            3 -> {
+                firstCategory = "juice"
+                secondCategory = "soda"
+            }
+            4 -> {
+                firstCategory = "decoration"
+                secondCategory = "flavor"
+            }
+        }
+
+        val removeItemsList = mutableListOf<IngredientModelSelection>()
+        ingredientsByCategoryList.forEach { item ->
+            if (item.category == firstCategory || item.category == secondCategory) {
                 removeItemsList.add(item)
             }
         }

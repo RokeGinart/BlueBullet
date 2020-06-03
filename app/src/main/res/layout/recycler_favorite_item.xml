@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:card_view="http://schemas.android.com/tools"
     android:layout_marginStart="20dp"
     android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
     android:layout_marginEnd="20dp"
+    android:layout_marginBottom="5dp"
     android:orientation="vertical">
 
     <FrameLayout
@@ -24,12 +24,12 @@
 
         <ImageView
             android:id="@+id/favoriteIcon"
-            android:paddingBottom="10dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="end"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
             android:src="@drawable/ic_favorite_s">
 
         </ImageView>
@@ -42,8 +42,8 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                card_view:cardBackgroundColor="@color/blue"
-                app:cardCornerRadius="15dp">
+                app:cardCornerRadius="15dp"
+                card_view:cardBackgroundColor="@color/blue1">
 
                 <ImageView
                     android:id="@+id/favoriteImage"
@@ -56,10 +56,11 @@
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -67,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="20dp">
+                    android:textSize="20sp">
 
                 </TextView>
 
@@ -76,7 +77,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey2"
-                    android:textSize="15dp">
+                    android:textSize="15sp">
 
                 </TextView>
 
@@ -85,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey2"
-                    android:textSize="15dp">
+                    android:textSize="15sp">
 
                 </TextView>
 

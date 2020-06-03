@@ -13,6 +13,7 @@ data class Cocktails(
     var instruction: String = "",
     var mainIngredient: String = "",
     var info : Info? = null,
+    var equipment : List<Equipment>? = null,
     var ingredients: List<Ingredients>? = null
 ) : Serializable {
 
@@ -28,6 +29,11 @@ data class Cocktails(
     ) : Serializable
 
     data class Glass(
+        var id: Int = 0,
+        var name: String = ""
+    ) : Serializable
+
+    data class Equipment(
         var id: Int = 0,
         var name: String = ""
     ) : Serializable

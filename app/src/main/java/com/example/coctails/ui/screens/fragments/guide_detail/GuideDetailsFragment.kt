@@ -66,7 +66,7 @@ class GuideDetailsFragment : BaseFragment<GuideDetailsPresenter, GuideDetailView
     override fun showGuide(guide: Guide?) {
         commonProgressBar.visibility = View.GONE
         guideScroll.visibility = View.VISIBLE
-        
+
         val sourceName = SpannableString(guide?.source?.name)
         sourceName.setSpan(UnderlineSpan(), 0, sourceName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 

@@ -9,6 +9,8 @@ import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.equipment.EquipmentFragment
 import com.example.coctails.ui.screens.fragments.glass.GlassWSFragment
+import com.example.coctails.ui.screens.fragments.guide.GuideFragment
+import com.example.coctails.ui.screens.fragments.shopping.ShoppingFragment
 import com.example.coctails.ui.screens.fragments.workspace.WorkSpaceFragment
 import com.example.coctails.utils.clickWithDebounce
 import kotlinx.android.synthetic.main.common_toolbar.*
@@ -50,6 +52,16 @@ class KitchenFragment : BaseFragment<KitchenPresenter, KitchenView>(),
         equipmentWS.clickWithDebounce{
             val fragment = EquipmentFragment()
             activity?.loadFragment(fragment, "Equipment", true)
+        }
+
+        guideIntent.clickWithDebounce{
+            val fragment = GuideFragment()
+            activity?.loadFragment(fragment, "Guide", true)
+        }
+
+        shoppingIntent.clickWithDebounce{
+            val fragment = ShoppingFragment()
+            activity?.loadFragment(fragment, "Shopping", true)
         }
     }
 

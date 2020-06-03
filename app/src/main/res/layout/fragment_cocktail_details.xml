@@ -85,29 +85,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/glass"
-                            android:textColor="@color/white"
-                            android:textSize="15dp" />
-
-                        <TextView
-                            android:id="@+id/cocktailGlassCD"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:textColor="@color/grey2"
-                            android:textSize="15dp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:text="@string/alc"
                             android:textColor="@color/white"
                             android:textSize="15dp" />
@@ -146,22 +123,45 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/infoButton"
-                        android:layout_marginTop="20dp"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/glass"
+                            android:textColor="@color/white"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:id="@+id/cocktailGlassCD"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="@color/grey2"
+                            android:textSize="15dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/infoButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
 
                         <FrameLayout
-                            android:layout_weight="2"
                             android:layout_width="0dp"
-                            android:background="@drawable/info_back"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/info_back">
 
                             <ImageView
-                                android:padding="12dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
+                                android:padding="12dp"
                                 android:src="@drawable/ic_info">
 
                             </ImageView>
@@ -170,17 +170,17 @@
 
                         <FrameLayout
                             android:id="@+id/favButton"
-                            android:layout_weight="2"
-                            android:layout_marginStart="1dp"
                             android:layout_width="0dp"
-                            android:background="@drawable/fav_back"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/fav_back">
 
                             <ImageView
                                 android:id="@+id/favImage"
-                                android:padding="12dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
+                                android:padding="12dp"
                                 android:src="@drawable/ic_favorite_ns">
 
                             </ImageView>
@@ -192,22 +192,10 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/ingredients"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:textStyle="bold">
-
-            </TextView>
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="20dp">
 
                 <View
                     android:layout_width="match_parent"
@@ -215,34 +203,39 @@
                     android:alpha="0.9"
                     android:background="@drawable/recycler_background" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/ingredientsRecyclerCD"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="20dp">
+                    android:orientation="vertical">
 
-                </androidx.recyclerview.widget.RecyclerView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="@string/ingredients"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:textStyle="bold">
+
+                    </TextView>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/ingredientsRecyclerCD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+                </LinearLayout>
 
             </FrameLayout>
 
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/receipt"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:textStyle="bold">
-
-            </TextView>
-
             <FrameLayout
+                android:id="@+id/equipmentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
+                android:layout_marginTop="20dp">
 
                 <View
                     android:layout_width="match_parent"
@@ -251,18 +244,78 @@
                     android:background="@drawable/instruction_background" />
 
 
-                <TextView
-                    android:id="@+id/instructionCD"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="20dp"
-                    android:textColor="@color/white"
-                    android:textSize="15dp">
+                    android:orientation="vertical">
 
-                </TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="@string/may_be_used"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:textStyle="bold">
+
+                    </TextView>
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/equipmentRecyclerCD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp">
+
+                <View
+                    android:id="@+id/instructionView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="0.9"
+                    android:background="@drawable/recycler_background" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="@string/receipt"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:textStyle="bold">
+
+                    </TextView>
+
+
+                    <TextView
+                        android:id="@+id/instructionCD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp"
+                        android:textColor="@color/white"
+                        android:textSize="15dp">
+
+                    </TextView>
+                </LinearLayout>
             </FrameLayout>
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

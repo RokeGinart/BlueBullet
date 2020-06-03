@@ -11,33 +11,39 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.coctails.R
 import com.example.coctails.interfaces.OnIngredientDataChanged
+import com.example.coctails.interfaces.OnRecyclerIconClick
 import com.example.coctails.interfaces.OnRecyclerItemClick
+import com.example.coctails.interfaces.OnRecyclerItemClickS
 import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.cocktail_info.CocktailsInfoFragment
+import com.example.coctails.ui.screens.fragments.cocktaildetails.adapters.EquipmentsRecyclerAdapter
 import com.example.coctails.ui.screens.fragments.cocktaildetails.adapters.IngredientsRecyclerAdapter
 import com.example.coctails.ui.screens.fragments.cocktaildetails.model.IngredientModelCD
+import com.example.coctails.ui.screens.fragments.equipment_details.EquipmentDetailsFragment
 import com.example.coctails.ui.screens.fragments.favorites.interfaces.OnFavoriteChange
 import com.example.coctails.ui.screens.fragments.glassdetails.GlassFragment
 import com.example.coctails.ui.screens.fragments.ingredients_details.IngredientDetailsFragment
 import com.example.coctails.ui.screens.fragments.photoview.PhotoFragment
-import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.model.IngredientModelSelection
 import com.example.coctails.utils.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_cocktail_details.*
 
 class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsView>(),
-    CocktailDetailsView, OnRecyclerItemClick, OnIngredientDataChanged {
+    CocktailDetailsView, OnRecyclerItemClick, OnIngredientDataChanged, OnRecyclerItemClickS, OnRecyclerIconClick {
 
     override fun getLayoutId(): Int = R.layout.fragment_cocktail_details
 
     private var activity: MainActivity? = null
     private var mLayoutManager: LinearLayoutManager? = null
+    private var msLayoutManager: LinearLayoutManager? = null
     private var adapter: IngredientsRecyclerAdapter? = null
+    private var adapterEquipment: EquipmentsRecyclerAdapter? = null
     private var cocktails: Cocktails? = null
     private var favorite = false
     private var subject: PublisherSubject? = null
+    private var ingredient: IngredientModelCD? = null
     private var onFavoriteChange: OnFavoriteChange? = null
 
     override fun providePresenter(): CocktailDetailsPresenter = CocktailDetailsPresenterImpl()
@@ -66,10 +72,17 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
 
     private fun setupRecycler() {
         mLayoutManager = LinearLayoutManager(context)
+        msLayoutManager = LinearLayoutManager(context)
+
         ingredientsRecyclerCD.layoutManager = mLayoutManager
         ingredientsRecyclerCD.setHasFixedSize(true)
-        adapter = IngredientsRecyclerAdapter(this)
+        adapter = IngredientsRecyclerAdapter(this, this)
         ingredientsRecyclerCD.adapter = adapter
+
+        equipmentRecyclerCD.layoutManager = msLayoutManager
+        equipmentRecyclerCD.setHasFixedSize(true)
+        adapterEquipment = EquipmentsRecyclerAdapter(this)
+        equipmentRecyclerCD.adapter = adapterEquipment
 
         cocktails?.let { setData(it) }
     }
@@ -85,6 +98,23 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
         fragment.arguments = bundle
 
         activity?.loadFragment(fragment, "IngredientDetails", true)
+    }
+
+    override fun onIconClick(position: Int, status: Boolean) {
+        ingredient = adapter?.getAdapterList()?.get(position)
+        presenter.setIngredientToDB(ingredient?.ingredientId!!, ingredient?.category!!)
+    }
+
+    override fun onItemClickS(position: Int) {
+        val fragment = EquipmentDetailsFragment()
+        val bundle = Bundle()
+
+        val equipment = adapterEquipment?.getAdapterList()?.get(position)
+
+        bundle.putInt(EQUIPMENT_ID, equipment?.id!!)
+        fragment.arguments = bundle
+
+        activity?.loadFragment(fragment, "EquipmentDetails", true)
     }
 
     override fun showFavorite(inFavorite: Boolean) {
@@ -115,6 +145,13 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
         } else {
             cocktailIbaCD.text =
                 getString(R.string.tild) + cocktails.abv + getString(R.string.percent)
+        }
+
+        if(cocktails.equipment!![1].id == 0){
+            equipmentLayout.visibility = View.GONE
+            instructionView.setBackgroundResource(R.drawable.instruction_background)
+        }else{
+            adapterEquipment?.setList(cocktails.equipment!!.subList(1, cocktails.equipment!!.size))
         }
 
         instructionCD.text = cocktails.instruction
@@ -197,6 +234,11 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
                 cocktails?.id!!,
                 favorite
             )
+        }
+
+        if (subject != null) {
+            subject?.publishIngredient(ingredient!!)
+            subject?.publish(CHANGED_FROM_INGREDIENT)
         }
     }
 

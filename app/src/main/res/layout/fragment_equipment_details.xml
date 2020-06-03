@@ -13,6 +13,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/equipmentDetailScroll"
+        android:visibility="gone"
         android:layout_marginTop="?actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -163,8 +164,8 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
             override fun onSubscribe(d: Disposable) {}
 
             override fun onNext(ingredient: IngredientModelCD) {
-                adapter?.getAdapterList()?.forEachIndexed{ index, item ->
-                    if(item.category == ingredient.category && item.ingredientId == ingredient.ingredientId){
+                adapter?.getAdapterList()?.forEachIndexed { index, item ->
+                    if (item.category == ingredient.category && item.ingredientId == ingredient.ingredientId) {
                         adapter?.resetDataItem(index, ingredient.isSelected)
                         adapter?.notifyItemChanged(index)
 
@@ -247,7 +248,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
     }
 
     private fun openSortDialog() {
-        sortDialog = Dialog(context!!, R.style.CustomDialog)
+        sortDialog = Dialog(context!!, R.style.CustomDialogUp)
         sortDialog?.setContentView(R.layout.dialog_sort_ingredient)
         val width = ViewGroup.LayoutParams.MATCH_PARENT
         val height = ViewGroup.LayoutParams.MATCH_PARENT

@@ -25,6 +25,7 @@ class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredien
     private var ingId: Int? = null
     private var ingredient : IngredientsModel? = null
     private var isSelected = false
+    private var shopSelected = false
 
     override fun getLayoutId(): Int = R.layout.fragment_ingredient_details
 
@@ -79,8 +80,9 @@ class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredien
         viewClicked()
     }
 
-    override fun showDatabaseResult(isSelected: Boolean) {
+    override fun showDatabaseResult(isSelected: Boolean, shoppingSelected : Boolean) {
         favoriteSelection(isSelected)
+        shoppingSelection(shoppingSelected)
     }
 
     private fun favoriteSelection(selection: Boolean){
@@ -89,6 +91,16 @@ class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredien
             false
         } else {
             favoriteIngredient.setImageDrawable(activity?.getDrawable(R.drawable.ic_add_white))
+            true
+        }
+    }
+
+    private fun shoppingSelection(selection: Boolean){
+        shopSelected = if(selection){
+            trolleyImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_grocery_trolley_selected))
+            false
+        } else {
+            trolleyImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_grocery_trolley))
             true
         }
     }
@@ -112,6 +124,11 @@ class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredien
         favoriteIngredient.clickWithDebounce {
             favoriteSelection(isSelected)
             presenter.setIngredientToDB(ingCategory!!, ingId!!)
+        }
+
+        glassTrolley.clickWithDebounce {
+            shoppingSelection(shopSelected)
+            presenter.updateShoppingStatus(ingredient?.id!!, ingredient?.name!!,  ingredient?.image!!, "ingredient", ingredient?.category?.category!!)
         }
     }
 

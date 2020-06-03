@@ -2,6 +2,7 @@ package com.example.coctails.ui.screens.fragments.cocktaildetails
 
 import com.example.coctails.core.App
 import com.example.coctails.core.room.entity.FavoriteModel
+import com.example.coctails.core.room.entity.IngredientDBModel
 import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.ui.screens.fragments.cocktaildetails.model.IngredientModelCD
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -75,5 +76,22 @@ class CocktailDetailsPresenterImpl : CocktailDetailsPresenter() {
                     screenView?.showIngredientResult(ingredientList)
                 }
         )
+    }
+
+    override fun setIngredientToDB(ingredientId: Int, category: String) {
+        val ingredientsDBModel = IngredientDBModel(ingredientId, category)
+        addToDispose(
+            App.instanse?.database?.ingredientDao()?.getIngredient(ingredientId, category)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    if (t1 != null) {
+                        App.instanse?.database?.ingredientDao()?.delete(t1)
+                    } else {
+                        App.instanse?.database?.ingredientDao()?.insert(ingredientsDBModel)
+                    }
+
+                    screenView?.success()
+                })
     }
 }

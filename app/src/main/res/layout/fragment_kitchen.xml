@@ -14,10 +14,10 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="5dp">
 
 
             <FrameLayout
@@ -25,7 +25,6 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/workspaceView"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
@@ -34,6 +33,7 @@
                 </ImageView>
 
                 <View
+                    android:id="@+id/workspaceView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:alpha="0.8"
@@ -47,7 +47,7 @@
                     android:gravity="center"
                     android:text="@string/workspace"
                     android:textColor="@color/white"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textStyle="bold">
 
                 </TextView>
@@ -66,7 +66,6 @@
                     android:layout_weight="2">
 
                     <ImageView
-                        android:id="@+id/glassWS"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:scaleType="centerCrop"
@@ -75,6 +74,7 @@
                     </ImageView>
 
                     <View
+                        android:id="@+id/glassWS"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.8"
@@ -88,7 +88,7 @@
                         android:gravity="center"
                         android:text="@string/glass_ws"
                         android:textColor="@color/white"
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         android:textStyle="bold">
 
                     </TextView>
@@ -96,21 +96,21 @@
                 </FrameLayout>
 
                 <FrameLayout
-                    android:layout_marginStart="5dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="2">
 
                     <ImageView
-                        android:id="@+id/equipmentWS"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/workspace">
+                        android:src="@drawable/equipment_background">
 
                     </ImageView>
 
                     <View
+                        android:id="@+id/equipmentWS"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.8"
@@ -122,9 +122,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Оборудование"
+                        android:text="@string/equipment"
                         android:textColor="@color/white"
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         android:textStyle="bold">
 
                     </TextView>
@@ -148,11 +148,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/workspace">
+                        android:src="@drawable/guide_background">
 
                     </ImageView>
 
                     <View
+                        android:id="@id/guideIntent"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.8"
@@ -164,9 +165,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Инструкции"
+                        android:text="@string/guides"
                         android:textColor="@color/white"
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         android:textStyle="bold">
 
                     </TextView>
@@ -174,16 +175,16 @@
                 </FrameLayout>
 
                 <FrameLayout
-                    android:layout_marginStart="5dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="2">
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/workspace">
+                        android:src="@drawable/source_background">
 
                     </ImageView>
 
@@ -199,9 +200,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Источники"
+                        android:text="@string/sources"
                         android:textColor="@color/white"
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         android:textStyle="bold">
 
                     </TextView>
@@ -211,20 +212,21 @@
             </LinearLayout>
 
             <FrameLayout
-                android:layout_marginTop="5dp"
-                android:paddingBottom="?actionBarSize"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="?actionBarSize">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="200dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/workspace">
+                    android:src="@drawable/shop_background">
 
                 </ImageView>
 
                 <View
+                    android:id="@+id/shoppingIntent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:alpha="0.8"
@@ -238,7 +240,7 @@
                     android:gravity="center"
                     android:text="@string/buy"
                     android:textColor="@color/white"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textStyle="bold">
 
                 </TextView>

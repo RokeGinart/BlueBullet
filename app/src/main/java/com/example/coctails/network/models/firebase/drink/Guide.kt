@@ -5,6 +5,7 @@ import java.io.Serializable
 data class Guide(
     var id: Int = 0,
     var title: String = "",
+    var image: String = "",
     var source: Source? = null,
     var steps: List<Steps>? = null
 ) : Serializable {

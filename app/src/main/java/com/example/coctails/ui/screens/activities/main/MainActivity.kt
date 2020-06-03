@@ -176,8 +176,6 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
         super.onDestroy()
         presenter.unbindView()
     }
-
-
 }
 
 

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="10dp">
 
     <androidx.cardview.widget.CardView
+        android:layout_margin="1dp"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        card_view:cardBackgroundColor="@color/purple"
-        card_view:cardCornerRadius="15dp">
+        card_view:cardBackgroundColor="@color/blue1"
+        card_view:cardCornerRadius="10dp">
 
         <ImageView
             android:id="@+id/glassImageGV"
@@ -18,23 +18,33 @@
             android:layout_height="200dp" />
 
         <View
-            android:alpha="0.2"
-            android:background="@color/black"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="match_parent"
+            android:alpha="0.3"
+            android:background="@color/black">
 
         </View>
 
     </androidx.cardview.widget.CardView>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.2"
+        android:background="@drawable/view_borders_black">
+
+    </View>
+
     <TextView
         android:id="@+id/glassNameGV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="210dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:textColor="@color/white_text"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textStyle="bold" />
 
-</LinearLayout>
+
+</FrameLayout>

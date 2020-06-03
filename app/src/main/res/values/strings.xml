@@ -2,7 +2,10 @@
     <string name="app_name">Blue Bullet</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="loading">Загрузка данных…</string>
+    <string name="adultCheck">Вам уже исполнилось 18?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
     <string name="bar">Бар</string>
     <string name="workspace">Рабочий стол</string>
     <string name="buy">Список покупок</string>
@@ -17,17 +20,20 @@
     <string name="glass">Посуда:</string>
     <string name="author">Автор коктейля:</string>
     <string name="source">Источник:</string>
+    <string name="sources">Источники</string>
     <string name="year">Год создания:</string>
     <string name="country">Страна:</string>
     <string name="glass_ws">Посуда</string>
     <string name="equipment">Оборудование</string>
     <string name="alc">Алкоголь:</string>
     <string name="ingredients">Ингредиенты</string>
+    <string name="may_be_used">Может понадобиться</string>
     <string name="receipt">Рецепт</string>
     <string name="time">Время:</string>
     <string name="cocktails">Коктейли</string>
     <string name="canCook">Можно приготовить</string>
     <string name="guide">Гайд</string>
+    <string name="guides">Гайды</string>
     <string name="show_video">Смотреть:</string>
 
     <string name="main_ingredients">Базовый ингредиент</string>
@@ -38,10 +44,10 @@
     <string name="brandy">Бренди</string>
     <string name="vodka">Водка</string>
 
-    <string name="shots">Шоты</string>
-    <string name="shorts">Средние</string>
-    <string name="nonalcohol">Безалкогольные</string>
-    <string name="longs">Лонги</string>
+    <string name="shots">Шот</string>
+    <string name="shorts">Шорт</string>
+    <string name="nonalcohol">Безалкогольный</string>
+    <string name="longs">Лонг</string>
 
     <string name="short_desc">Средние (Short drinks).\n\nПодаются в бокалах объемом 60–160 мл, крепость варьируется от 17 до 45 градусов.</string>
     <string name="long_desc">Лонги (Long drinks).\n\nПьют из высоких стаканов объемом 160–300 мл, крепость редко превышает 17 градусов.</string>
@@ -84,4 +90,13 @@
 
     <string name="reset">Сбросить</string>
     <string name="find">Найдено:</string>
+
+    <string name="no_guide">Для «</string>
+    <string name="no_guide_s_part">» нет гайдов</string>
+
+    <string name="shopping_start">Товар «</string>
+    <string name="shopping_added">» добавлен в список покупок</string>
+    <string name="shopping_delete">» удален из списка покупок</string>
+    <string name="shopping_message">Список покупок пуст</string>
+
 </resources>

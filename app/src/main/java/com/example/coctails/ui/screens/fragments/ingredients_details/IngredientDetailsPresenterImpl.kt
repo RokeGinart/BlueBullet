@@ -2,6 +2,7 @@ package com.example.coctails.ui.screens.fragments.ingredients_details
 
 import com.example.coctails.core.App
 import com.example.coctails.core.room.entity.IngredientDBModel
+import com.example.coctails.core.room.entity.Shopping
 import com.example.coctails.network.models.firebase.drink.IngredientsModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -33,11 +34,30 @@ class IngredientDetailsPresenterImpl : IngredientDetailsPresenter() {
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
                     if (t1 != null) {
-                        screenView?.showDatabaseResult(true)
+                        getShopDB(category, ingredientId, true)
                     } else {
-                        screenView?.showDatabaseResult(false)
+                        getShopDB(category, ingredientId, false)
                     }
                 })
+    }
+
+    private fun getShopDB(category: String, ingredientId: Int, selected: Boolean) {
+        addToDispose(
+            App.instanse?.database?.shoppingDao()?.getShoppingItem(
+                ingredientId,
+                category
+            )?.subscribeOn(
+                Schedulers.io()
+            )
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    if (t1 != null) {
+                        screenView?.showDatabaseResult(selected, true)
+                    } else {
+                        screenView?.showDatabaseResult(selected, false)
+                    }
+                }
+        )
     }
 
     override fun setIngredientToDB(category: String, ingredientId: Int) {
@@ -54,6 +74,28 @@ class IngredientDetailsPresenterImpl : IngredientDetailsPresenter() {
                     }
 
                     screenView?.successChange()
+                })
+    }
+
+    override fun updateShoppingStatus(
+        itemId: Int,
+        name: String,
+        image: String,
+        mainCategory: String,
+        category: String
+    ) {
+        val shoppingItem = Shopping(itemId, name, image, mainCategory, category, true)
+
+        addToDispose(
+            App.instanse?.database?.shoppingDao()?.getShoppingItem(itemId, category)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    if (t1 == null) {
+                        App.instanse?.database?.shoppingDao()?.insert(shoppingItem)
+                    } else {
+                        App.instanse?.database?.shoppingDao()?.delete(t1)
+                    }
                 })
     }
 }

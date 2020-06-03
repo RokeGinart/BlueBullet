@@ -21,7 +21,8 @@ import kotlinx.android.synthetic.main.fragment_equipment_details.*
 class EquipmentDetailsFragment : BaseFragment<EquipmentDetailsPresenter, EquipmentDetailView>(),
     EquipmentDetailView {
 
-    private var activity : MainActivity? = null
+    private var activity: MainActivity? = null
+    private var shoppingSelected = false
 
     override fun getLayoutId(): Int = R.layout.fragment_equipment_details
 
@@ -43,42 +44,68 @@ class EquipmentDetailsFragment : BaseFragment<EquipmentDetailsPresenter, Equipme
 
     override fun onResume() {
         super.onResume()
-        commonToolbarBackPress.setOnClickListener{
+        commonToolbarBackPress.setOnClickListener {
             activity?.onBackPressed()
         }
     }
 
-    override fun showEquipment(equipment: Equipment?) {
+    override fun showEquipment(equipment: Equipment?, selected: Boolean) {
         commonProgressBar.visibility = View.GONE
         equipmentDetailScroll.visibility = View.VISIBLE
         Glide.with(this).load(equipment?.image).into(imageED)
         commonToolbarTitle.text = equipment?.name
         descriptionED.text = equipment?.description
 
-        equipmentShop.setOnClickListener{
+        if (selected) {
+            trolleyImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_grocery_trolley_selected))
+        }
+        shoppingSelected = selected
+
+        clickers(equipment)
+    }
+
+    private fun clickers(equipment: Equipment?){
+        equipmentShop.setOnClickListener {
             activity?.customToast(getString(R.string.clickToShop), 1)
         }
 
-        equipmentShop.setOnLongClickListener{
+        equipmentShop.setOnLongClickListener {
             val browserIntent =
                 Intent(Intent.ACTION_VIEW, Uri.parse(equipment?.link))
             startActivity(browserIntent)
             return@setOnLongClickListener true
         }
 
-        equipmentTrolley.setOnClickListener{
-            trolleyImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_grocery_trolley_selected))
+        equipmentTrolley.setOnClickListener {
+            shoppingSelected = if(shoppingSelected){
+                trolleyImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_grocery_trolley))
+                activity?.customToast(getString(R.string.shopping_start) + equipment?.name + getString(R.string.shopping_delete), 2)
+                false
+            } else {
+                trolleyImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_grocery_trolley_selected))
+                activity?.customToast(getString(R.string.shopping_start) + equipment?.name + getString(R.string.shopping_added), 1)
+                true
+            }
+
+            presenter.updateShoppingStatus(equipment?.id!!, equipment.name,  equipment.image, "equipment", "equipment")
         }
 
         guideIntent.clickWithDebounce {
-            val fragment = GuideDetailsFragment()
+            if (equipment?.guide != 0) {
+                val fragment = GuideDetailsFragment()
 
-            val bundle = Bundle()
+                val bundle = Bundle()
 
-            bundle.putInt(GUIDE_ID, equipment?.guide!!)
-            fragment.arguments = bundle
+                bundle.putInt(GUIDE_ID, equipment?.guide!!)
+                fragment.arguments = bundle
 
-            activity?.loadFragment(fragment, "GuideDetails", true)
+                activity?.loadFragment(fragment, "GuideDetails", true)
+            } else {
+                activity?.customToast(
+                    getString(R.string.no_guide) + equipment.name + getString(R.string.no_guide_s_part),
+                    2
+                )
+            }
         }
     }
 

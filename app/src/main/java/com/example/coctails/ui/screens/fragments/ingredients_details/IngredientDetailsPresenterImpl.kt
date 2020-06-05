@@ -96,6 +96,8 @@ class IngredientDetailsPresenterImpl : IngredientDetailsPresenter() {
                     } else {
                         App.instanse?.database?.shoppingDao()?.delete(t1)
                     }
+
+                    screenView?.successChange()
                 })
     }
 }

@@ -7,10 +7,12 @@ import android.os.Bundle
 import android.view.View
 import com.bumptech.glide.Glide
 import com.example.coctails.R
+import com.example.coctails.core.App
 import com.example.coctails.network.models.firebase.drink.Equipment
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.guide_detail.GuideDetailsFragment
+import com.example.coctails.ui.screens.fragments.shopping.model.ItemChange
 import com.example.coctails.utils.EQUIPMENT_ID
 import com.example.coctails.utils.GUIDE_ID
 import com.example.coctails.utils.clickWithDebounce
@@ -108,6 +110,12 @@ class EquipmentDetailsFragment : BaseFragment<EquipmentDetailsPresenter, Equipme
             }
         }
     }
+
+    override fun changesSuccess(id : Int, selected: Boolean) {
+        val item = ItemChange("equipment", id, selected)
+        App.instanse?.subject?.publishItem(item)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -16,6 +16,7 @@ class ShoppingPresenterImpl : ShoppingPresenter() {
                     if (t1.isNotEmpty()) {
                         screenView?.showResult(t1)
                     } else {
+                        screenView?.showResult(t1)
                         screenView?.showMessage()
                     }
                 }

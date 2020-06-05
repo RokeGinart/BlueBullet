@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -22,6 +21,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coctails.R
+import com.example.coctails.core.App
 import com.example.coctails.interfaces.OnIngredientDataChanged
 import com.example.coctails.interfaces.OnRecyclerIconClick
 import com.example.coctails.interfaces.OnRecyclerItemClick
@@ -40,7 +40,7 @@ import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.fragment_ingredients_w.*
 import kotlinx.android.synthetic.main.fragment_work_space.*
 
-class IngredientsWSFragment(private val subject: PublisherSubject) :
+class IngredientsWSFragment :
     BaseFragment<IngredientsWSPresenter, IngredientsWSView>(),
     IngredientsWSView, OnRecyclerItemClick,
     OnSearchItemClick, OnRecyclerIconClick, OnIngredientDataChanged {
@@ -82,8 +82,8 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         presenter.bindView(this)
         presenter.getIngredientList()
 
-        openSearchDialog()
         openSortDialog()
+        openSearchDialog()
 
         setupRecycler()
         mainFab.setOnClickListener {
@@ -103,7 +103,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         forwardAnim = AnimationUtils.loadAnimation(context, R.anim.rotate_forward)
         backwardAnim = AnimationUtils.loadAnimation(context, R.anim.rotate_backward)
 
-        subject.listenChange().subscribe(getInputObserver())
+        App.instanse?.subject?.listenChange()?.subscribe(getInputObserver())
     }
 
     private fun setupRecycler() {
@@ -168,10 +168,10 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
                     if (item.category == ingredient.category && item.ingredientId == ingredient.ingredientId) {
                         adapter?.resetDataItem(index, ingredient.isSelected)
                         adapter?.notifyItemChanged(index)
-
-                        openSearchDialog()
                     }
                 }
+
+                openSearchDialog()
             }
 
             override fun onError(e: Throwable) {}
@@ -234,7 +234,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
     }
 
     override fun successChanges() {
-        subject.publish(CHANGED_FROM_ALL)
+        App.instanse?.subject?.publish(CHANGED_FROM_ALL)
     }
 
     private fun openSearchDialog() {
@@ -509,7 +509,7 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
                 adapter?.resetDataItem(index, isChanged)
                 adapter?.notifyItemChanged(index)
 
-                subject.publish(CHANGED_FROM_ALL)
+                App.instanse?.subject?.publish(CHANGED_FROM_ALL)
 
                 if (isChanged) {
                     count++
@@ -522,8 +522,8 @@ class IngredientsWSFragment(private val subject: PublisherSubject) :
         }
     }
 
-    fun newInstance(index: Int, subject: PublisherSubject): IngredientsWSFragment {
-        val fragment = IngredientsWSFragment(subject)
+    fun newInstance(index: Int): IngredientsWSFragment {
+        val fragment = IngredientsWSFragment()
         val bundle = Bundle()
         bundle.putInt(ARG_SECTION_NUMBER, index)
         fragment.arguments = bundle

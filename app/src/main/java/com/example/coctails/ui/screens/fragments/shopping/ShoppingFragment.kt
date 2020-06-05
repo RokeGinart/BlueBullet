@@ -7,6 +7,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coctails.R
+import com.example.coctails.core.App
 import com.example.coctails.core.room.entity.Shopping
 import com.example.coctails.interfaces.OnIngredientDataChanged
 import com.example.coctails.interfaces.OnRecyclerIconClick
@@ -19,7 +20,10 @@ import com.example.coctails.ui.screens.fragments.glassdetails.GlassFragment
 import com.example.coctails.ui.screens.fragments.guide_detail.GuideDetailsFragment
 import com.example.coctails.ui.screens.fragments.ingredients_details.IngredientDetailsFragment
 import com.example.coctails.ui.screens.fragments.shopping.adapters.ShoppingRecyclerViewAdapter
+import com.example.coctails.ui.screens.fragments.shopping.model.ItemChange
 import com.example.coctails.utils.*
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_shopping.*
@@ -48,6 +52,12 @@ class ShoppingFragment : BaseFragment<ShoppingPresenter, ShoppingView>(), Shoppi
         presenter.getAllShoppingItems()
 
         setupRecycler()
+
+        shoppingRefresh.setOnRefreshListener{
+            presenter.getAllShoppingItems()
+        }
+
+        App.instanse?.subject?.listenShoppingChange()?.subscribe(getInputObserver())
     }
 
     private fun setupRecycler() {
@@ -66,15 +76,35 @@ class ShoppingFragment : BaseFragment<ShoppingPresenter, ShoppingView>(), Shoppi
         }
     }
 
+    private fun getInputObserver(): Observer<ItemChange> {
+        return object : Observer<ItemChange> {
+            override fun onComplete() {}
+            override fun onSubscribe(d: Disposable) {}
+
+            override fun onNext(item: ItemChange) {
+               adapter?.getAdapterList()?.forEachIndexed{index, shopping ->
+                   if(shopping.category == item.category && shopping.itemId == item.itemId){
+                       adapter?.resetDataItem(index, item.selection)
+                       adapter?.notifyItemChanged(index)
+                   }
+               }
+            }
+
+            override fun onError(e: Throwable) {}
+        }
+    }
+
     override fun showResult(shopping: List<Shopping>) {
         commonProgressBar.visibility = View.GONE
         shoppingMessage.visibility = View.GONE
-        adapter?.setList(shopping)
+        shoppingRefresh.isRefreshing = false
+        adapter?.setList(shopping.reversed())
     }
 
     override fun showMessage() {
         commonProgressBar.visibility = View.GONE
         shoppingMessage.visibility = View.VISIBLE
+        shoppingRefresh.isRefreshing = false
     }
 
     override fun onItemClick(position: Int) {

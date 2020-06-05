@@ -7,6 +7,7 @@ import android.view.View
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.coctails.R
+import com.example.coctails.core.App
 import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.ui.screens.BaseFragment
@@ -19,7 +20,7 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_cocktails_ws.*
 import kotlinx.android.synthetic.main.fragment_work_space.*
 
-class CocktailsWSFragment(private val subject: PublisherSubject) :
+class CocktailsWSFragment :
     BaseFragment<CocktailsWSPresenter, CocktailsWSView>(), CocktailsWSView,
     OnRecyclerItemClick {
 
@@ -41,7 +42,7 @@ class CocktailsWSFragment(private val subject: PublisherSubject) :
         presenter.bindView(this)
         presenter.getAllCocktails()
 
-        subject.listen().subscribe(getInputObserver())
+        App.instanse?.subject?.listen()?.subscribe(getInputObserver())
 
         setupRecycler()
     }
@@ -59,7 +60,6 @@ class CocktailsWSFragment(private val subject: PublisherSubject) :
         readyCocktailMessage.visibility = View.GONE
         adapter?.setList(cocktails)
         if (cocktails.isNotEmpty()) {
-            Log.d("TAGS", "tab")
             activity?.kitchenTabs?.getTabAt(1)?.orCreateBadge?.badgeTextColor = getColor(context!!, R.color.white)
             activity?.kitchenTabs?.getTabAt(1)?.orCreateBadge?.number = cocktails.size
         } else {
@@ -76,7 +76,6 @@ class CocktailsWSFragment(private val subject: PublisherSubject) :
         val bundle = Bundle()
 
         bundle.putSerializable(COCKTAIL, adapter?.getAdapterList()?.get(position))
-        bundle.putSerializable(INGREDIENT_INTERFACE, subject)
         fragment.arguments = bundle
 
         activity?.loadFragment(fragment, "CocktailDetails", true)
@@ -97,8 +96,8 @@ class CocktailsWSFragment(private val subject: PublisherSubject) :
         }
     }
 
-    fun newInstance(index: Int, subject: PublisherSubject): CocktailsWSFragment {
-        val fragment = CocktailsWSFragment(subject)
+    fun newInstance(index: Int): CocktailsWSFragment {
+        val fragment = CocktailsWSFragment()
         val bundle = Bundle()
         bundle.putInt(ARG_SECTION_NUMBER, index)
         fragment.arguments = bundle

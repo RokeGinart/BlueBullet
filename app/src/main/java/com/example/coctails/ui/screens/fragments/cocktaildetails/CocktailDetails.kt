@@ -10,6 +10,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.coctails.R
+import com.example.coctails.core.App
 import com.example.coctails.interfaces.OnIngredientDataChanged
 import com.example.coctails.interfaces.OnRecyclerIconClick
 import com.example.coctails.interfaces.OnRecyclerItemClick
@@ -22,7 +23,7 @@ import com.example.coctails.ui.screens.fragments.cocktaildetails.adapters.Equipm
 import com.example.coctails.ui.screens.fragments.cocktaildetails.adapters.IngredientsRecyclerAdapter
 import com.example.coctails.ui.screens.fragments.cocktaildetails.model.IngredientModelCD
 import com.example.coctails.ui.screens.fragments.equipment_details.EquipmentDetailsFragment
-import com.example.coctails.ui.screens.fragments.favorites.interfaces.OnFavoriteChange
+import com.example.coctails.ui.screens.fragments.favorites.model.FavoriteSubjectModel
 import com.example.coctails.ui.screens.fragments.glassdetails.GlassFragment
 import com.example.coctails.ui.screens.fragments.ingredients_details.IngredientDetailsFragment
 import com.example.coctails.ui.screens.fragments.photoview.PhotoFragment
@@ -31,7 +32,8 @@ import kotlinx.android.synthetic.main.common_toolbar.*
 import kotlinx.android.synthetic.main.fragment_cocktail_details.*
 
 class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsView>(),
-    CocktailDetailsView, OnRecyclerItemClick, OnIngredientDataChanged, OnRecyclerItemClickS, OnRecyclerIconClick {
+    CocktailDetailsView, OnRecyclerItemClick, OnIngredientDataChanged, OnRecyclerItemClickS,
+    OnRecyclerIconClick {
 
     override fun getLayoutId(): Int = R.layout.fragment_cocktail_details
 
@@ -42,9 +44,7 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
     private var adapterEquipment: EquipmentsRecyclerAdapter? = null
     private var cocktails: Cocktails? = null
     private var favorite = false
-    private var subject: PublisherSubject? = null
     private var ingredient: IngredientModelCD? = null
-    private var onFavoriteChange: OnFavoriteChange? = null
 
     override fun providePresenter(): CocktailDetailsPresenter = CocktailDetailsPresenterImpl()
 
@@ -54,8 +54,6 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
 
         val bundle = arguments
         cocktails = bundle?.getSerializable(COCKTAIL) as Cocktails?
-        subject = bundle?.getSerializable(INGREDIENT_INTERFACE) as PublisherSubject?
-        onFavoriteChange = bundle?.getSerializable(FAVORITE_INTERFACE) as OnFavoriteChange?
 
         cocktails?.let {
             presenter.getFavorite(it.id, it.category?.category!!)
@@ -147,10 +145,10 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
                 getString(R.string.tild) + cocktails.abv + getString(R.string.percent)
         }
 
-        if(cocktails.equipment!![1].id == 0){
+        if (cocktails.equipment!![1].id == 0) {
             equipmentLayout.visibility = View.GONE
             instructionView.setBackgroundResource(R.drawable.instruction_background)
-        }else{
+        } else {
             adapterEquipment?.setList(cocktails.equipment!!.subList(1, cocktails.equipment!!.size))
         }
 
@@ -228,18 +226,12 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
     }
 
     override fun success() {
-        if (onFavoriteChange != null) {
-            onFavoriteChange?.favoriteStatusChange(
-                cocktails?.category?.category!!,
-                cocktails?.id!!,
-                favorite
-            )
-        }
+        val favoriteSubjectModel = FavoriteSubjectModel(cocktails?.category?.category!!, cocktails?.id!!, favorite)
 
-        if (subject != null) {
-            subject?.publishIngredient(ingredient!!)
-            subject?.publish(CHANGED_FROM_INGREDIENT)
-        }
+        App.instanse?.subject?.publishFavorite(favoriteSubjectModel)
+
+        ingredient?.let { App.instanse?.subject?.publishIngredient(it) }
+        App.instanse?.subject?.publish(CHANGED_FROM_INGREDIENT)
     }
 
     override fun showIngredientResult(ingredientsList: List<IngredientModelCD>) {
@@ -252,10 +244,8 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
                 adapter?.updateItem(index, isChanged)
                 adapter?.notifyItemChanged(index)
 
-                if (subject != null) {
-                    subject?.publishIngredient(element)
-                    subject?.publish(CHANGED_FROM_INGREDIENT)
-                }
+                App.instanse?.subject?.publishIngredient(element)
+                App.instanse?.subject?.publish(CHANGED_FROM_INGREDIENT)
             }
         }
     }

@@ -8,9 +8,11 @@ import android.view.View
 import com.bumptech.glide.Glide
 
 import com.example.coctails.R
+import com.example.coctails.core.App
 import com.example.coctails.network.models.firebase.drink.GlassDetails
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
+import com.example.coctails.ui.screens.fragments.shopping.model.ItemChange
 import com.example.coctails.utils.GLASS_ID
 import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.common_toolbar.*
@@ -88,6 +90,11 @@ class GlassFragment : BaseFragment<GlassPresenter, GlassView>(), GlassView {
 
             presenter.updateShoppingStatus(glass?.id!!, glass.name,  glass.image, "glass", "glass")
         }
+    }
+
+    override fun changesSuccess(id : Int, selected: Boolean) {
+        val item = ItemChange("glass", id, selected)
+        App.instanse?.subject?.publishItem(item)
     }
 
     override fun onDestroyView() {

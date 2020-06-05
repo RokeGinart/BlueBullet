@@ -61,8 +61,10 @@ class EquipmentDetailsPresenterImpl : EquipmentDetailsPresenter() {
                 ?.subscribe { t1, t2 ->
                     if (t1 == null) {
                         App.instanse?.database?.shoppingDao()?.insert(shoppingItem)
+                        screenView?.changesSuccess(itemId, true)
                     } else {
                         App.instanse?.database?.shoppingDao()?.delete(t1)
+                        screenView?.changesSuccess(itemId, false)
                     }
                 })
     }

@@ -9,7 +9,6 @@ class ApiManager : CocktailsAPI {
     private val retrofit = RetrofitClient.getInstance.createRetrofit("https://www.thecocktaildb.com")
     private val appApi = retrofit.create(CocktailsAPI::class.java)
 
-
     override fun searchCocktails(cocktailName: String): Single<CocktailsCategoryList> {
        return appApi.searchCocktails(cocktailName)
     }

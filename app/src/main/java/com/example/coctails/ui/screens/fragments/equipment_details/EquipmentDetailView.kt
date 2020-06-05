@@ -5,4 +5,5 @@ import com.example.coctails.ui.BaseView
 
 interface EquipmentDetailView : BaseView {
     fun showEquipment(equipment: Equipment?, selected : Boolean)
+    fun changesSuccess(id : Int, selected: Boolean)
 }

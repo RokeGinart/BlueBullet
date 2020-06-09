@@ -27,11 +27,13 @@ class SplashActivity : BaseActivity<SplashPresenter, SplashView>(), SplashView {
         setContentView(R.layout.activity_splash)
         presenter.bindView(this)
 
-        if(Cocktails.getPref().isAdult()){
+      /*  if(Cocktails.getPref().isAdult()){
             startMainActivity()
         } else {
             showAdultDialog()
-        }
+        }*/
+
+        presenter.downloadData()
     }
 
     private fun startMainActivity(){
@@ -65,6 +67,12 @@ class SplashActivity : BaseActivity<SplashPresenter, SplashView>(), SplashView {
         }
 
         dialog.show()
+    }
+
+    override fun message() {
+        val intent = Intent(this@SplashActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     override fun onDestroy() {

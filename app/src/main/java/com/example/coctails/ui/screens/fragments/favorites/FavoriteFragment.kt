@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coctails.R
 import com.example.coctails.core.App
 import com.example.coctails.core.room.entity.FavoriteModel
+import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
 import com.example.coctails.interfaces.OnRecyclerIconClick
 import com.example.coctails.interfaces.OnRecyclerItemClick
 import com.example.coctails.network.models.firebase.drink.Cocktails
@@ -112,7 +113,7 @@ class FavoriteFragment : BaseFragment<FavoritePresenter, FavoriteView>(), Favori
         presenter.setFavoriteStatus(favoriteModel?.cocktailId!!, favoriteModel.name, favoriteModel.image, favoriteModel.category, favoriteModel.abv, favoriteModel.categoryName, favoriteModel.favorite)
     }
 
-    override fun getCocktail(cocktails: Cocktails) {
+    override fun getCocktail(cocktails: CocktailFirebaseData) {
         commonProgressBar.visibility = View.GONE
 
         val fragment = CocktailDetails()

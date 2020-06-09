@@ -14,8 +14,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coctails.R
+import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
 import com.example.coctails.interfaces.OnRecyclerItemClick
-import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.cocktaildetails.CocktailDetails
@@ -32,7 +32,7 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
 
     private var mLayoutManager: GridLayoutManager? = null
     private var adapter: CocktailsRecyclerAdapter? = null
-    private var cocktails: List<Cocktails>? = null
+    private var cocktails: List<CocktailFirebaseData>? = null
     private var activity: MainActivity? = null
     private var searchView: SearchView? = null
     private var category: String? = null
@@ -118,14 +118,14 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
     }
 
 
-    override fun showCocktailsCategory(cocktailsList: List<Cocktails>) {
+
+    override fun showCocktailsCategory(cocktailsList: List<CocktailFirebaseData>) {
         adapter?.setList(cocktailsList)
         adapter?.setSortedByNameList()
         cocktails = cocktailsList
 
         commonProgressBar.visibility = View.GONE
     }
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -204,7 +204,7 @@ class CocktailsCategoryFragment : BaseFragment<CocktailsCategoryPresenter, Cockt
             setSortedList(selectedSort)
             errorMessage.visibility = View.GONE
         } else {
-            val searchRes = mutableListOf<Cocktails>()
+            val searchRes = mutableListOf<CocktailFirebaseData>()
             val query = TranslitUtils().cyr2lat(name.toLowerCase().trim())
             cocktails?.forEach {
                 if (it.name.toLowerCase().trim().contains(query.toString())) {

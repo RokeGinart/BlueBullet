@@ -1,11 +1,15 @@
 package com.example.coctails.ui.screens.fragments.cocktailscategory
 
 import androidx.annotation.NonNull
+import com.example.coctails.core.App
+import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
 import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 
 class CocktailsCategoryPresenterImpl : CocktailsCategoryPresenter() {
@@ -14,62 +18,52 @@ class CocktailsCategoryPresenterImpl : CocktailsCategoryPresenter() {
     var myRef = database.getReference("drink")
 
     override fun getCocktailsByCategory(category: String) {
-        myRef.child(category).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-                val responseList = mutableListOf<Cocktails>()
+        addToDispose(
+            App.instanse?.database?.cocktailFB()?.getAllFirebaseCocktails()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe{t1, t2 ->
+                    val responseList = mutableListOf<CocktailFirebaseData>()
 
-                dataSnapshot.children.forEach {
-                    responseList.add(it.getValue(Cocktails::class.java)!!)
+                    t1?.forEach{
+                        if(it.category?.category == category){
+                            responseList.add(it)
+                        }
+                    }
+
+                    screenView?.showCocktailsCategory(responseList)
                 }
-
-                screenView?.showCocktailsCategory(responseList)
-            }
-
-            override fun onCancelled(@NonNull databaseError: DatabaseError) {}
-        })
+        )
     }
 
     override fun getAllCocktails() {
-        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-                val responseList = mutableListOf<Cocktails>()
-
-                dataSnapshot.children.forEach {
-                    it.children.forEach { cocktails ->
-                        responseList.add(cocktails.getValue(Cocktails::class.java)!!)
-                    }
+        addToDispose(
+            App.instanse?.database?.cocktailFB()?.getAllFirebaseCocktails()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe{t1, t2 ->
+                    screenView?.showCocktailsCategory(t1)
                 }
-
-                screenView?.showCocktailsCategory(responseList)
-            }
-
-            override fun onCancelled(@NonNull databaseError: DatabaseError) {}
-        })
+        )
     }
 
     override fun getCocktailsByIngredient(ingredient: String) {
-        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-                val allCocktails = mutableListOf<Cocktails>()
-                val responseList = mutableListOf<Cocktails>()
+        addToDispose(
+            App.instanse?.database?.cocktailFB()?.getAllFirebaseCocktails()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe{t1, t2 ->
+                    val responseList = mutableListOf<CocktailFirebaseData>()
 
-                dataSnapshot.children.forEach {
-                    it.children.forEach { cocktails ->
-                        allCocktails.add(cocktails.getValue(Cocktails::class.java)!!)
+                    t1?.forEach{
+                        if(it.mainIngredient == ingredient){
+                            responseList.add(it)
+                        }
                     }
+
+                    screenView?.showCocktailsCategory(responseList)
                 }
-
-                allCocktails.forEach{
-                    if(it.mainIngredient == ingredient){
-                        responseList.add(it)
-                    }
-                }
-
-                screenView?.showCocktailsCategory(responseList)
-            }
-
-            override fun onCancelled(@NonNull databaseError: DatabaseError) {}
-        })
+        )
     }
 }
 

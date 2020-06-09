@@ -14,6 +14,6 @@ interface IPref {
     fun isAdultSecondCheck():Boolean
     fun setAdultSecondCheck(adultSecond: Boolean)
 
-    fun getVersion(): Float
-    fun setVersion(version : Float)
+    fun getVersion(): Long
+    fun setVersion(version : Long)
 }

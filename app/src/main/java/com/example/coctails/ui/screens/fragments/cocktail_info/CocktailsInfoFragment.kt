@@ -9,6 +9,7 @@ import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.View
 import com.example.coctails.R
+import com.example.coctails.core.room.entity.cocktails_data.InfoDB
 import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
@@ -24,7 +25,7 @@ class CocktailsInfoFragment : BaseFragment<CocktailsInfoPresenter, CocktailsInfo
 
     override fun getLayoutId(): Int = R.layout.fragment_cocktails_info
 
-    private var information : Cocktails.Info? = null
+    private var information : InfoDB? = null
 
     override fun providePresenter(): CocktailsInfoPresenter = CocktailsInfoPresenterImpl()
 
@@ -38,11 +39,11 @@ class CocktailsInfoFragment : BaseFragment<CocktailsInfoPresenter, CocktailsInfo
         presenter.bindView(this)
 
         val bundle = arguments
-        information = bundle?.getSerializable(COCKTAIL_INFO) as Cocktails.Info?
+        information = bundle?.getSerializable(COCKTAIL_INFO) as InfoDB?
         information?.let { setInfo(it) }
     }
 
-    private fun setInfo(info : Cocktails.Info){
+    private fun setInfo(info : InfoDB){
         val sourceName = SpannableString(info.source?.name)
         sourceName.setSpan(UnderlineSpan(), 0, sourceName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 

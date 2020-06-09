@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.coctails.R
 import com.example.coctails.core.App
+import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
 import com.example.coctails.interfaces.OnIngredientDataChanged
 import com.example.coctails.interfaces.OnRecyclerIconClick
 import com.example.coctails.interfaces.OnRecyclerItemClick
@@ -42,7 +43,7 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
     private var msLayoutManager: LinearLayoutManager? = null
     private var adapter: IngredientsRecyclerAdapter? = null
     private var adapterEquipment: EquipmentsRecyclerAdapter? = null
-    private var cocktails: Cocktails? = null
+    private var cocktails: CocktailFirebaseData? = null
     private var favorite = false
     private var ingredient: IngredientModelCD? = null
 
@@ -53,7 +54,7 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
         presenter.bindView(this)
 
         val bundle = arguments
-        cocktails = bundle?.getSerializable(COCKTAIL) as Cocktails?
+        cocktails = bundle?.getSerializable(COCKTAIL) as CocktailFirebaseData?
 
         cocktails?.let {
             presenter.getFavorite(it.id, it.category?.category!!)
@@ -128,7 +129,7 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setData(cocktails: Cocktails) {
+    private fun setData(cocktails: CocktailFirebaseData) {
         Glide.with(this).load(cocktails.image).centerCrop()
             .into(cocktailImage)
         cocktailCategoryCD.text = cocktails.category?.name

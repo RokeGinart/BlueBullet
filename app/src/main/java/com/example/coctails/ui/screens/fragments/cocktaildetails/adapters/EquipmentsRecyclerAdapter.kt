@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coctails.R
+import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
+import com.example.coctails.core.room.entity.cocktails_data.EquipmentDB
 import com.example.coctails.interfaces.OnRecyclerItemClickS
 import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.utils.clickWithDebounce
@@ -14,14 +16,14 @@ import kotlinx.android.synthetic.main.recycler_equipments_cd_item.view.*
 class EquipmentsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemClickS) :
     RecyclerView.Adapter<EquipmentsRecyclerAdapter.ViewHolder>() {
 
-    private val equipments = ArrayList<Cocktails.Equipment?>()
+    private val equipments = ArrayList<EquipmentDB?>()
 
-    fun setList(stList: List<Cocktails.Equipment?>) {
+    fun setList(stList: List<EquipmentDB?>) {
         equipments.addAll(stList)
         notifyDataSetChanged()
     }
 
-    fun getAdapterList() : ArrayList<Cocktails.Equipment?> = equipments
+    fun getAdapterList() : ArrayList<EquipmentDB?> = equipments
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -50,7 +52,7 @@ class EquipmentsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemC
 
         lateinit var onItemClick: OnRecyclerItemClickS
 
-        fun bind(equipment: Cocktails.Equipment) {
+        fun bind(equipment: EquipmentDB) {
             itemView.clickWithDebounce { onItemClick.onItemClickS(adapterPosition) }
             itemView.equipmentName.text = equipment.name
         }

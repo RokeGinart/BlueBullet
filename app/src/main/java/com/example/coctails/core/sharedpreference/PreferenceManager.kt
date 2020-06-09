@@ -37,11 +37,11 @@ class PreferenceManager : IPref{
         editor.apply()
     }
 
-    override fun getVersion() : Float = sharedPreferences!!.getFloat(SP_VERSION, 0f)
+    override fun getVersion() : Long = sharedPreferences!!.getLong(SP_VERSION, 0L)
 
-    override fun setVersion(version: Float) {
+    override fun setVersion(version: Long) {
         val editor = sharedPreferences!!.edit()
-        editor.putFloat(SP_VERSION, version)
+        editor.putLong(SP_VERSION, version)
         editor.apply()
     }
 

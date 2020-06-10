@@ -4,7 +4,6 @@ import com.example.coctails.core.App
 import com.example.coctails.core.room.entity.FavoriteModel
 import com.example.coctails.core.room.entity.IngredientDBModel
 import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
-import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.ui.screens.fragments.cocktaildetails.model.IngredientModelCD
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

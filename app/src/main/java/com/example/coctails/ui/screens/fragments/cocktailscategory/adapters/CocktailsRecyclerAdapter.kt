@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.example.coctails.R
 import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
 import com.example.coctails.interfaces.OnRecyclerItemClick
-import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.utils.clickWithDebounce
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_cocktail_item.view.*

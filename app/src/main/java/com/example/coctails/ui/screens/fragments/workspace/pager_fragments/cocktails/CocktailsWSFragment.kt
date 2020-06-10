@@ -2,14 +2,13 @@ package com.example.coctails.ui.screens.fragments.workspace.pager_fragments.cock
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.coctails.R
 import com.example.coctails.core.App
+import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
 import com.example.coctails.interfaces.OnRecyclerItemClick
-import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.cocktaildetails.CocktailDetails
@@ -56,7 +55,7 @@ class CocktailsWSFragment :
         readyCocktailRecycler.adapter = adapter
     }
 
-    override fun showResult(cocktails: List<Cocktails>) {
+    override fun showResult(cocktails: List<CocktailFirebaseData>) {
         readyCocktailMessage.visibility = View.GONE
         adapter?.setList(cocktails)
         if (cocktails.isNotEmpty()) {

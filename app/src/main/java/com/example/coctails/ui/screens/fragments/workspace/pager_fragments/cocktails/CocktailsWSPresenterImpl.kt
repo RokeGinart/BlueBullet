@@ -1,39 +1,27 @@
 package com.example.coctails.ui.screens.fragments.workspace.pager_fragments.cocktails
 
-import androidx.annotation.NonNull
 import com.example.coctails.core.App
-import com.example.coctails.network.models.firebase.drink.Cocktails
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class CocktailsWSPresenterImpl : CocktailsWSPresenter() {
 
-    var database = FirebaseDatabase.getInstance()
-    var myRef = database.getReference("drink")
-
-    private val responseList = mutableListOf<Cocktails>()
+    private val responseList = mutableListOf<CocktailFirebaseData>()
 
     override fun getAllCocktails() {
         responseList.clear()
-        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-
-                dataSnapshot.children.forEach {
-                    it.children.forEach { cocktails ->
-                        responseList.add(cocktails.getValue(Cocktails::class.java)!!)
+        addToDispose(
+            App.instanse?.database?.cocktailFB()?.getAllFirebaseCocktails()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe{t1, t2 ->
+                    if(t1 != null){
+                        responseList.addAll(t1)
+                        showReadyCocktails()
                     }
                 }
-
-                showReadyCocktails()
-
-            }
-
-            override fun onCancelled(@NonNull databaseError: DatabaseError) {}
-        })
+        )
     }
 
     override fun showReadyCocktails() {
@@ -42,7 +30,7 @@ class CocktailsWSPresenterImpl : CocktailsWSPresenter() {
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.map { mapIng ->
-                    val readyCocktails = mutableListOf<Cocktails>()
+                    val readyCocktails = mutableListOf<CocktailFirebaseData>()
                     responseList.forEach { cocktail ->
                         val cocktailsIngredientSize = cocktail.ingredients?.size
                         var sameIngredients = 0

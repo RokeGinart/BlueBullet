@@ -2,7 +2,6 @@ package com.example.coctails.ui.screens.fragments.shopping
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,12 +11,10 @@ import com.example.coctails.core.room.entity.Shopping
 import com.example.coctails.interfaces.OnIngredientDataChanged
 import com.example.coctails.interfaces.OnRecyclerIconClick
 import com.example.coctails.interfaces.OnRecyclerItemClick
-import com.example.coctails.network.models.firebase.drink.GlassDetails
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.equipment_details.EquipmentDetailsFragment
 import com.example.coctails.ui.screens.fragments.glassdetails.GlassFragment
-import com.example.coctails.ui.screens.fragments.guide_detail.GuideDetailsFragment
 import com.example.coctails.ui.screens.fragments.ingredients_details.IngredientDetailsFragment
 import com.example.coctails.ui.screens.fragments.shopping.adapters.ShoppingRecyclerViewAdapter
 import com.example.coctails.ui.screens.fragments.shopping.model.ItemChange

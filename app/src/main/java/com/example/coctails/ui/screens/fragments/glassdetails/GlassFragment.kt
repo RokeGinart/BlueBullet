@@ -9,14 +9,13 @@ import com.bumptech.glide.Glide
 
 import com.example.coctails.R
 import com.example.coctails.core.App
-import com.example.coctails.network.models.firebase.drink.GlassDetails
+import com.example.coctails.core.room.entity.glass_data.GlassFirebaseData
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.shopping.model.ItemChange
 import com.example.coctails.utils.GLASS_ID
 import kotlinx.android.synthetic.main.common_progress_bar.*
 import kotlinx.android.synthetic.main.common_toolbar.*
-import kotlinx.android.synthetic.main.fragment_equipment_details.*
 import kotlinx.android.synthetic.main.fragment_glass.*
 import kotlinx.android.synthetic.main.fragment_glass.trolleyImage
 
@@ -50,7 +49,7 @@ class GlassFragment : BaseFragment<GlassPresenter, GlassView>(), GlassView {
         }
     }
 
-    override fun showGlass(glass: GlassDetails?, selected: Boolean) {
+    override fun showGlass(glass: GlassFirebaseData?, selected: Boolean) {
         commonProgressBar.visibility = View.GONE
         glassDetailScroll.visibility = View.VISIBLE
         Glide.with(this).load(glass?.image).into(imageGD)
@@ -65,7 +64,7 @@ class GlassFragment : BaseFragment<GlassPresenter, GlassView>(), GlassView {
         clickers(glass)
     }
 
-    private fun clickers(glass: GlassDetails?) {
+    private fun clickers(glass: GlassFirebaseData?) {
         glassShop.setOnClickListener {
             activity?.customToast(getString(R.string.clickToShop), 1)
         }

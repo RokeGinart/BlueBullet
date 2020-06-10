@@ -1,35 +1,30 @@
 package com.example.coctails.ui.screens.fragments.equipment_details
 
-import androidx.annotation.NonNull
 import com.example.coctails.core.App
 import com.example.coctails.core.room.entity.Shopping
-import com.example.coctails.network.models.firebase.drink.Equipment
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.example.coctails.core.room.entity.equipment_data.EquipmentFirebaseData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class EquipmentDetailsPresenterImpl : EquipmentDetailsPresenter() {
 
-    var database = FirebaseDatabase.getInstance()
-    var myRef = database.getReference("equipment")
-
     override fun getEquipment(id: Int) {
-        myRef.child(id.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-                getItemDataFromDB(dataSnapshot.getValue(Equipment::class.java)!!)
-            }
-
-            override fun onCancelled(@NonNull databaseError: DatabaseError) {}
-        })
+        addToDispose(
+            App.instanse?.database?.equipmentFB()?.getEquipmentDetails(id)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    if (t1 != null) {
+                        getItemDataFromDB(t1)
+                    }
+                }
+        )
     }
 
-    private fun getItemDataFromDB(equipment: Equipment) {
+    private fun getItemDataFromDB(equipmentFirebaseData: EquipmentFirebaseData) {
         addToDispose(
             App.instanse?.database?.shoppingDao()?.getShoppingItem(
-                equipment.id,
+                equipmentFirebaseData.id,
                 "equipment"
             )?.subscribeOn(
                 Schedulers.io()
@@ -37,9 +32,9 @@ class EquipmentDetailsPresenterImpl : EquipmentDetailsPresenter() {
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
                     if (t1 != null) {
-                        screenView?.showEquipment(equipment, true)
+                        screenView?.showEquipment(equipmentFirebaseData, true)
                     } else {
-                        screenView?.showEquipment(equipment, false)
+                        screenView?.showEquipment(equipmentFirebaseData, false)
                     }
                 }
         )

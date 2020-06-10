@@ -168,10 +168,9 @@ class IngredientsWSFragment :
                     if (item.category == ingredient.category && item.ingredientId == ingredient.ingredientId) {
                         adapter?.resetDataItem(index, ingredient.isSelected)
                         adapter?.notifyItemChanged(index)
+                        searchAdapter?.clearList()
                     }
                 }
-
-                openSearchDialog()
             }
 
             override fun onError(e: Throwable) {}

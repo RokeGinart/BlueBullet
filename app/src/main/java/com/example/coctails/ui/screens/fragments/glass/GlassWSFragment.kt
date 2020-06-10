@@ -6,8 +6,8 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 
 import com.example.coctails.R
+import com.example.coctails.core.room.entity.glass_data.GlassFirebaseData
 import com.example.coctails.interfaces.OnRecyclerItemClick
-import com.example.coctails.network.models.firebase.drink.GlassDetails
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.glass.adapters.GlassRecyclerViewAdapter
@@ -55,7 +55,7 @@ class GlassWSFragment : BaseFragment<GlassWSPresenter, GlassWSView>(), GlassWSVi
         glassRecyclerView.adapter = adapter
     }
 
-    override fun showGlassList(glassList: List<GlassDetails>) {
+    override fun showGlassList(glassList: List<GlassFirebaseData>) {
         commonProgressBar.visibility = View.GONE
         adapter?.setList(glassList)
     }

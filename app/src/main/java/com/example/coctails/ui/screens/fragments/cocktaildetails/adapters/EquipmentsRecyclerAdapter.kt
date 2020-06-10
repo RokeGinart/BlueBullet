@@ -5,10 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coctails.R
-import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
 import com.example.coctails.core.room.entity.cocktails_data.EquipmentDB
 import com.example.coctails.interfaces.OnRecyclerItemClickS
-import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.utils.clickWithDebounce
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_equipments_cd_item.view.*

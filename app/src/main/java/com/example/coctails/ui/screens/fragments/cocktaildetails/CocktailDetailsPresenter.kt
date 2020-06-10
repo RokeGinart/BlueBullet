@@ -1,7 +1,6 @@
 package com.example.coctails.ui.screens.fragments.cocktaildetails
 
 import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
-import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.ui.BasePresenter
 
 abstract class CocktailDetailsPresenter : BasePresenter<CocktailDetailsView>(){

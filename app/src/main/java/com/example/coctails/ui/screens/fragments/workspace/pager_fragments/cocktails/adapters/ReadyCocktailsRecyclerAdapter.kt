@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coctails.R
+import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
 import com.example.coctails.interfaces.OnRecyclerItemClick
-import com.example.coctails.network.models.firebase.drink.Cocktails
 import com.example.coctails.utils.clickWithDebounce
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_cocktail_item.view.*
@@ -17,9 +17,9 @@ import kotlin.collections.ArrayList
 class ReadyCocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerItemClick) :
     RecyclerView.Adapter<ReadyCocktailsRecyclerAdapter.ViewHolder>() {
 
-    private val cocktails = ArrayList<Cocktails>()
+    private val cocktails = ArrayList<CocktailFirebaseData>()
 
-    fun setList(stList: List<Cocktails>){
+    fun setList(stList: List<CocktailFirebaseData>){
         cocktails.clear()
         cocktails.addAll(stList)
         setSortedByNameList()
@@ -40,7 +40,7 @@ class ReadyCocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerI
         notifyDataSetChanged()
     }*/
 
-    fun getAdapterList(): List<Cocktails> = cocktails
+    fun getAdapterList(): List<CocktailFirebaseData> = cocktails
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -69,7 +69,7 @@ class ReadyCocktailsRecyclerAdapter(private val onRecyclerItemClick: OnRecyclerI
 
         lateinit var onItemClick: OnRecyclerItemClick
 
-        fun bind(cocktails: Cocktails) {
+        fun bind(cocktails: CocktailFirebaseData) {
             itemView.clickWithDebounce { onItemClick.onItemClick(adapterPosition) }
 
             Glide.with(itemView.context)

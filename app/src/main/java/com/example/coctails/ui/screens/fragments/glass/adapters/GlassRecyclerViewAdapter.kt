@@ -6,17 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coctails.R
+import com.example.coctails.core.room.entity.glass_data.GlassFirebaseData
 import com.example.coctails.interfaces.OnRecyclerItemClick
-import com.example.coctails.network.models.firebase.drink.GlassDetails
 import com.example.coctails.utils.clickWithDebounce
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_glass_item.view.*
 
 class GlassRecyclerViewAdapter(private val onRecyclerItemClick: OnRecyclerItemClick) : RecyclerView.Adapter<GlassRecyclerViewAdapter.ViewHolder>(){
 
-    private val glass = ArrayList<GlassDetails>()
+    private val glass = ArrayList<GlassFirebaseData>()
 
-    fun setList(stList: List<GlassDetails>){
+    fun setList(stList: List<GlassFirebaseData>){
         glass.clear()
         glass.addAll(stList)
         setSortedByNameList()
@@ -27,7 +27,7 @@ class GlassRecyclerViewAdapter(private val onRecyclerItemClick: OnRecyclerItemCl
         notifyDataSetChanged()
     }
 
-    fun getAdapterList() : List<GlassDetails> = glass
+    fun getAdapterList() : List<GlassFirebaseData> = glass
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -52,7 +52,7 @@ class GlassRecyclerViewAdapter(private val onRecyclerItemClick: OnRecyclerItemCl
 
         lateinit var onItemClick: OnRecyclerItemClick
 
-        fun bind(glassDetails: GlassDetails){
+        fun bind(glassDetails: GlassFirebaseData){
             itemView.clickWithDebounce { onItemClick.onItemClick(adapterPosition) }
 
             Glide.with(itemView.context)

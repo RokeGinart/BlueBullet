@@ -13,15 +13,12 @@ interface CocktailsFirebaseDataDAO {
     @Query("SELECT * FROM firebase_cocktails")
     fun getAllFirebaseCocktails(): Single<List<CocktailFirebaseData>>
 
-  /*  @Query("SELECT * FROM firebase_cocktails WHERE cocktail_id = :cocktailId AND category = :category")
-    fun getCocktail(cocktailId : Int, category : String): Single<FavoriteModel>*/
-
     @Insert
     fun insert(cocktailFB: CocktailFirebaseData)
 
     @Delete
     fun delete(cocktailFB: CocktailFirebaseData)
 
-    @Delete
-    fun deleteAllData(cocktailFB: List<CocktailFirebaseData>)
+    @Query("DELETE FROM firebase_cocktails")
+    fun deleteAllData()
 }

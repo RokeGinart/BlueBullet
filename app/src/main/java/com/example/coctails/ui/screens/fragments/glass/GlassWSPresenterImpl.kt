@@ -1,30 +1,20 @@
 package com.example.coctails.ui.screens.fragments.glass
 
-import androidx.annotation.NonNull
-import com.example.coctails.network.models.firebase.drink.GlassDetails
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.example.coctails.core.App
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class GlassWSPresenterImpl : GlassWSPresenter() {
-
-    var database = FirebaseDatabase.getInstance()
-    var myRef = database.getReference("glass")
-
     override fun getGlassList() {
-        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-                val responseList = mutableListOf<GlassDetails>()
-
-                dataSnapshot.children.forEach {
-                    responseList.add(it.getValue(GlassDetails::class.java)!!)
+        addToDispose(
+            App.instanse?.database?.glassFB()?.getAllGlass()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    if (t1 != null) {
+                        screenView?.showGlassList(t1)
+                    }
                 }
-
-                screenView?.showGlassList(responseList)
-            }
-
-            override fun onCancelled(@NonNull databaseError: DatabaseError) {}
-        })
+        )
     }
 }

@@ -1,34 +1,27 @@
 package com.example.coctails.ui.screens.fragments.glassdetails
 
-import androidx.annotation.NonNull
 import com.example.coctails.core.App
 import com.example.coctails.core.room.entity.Shopping
-import com.example.coctails.network.models.firebase.drink.Cocktails
-import com.example.coctails.network.models.firebase.drink.Equipment
-import com.example.coctails.network.models.firebase.drink.GlassDetails
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.example.coctails.core.room.entity.glass_data.GlassFirebaseData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class GlassPresenterImpl : GlassPresenter() {
 
-    var database = FirebaseDatabase.getInstance()
-    var myRef = database.getReference("glass")
-
     override fun getGlass(glassId: Int) {
-        myRef.child(glassId.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-                getItemDataFromDB(dataSnapshot.getValue(GlassDetails::class.java)!!)
-            }
-
-            override fun onCancelled(@NonNull databaseError: DatabaseError) {}
-        })
+        addToDispose(
+            App.instanse?.database?.glassFB()?.getGlassDetails(glassId)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    if (t1 != null) {
+                        getItemDataFromDB(t1)
+                    }
+                }
+        )
     }
 
-    private fun getItemDataFromDB(glass: GlassDetails) {
+    private fun getItemDataFromDB(glass: GlassFirebaseData) {
         addToDispose(
             App.instanse?.database?.shoppingDao()?.getShoppingItem(
                 glass.id,
@@ -50,7 +43,7 @@ class GlassPresenterImpl : GlassPresenter() {
     override fun updateShoppingStatus(
         itemId: Int,
         name: String,
-        image : String,
+        image: String,
         mainCategory: String,
         category: String
     ) {

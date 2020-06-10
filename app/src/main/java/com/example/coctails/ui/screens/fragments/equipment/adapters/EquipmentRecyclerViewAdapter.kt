@@ -7,16 +7,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coctails.R
 import com.example.coctails.interfaces.OnRecyclerItemClick
-import com.example.coctails.network.models.firebase.drink.Equipment
+import com.example.coctails.core.room.entity.equipment_data.EquipmentFirebaseData
 import com.example.coctails.utils.clickWithDebounce
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_glass_item.view.*
 
 class EquipmentRecyclerViewAdapter(private val onRecyclerItemClick: OnRecyclerItemClick) : RecyclerView.Adapter<EquipmentRecyclerViewAdapter.ViewHolder>(){
 
-    private val glass = ArrayList<Equipment>()
+    private val glass = ArrayList<EquipmentFirebaseData>()
 
-    fun setList(stList: List<Equipment>){
+    fun setList(stList: List<EquipmentFirebaseData>){
         glass.clear()
         glass.addAll(stList)
         setSortedByNameList()
@@ -27,7 +27,7 @@ class EquipmentRecyclerViewAdapter(private val onRecyclerItemClick: OnRecyclerIt
         notifyDataSetChanged()
     }
 
-    fun getAdapterList() : List<Equipment> = glass
+    fun getAdapterList() : List<EquipmentFirebaseData> = glass
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -52,15 +52,15 @@ class EquipmentRecyclerViewAdapter(private val onRecyclerItemClick: OnRecyclerIt
 
         lateinit var onItemClick: OnRecyclerItemClick
 
-        fun bind(equipment: Equipment){
+        fun bind(equipmentFirebaseData: EquipmentFirebaseData){
             itemView.clickWithDebounce { onItemClick.onItemClick(adapterPosition) }
 
             Glide.with(itemView.context)
-                .load(equipment.image)
+                .load(equipmentFirebaseData.image)
                 .centerCrop()
                 .into(itemView.glassImageGV)
 
-            itemView.glassNameGV.text = equipment.name
+            itemView.glassNameGV.text = equipmentFirebaseData.name
         }
     }
 }

@@ -8,7 +8,7 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.example.coctails.R
 import com.example.coctails.core.App
-import com.example.coctails.network.models.firebase.drink.Equipment
+import com.example.coctails.core.room.entity.equipment_data.EquipmentFirebaseData
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.guide_detail.GuideDetailsFragment
@@ -51,29 +51,29 @@ class EquipmentDetailsFragment : BaseFragment<EquipmentDetailsPresenter, Equipme
         }
     }
 
-    override fun showEquipment(equipment: Equipment?, selected: Boolean) {
+    override fun showEquipment(equipmentFirebaseData: EquipmentFirebaseData?, selected: Boolean) {
         commonProgressBar.visibility = View.GONE
         equipmentDetailScroll.visibility = View.VISIBLE
-        Glide.with(this).load(equipment?.image).into(imageED)
-        commonToolbarTitle.text = equipment?.name
-        descriptionED.text = equipment?.description
+        Glide.with(this).load(equipmentFirebaseData?.image).into(imageED)
+        commonToolbarTitle.text = equipmentFirebaseData?.name
+        descriptionED.text = equipmentFirebaseData?.description
 
         if (selected) {
             trolleyImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_grocery_trolley_selected))
         }
         shoppingSelected = selected
 
-        clickers(equipment)
+        clickers(equipmentFirebaseData)
     }
 
-    private fun clickers(equipment: Equipment?){
+    private fun clickers(equipmentFirebaseData: EquipmentFirebaseData?){
         equipmentShop.setOnClickListener {
             activity?.customToast(getString(R.string.clickToShop), 1)
         }
 
         equipmentShop.setOnLongClickListener {
             val browserIntent =
-                Intent(Intent.ACTION_VIEW, Uri.parse(equipment?.link))
+                Intent(Intent.ACTION_VIEW, Uri.parse(equipmentFirebaseData?.link))
             startActivity(browserIntent)
             return@setOnLongClickListener true
         }
@@ -81,30 +81,30 @@ class EquipmentDetailsFragment : BaseFragment<EquipmentDetailsPresenter, Equipme
         equipmentTrolley.setOnClickListener {
             shoppingSelected = if(shoppingSelected){
                 trolleyImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_grocery_trolley))
-                activity?.customToast(getString(R.string.shopping_start) + equipment?.name + getString(R.string.shopping_delete), 2)
+                activity?.customToast(getString(R.string.shopping_start) + equipmentFirebaseData?.name + getString(R.string.shopping_delete), 2)
                 false
             } else {
                 trolleyImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_grocery_trolley_selected))
-                activity?.customToast(getString(R.string.shopping_start) + equipment?.name + getString(R.string.shopping_added), 1)
+                activity?.customToast(getString(R.string.shopping_start) + equipmentFirebaseData?.name + getString(R.string.shopping_added), 1)
                 true
             }
 
-            presenter.updateShoppingStatus(equipment?.id!!, equipment.name,  equipment.image, "equipment", "equipment")
+            presenter.updateShoppingStatus(equipmentFirebaseData?.id!!, equipmentFirebaseData.name,  equipmentFirebaseData.image, "equipment", "equipment")
         }
 
         guideIntent.clickWithDebounce {
-            if (equipment?.guide != 0) {
+            if (equipmentFirebaseData?.guide != 0) {
                 val fragment = GuideDetailsFragment()
 
                 val bundle = Bundle()
 
-                bundle.putInt(GUIDE_ID, equipment?.guide!!)
+                bundle.putInt(GUIDE_ID, equipmentFirebaseData?.guide!!)
                 fragment.arguments = bundle
 
                 activity?.loadFragment(fragment, "GuideDetails", true)
             } else {
                 activity?.customToast(
-                    getString(R.string.no_guide) + equipment.name + getString(R.string.no_guide_s_part),
+                    getString(R.string.no_guide) + equipmentFirebaseData.name + getString(R.string.no_guide_s_part),
                     2
                 )
             }

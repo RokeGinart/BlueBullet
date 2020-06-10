@@ -6,7 +6,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.coctails.R
 import com.example.coctails.interfaces.OnRecyclerItemClick
-import com.example.coctails.network.models.firebase.drink.Equipment
+import com.example.coctails.core.room.entity.equipment_data.EquipmentFirebaseData
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.equipment.adapters.EquipmentRecyclerViewAdapter
@@ -53,9 +53,9 @@ class EquipmentFragment : BaseFragment<EquipmentPresenter, EquipmentView>(), Equ
         equipmentRecyclerView.adapter = adapter
     }
 
-    override fun showEquipment(equipmentList: List<Equipment>) {
+    override fun showEquipment(equipmentFirebaseDataList: List<EquipmentFirebaseData>) {
         commonProgressBar.visibility = View.GONE
-        adapter?.setList(equipmentList)
+        adapter?.setList(equipmentFirebaseDataList)
     }
 
     override fun onItemClick(position: Int) {

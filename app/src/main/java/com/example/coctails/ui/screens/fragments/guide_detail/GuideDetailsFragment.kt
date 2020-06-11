@@ -8,11 +8,10 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coctails.R
-import com.example.coctails.network.models.firebase.drink.Guide
+import com.example.coctails.core.room.entity.guide_data.GuideFirebaseData
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.guide_detail.adapters.GuideRecyclerAdapter
@@ -63,20 +62,20 @@ class GuideDetailsFragment : BaseFragment<GuideDetailsPresenter, GuideDetailView
         commonToolbarTitle.text = getString(R.string.guide)
     }
 
-    override fun showGuide(guide: Guide?) {
+    override fun showGuide(guideFirebaseData: GuideFirebaseData?) {
         commonProgressBar.visibility = View.GONE
         guideScroll.visibility = View.VISIBLE
 
-        val sourceName = SpannableString(guide?.source?.name)
+        val sourceName = SpannableString(guideFirebaseData?.source?.name)
         sourceName.setSpan(UnderlineSpan(), 0, sourceName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-        guideTitle.text = guide?.title
+        guideTitle.text = guideFirebaseData?.title
         guideSource.text = sourceName
-        adapter?.setList(guide?.steps?.subList(1, guide.steps?.size!!)!!)
+        adapter?.setList(guideFirebaseData?.steps?.subList(1, guideFirebaseData.steps?.size!!)!!)
 
         guideSource.clickWithDebounce {
             val browserIntent =
-                Intent(Intent.ACTION_VIEW, Uri.parse(guide?.source?.link))
+                Intent(Intent.ACTION_VIEW, Uri.parse(guideFirebaseData?.source?.link))
             startActivity(browserIntent)
         }
     }

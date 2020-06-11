@@ -6,25 +6,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coctails.R
-import com.example.coctails.interfaces.OnRecyclerIconClick
 import com.example.coctails.interfaces.OnRecyclerItemClick
-import com.example.coctails.network.models.firebase.drink.Guide
+import com.example.coctails.core.room.entity.guide_data.GuideFirebaseData
 import com.example.coctails.utils.clickWithDebounce
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_guide_item.view.*
 
 class GuideRecyclerViewAdapter(private val onRecyclerItemClick: OnRecyclerItemClick) : RecyclerView.Adapter<GuideRecyclerViewAdapter.ViewHolder>(){
 
-    private val guide = ArrayList<Guide>()
+    private val guide = ArrayList<GuideFirebaseData>()
 
-    fun setList(stList: List<Guide>){
+    fun setList(stList: List<GuideFirebaseData>){
         guide.clear()
         guide.addAll(stList)
         notifyDataSetChanged()
     }
 
 
-    fun getAdapterList() : List<Guide> = guide
+    fun getAdapterList() : List<GuideFirebaseData> = guide
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -49,11 +48,11 @@ class GuideRecyclerViewAdapter(private val onRecyclerItemClick: OnRecyclerItemCl
 
         lateinit var onItemClick: OnRecyclerItemClick
 
-        fun bind(guide: Guide){
+        fun bind(guideFirebaseData: GuideFirebaseData){
             itemView.clickWithDebounce { onItemClick.onItemClick(adapterPosition) }
 
-            Glide.with(itemView.context).load(guide.image).into(itemView.guideImageGA)
-            itemView.guideTitleGA.text = guide.title
+            Glide.with(itemView.context).load(guideFirebaseData.image).into(itemView.guideImageGA)
+            itemView.guideTitleGA.text = guideFirebaseData.title
         }
     }
 }

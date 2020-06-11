@@ -6,7 +6,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.coctails.R
 import com.example.coctails.interfaces.OnRecyclerItemClick
-import com.example.coctails.network.models.firebase.drink.Guide
+import com.example.coctails.core.room.entity.guide_data.GuideFirebaseData
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.guide.adapters.GuideRecyclerViewAdapter
@@ -56,9 +56,9 @@ class GuideFragment : BaseFragment<GuidePresenter, GuideView>(), GuideView, OnRe
         guideRecyclerView.adapter = adapter
     }
 
-    override fun showAllGuide(guide: List<Guide>) {
+    override fun showAllGuide(guideFirebaseData: List<GuideFirebaseData>) {
         commonProgressBar.visibility = View.GONE
-        adapter?.setList(guide)
+        adapter?.setList(guideFirebaseData)
     }
 
     override fun onItemClick(position: Int) {

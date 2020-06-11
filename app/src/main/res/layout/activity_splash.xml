@@ -20,6 +20,8 @@
     </ImageView>
 
     <LinearLayout
+        android:id="@+id/progressLayout"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -47,6 +49,24 @@
         </TextView>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/splashMessage"
+        android:textSize="15sp"
+        android:visibility="gone"
+        android:textStyle="bold"
+        android:background="@color/red4"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:padding="20sp"
+        android:text="@string/splash_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    </TextView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

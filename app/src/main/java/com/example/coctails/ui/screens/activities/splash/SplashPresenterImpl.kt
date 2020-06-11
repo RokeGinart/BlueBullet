@@ -6,6 +6,7 @@ import com.example.coctails.core.Cocktails
 import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
 import com.example.coctails.core.room.entity.equipment_data.EquipmentFirebaseData
 import com.example.coctails.core.room.entity.glass_data.GlassFirebaseData
+import com.example.coctails.core.room.entity.guide_data.GuideFirebaseData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -19,6 +20,7 @@ class SplashPresenterImpl : SplashPresenter() {
     private var myRef = database.getReference("drink")
     private var glassDatabase = database.getReference("glass")
     private var equipmentDatabase = database.getReference("equipment")
+    private var guideDatabase = database.getReference("guides")
     private var databaseVersion = database.getReference("version")
 
     override fun downloadData() {
@@ -26,9 +28,9 @@ class SplashPresenterImpl : SplashPresenter() {
             override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
                 if (Cocktails.getPref().getVersion() != dataSnapshot.value) {
                     Cocktails.getPref().setVersion(dataSnapshot.value as Long)
-                    startDownloading()
+                    getAllCocktails()
                 } else {
-                    screenView?.message()
+                    checkData()
                 }
             }
 
@@ -36,8 +38,65 @@ class SplashPresenterImpl : SplashPresenter() {
         })
     }
 
-    private fun startDownloading() {
-        getAllCocktails()
+    override fun checkData() {
+        addToDispose(
+            App.instanse?.database?.cocktailFB()?.getAllFirebaseCocktails()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    if (t1.isNotEmpty()) {
+                        checkGlassData()
+                    } else {
+                        getAllCocktails()
+                    }
+                }
+        )
+    }
+
+    private fun checkGlassData() {
+        addToDispose(
+            App.instanse?.database?.glassFB()?.getAllGlass()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    if (t1.isNotEmpty()) {
+                        checkEquipmentData()
+                    } else {
+                        getAllGlass()
+                    }
+                }
+        )
+
+    }
+
+    private fun checkEquipmentData() {
+        addToDispose(
+            App.instanse?.database?.equipmentFB()?.getAllEquipment()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    if (t1.isNotEmpty()) {
+                        checkGuideData()
+                    } else {
+                        getAllEquipment()
+                    }
+                }
+        )
+    }
+
+    private fun checkGuideData() {
+        addToDispose(
+            App.instanse?.database?.guideFB()?.getAllGuides()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    if (t1.isNotEmpty()) {
+                        screenView?.message()
+                    } else {
+                        getAllGuide()
+                    }
+                }
+        )
     }
 
     private fun getAllCocktails() {
@@ -69,6 +128,7 @@ class SplashPresenterImpl : SplashPresenter() {
                     App.instanse?.database?.glassFB()
                         ?.insert(it.getValue(GlassFirebaseData::class.java)!!)
                 }
+
                 getAllEquipment()
             }
 
@@ -84,6 +144,23 @@ class SplashPresenterImpl : SplashPresenter() {
                 dataSnapshot.children.forEach {
                     App.instanse?.database?.equipmentFB()
                         ?.insert(it.getValue(EquipmentFirebaseData::class.java)!!)
+                }
+
+                getAllGuide()
+            }
+
+            override fun onCancelled(@NonNull databaseError: DatabaseError) {}
+        })
+    }
+
+    private fun getAllGuide() {
+        guideDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
+                App.instanse?.database?.guideFB()?.deleteAllGuide()
+
+                dataSnapshot.children.forEach {
+                    App.instanse?.database?.guideFB()
+                        ?.insert(it.getValue(GuideFirebaseData::class.java)!!)
                 }
 
                 screenView?.message()

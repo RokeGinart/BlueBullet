@@ -1,6 +1,7 @@
 package com.example.coctails.core.room.entity.cocktails_data
 
 import androidx.room.*
+import com.example.coctails.core.room.entity.TypeConvert
 import java.io.Serializable
 
 

@@ -3,6 +3,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="loading">Загрузка данных…</string>
+    <string name="splash_message">Что-то пошло не так…\nПроверьте подключение к интернету.</string>
     <string name="adultCheck">Вам уже исполнилось 18?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>

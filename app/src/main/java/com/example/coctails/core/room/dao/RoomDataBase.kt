@@ -7,22 +7,25 @@ import com.example.coctails.core.room.entity.FavoriteModel
 import com.example.coctails.core.room.entity.IngredientDBModel
 import com.example.coctails.core.room.entity.Shopping
 import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
-import com.example.coctails.core.room.entity.cocktails_data.TypeConvert
+import com.example.coctails.core.room.entity.TypeConvert
 import com.example.coctails.core.room.entity.equipment_data.EquipmentFirebaseData
 import com.example.coctails.core.room.entity.glass_data.GlassFirebaseData
+import com.example.coctails.core.room.entity.guide_data.GuideFirebaseData
 
 @Database(entities = [FavoriteModel::class,
     IngredientDBModel::class,
     Shopping::class,
     CocktailFirebaseData::class,
     GlassFirebaseData::class,
-    EquipmentFirebaseData::class],  version = 14)
+    GuideFirebaseData::class,
+    EquipmentFirebaseData::class],  version = 15)
 @TypeConverters(TypeConvert::class)
 abstract class RoomDataBase : RoomDatabase() {
 
     abstract fun cocktailFB() : CocktailsFirebaseDataDAO
     abstract fun glassFB() : GlassDAO
     abstract fun equipmentFB() : EquipmentDAO
+    abstract fun guideFB() : GuideDAO
 
     abstract fun favoriteDao() : FavoriteDAO
     abstract fun ingredientDao() : IngredientsDAO

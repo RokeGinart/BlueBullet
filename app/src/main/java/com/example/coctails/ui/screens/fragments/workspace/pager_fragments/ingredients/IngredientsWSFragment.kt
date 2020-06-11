@@ -516,6 +516,8 @@ class IngredientsWSFragment :
                     count--
                 }
 
+                searchAdapter?.clearList()
+
                 setBadgeNumber()
             }
         }

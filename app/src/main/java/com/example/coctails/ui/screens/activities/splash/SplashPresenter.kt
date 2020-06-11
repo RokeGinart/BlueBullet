@@ -4,4 +4,5 @@ import com.example.coctails.ui.BasePresenter
 
 abstract class SplashPresenter : BasePresenter<SplashView>() {
     abstract fun downloadData()
+    abstract fun checkData()
 }

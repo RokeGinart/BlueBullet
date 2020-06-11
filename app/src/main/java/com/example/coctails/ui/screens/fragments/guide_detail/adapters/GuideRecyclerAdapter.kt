@@ -6,18 +6,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coctails.R
-import com.example.coctails.network.models.firebase.drink.Guide
+import com.example.coctails.core.room.entity.guide_data.Steps
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_steps_item.view.*
 
 
 class GuideRecyclerAdapter : RecyclerView.Adapter<GuideRecyclerAdapter.ViewHolder>() {
 
-    private val steps = ArrayList<Guide.Steps>()
+    private val steps = ArrayList<Steps>()
     private val left = 0
     private val right = 1
 
-    fun setList(stList: List<Guide.Steps>) {
+    fun setList(stList: List<Steps>) {
         steps.clear()
         steps.addAll(stList)
         notifyDataSetChanged()
@@ -44,7 +44,7 @@ class GuideRecyclerAdapter : RecyclerView.Adapter<GuideRecyclerAdapter.ViewHolde
     }
 
 
-    fun getAdapterList(): ArrayList<Guide.Steps> = steps
+    fun getAdapterList(): ArrayList<Steps> = steps
 
     override fun getItemCount(): Int = steps.size
 
@@ -61,7 +61,7 @@ class GuideRecyclerAdapter : RecyclerView.Adapter<GuideRecyclerAdapter.ViewHolde
             get() = itemView
 
 
-        fun bind(step: Guide.Steps) {
+        fun bind(step: Steps) {
             Glide.with(itemView.context)
                 .load(step.image)
                 .into(itemView.stepImage)

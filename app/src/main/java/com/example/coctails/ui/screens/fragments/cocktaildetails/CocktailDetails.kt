@@ -228,10 +228,10 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
     override fun success() {
         val favoriteSubjectModel = FavoriteSubjectModel(cocktails?.category?.category!!, cocktails?.id!!, favorite)
 
-        App.instanse?.subject?.publishFavorite(favoriteSubjectModel)
+        App.instance?.subject?.publishFavorite(favoriteSubjectModel)
 
-        ingredient?.let { App.instanse?.subject?.publishIngredient(it) }
-        App.instanse?.subject?.publish(CHANGED_FROM_INGREDIENT)
+        ingredient?.let { App.instance?.subject?.publishIngredient(it) }
+        App.instance?.subject?.publish(CHANGED_FROM_INGREDIENT)
     }
 
     override fun showIngredientResult(ingredientsList: List<IngredientModelCD>) {
@@ -244,8 +244,8 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
                 adapter?.updateItem(index, isChanged)
                 adapter?.notifyItemChanged(index)
 
-                App.instanse?.subject?.publishIngredient(element)
-                App.instanse?.subject?.publish(CHANGED_FROM_INGREDIENT)
+                App.instance?.subject?.publishIngredient(element)
+                App.instance?.subject?.publish(CHANGED_FROM_INGREDIENT)
             }
         }
     }

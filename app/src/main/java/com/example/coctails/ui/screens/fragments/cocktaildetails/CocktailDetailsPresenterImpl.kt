@@ -12,7 +12,7 @@ class CocktailDetailsPresenterImpl : CocktailDetailsPresenter() {
 
     override fun getFavorite(cocktailId: Int, category: String) {
         addToDispose(
-            App.instanse?.database?.favoriteDao()?.getCocktail(cocktailId, category)
+            App.instance?.database?.favoriteDao()?.getCocktail(cocktailId, category)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
@@ -38,14 +38,14 @@ class CocktailDetailsPresenterImpl : CocktailDetailsPresenter() {
         val favoriteModel = FavoriteModel(cocktailId, name, image, category, abv, categoryName, favorite)
 
         addToDispose(
-            App.instanse?.database?.favoriteDao()?.getCocktail(cocktailId, category)
+            App.instance?.database?.favoriteDao()?.getCocktail(cocktailId, category)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
                     if (t1 == null) {
-                        App.instanse?.database?.favoriteDao()?.insert(favoriteModel)
+                        App.instance?.database?.favoriteDao()?.insert(favoriteModel)
                     } else {
-                        App.instanse?.database?.favoriteDao()?.delete(t1)
+                        App.instance?.database?.favoriteDao()?.delete(t1)
                     }
 
                     screenView?.success()
@@ -54,7 +54,7 @@ class CocktailDetailsPresenterImpl : CocktailDetailsPresenter() {
 
     override fun getIngredientDetail(cocktails: CocktailFirebaseData) {
         addToDispose(
-            App.instanse?.database?.ingredientDao()?.getAllIngredient()
+            App.instance?.database?.ingredientDao()?.getAllIngredient()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
@@ -81,14 +81,14 @@ class CocktailDetailsPresenterImpl : CocktailDetailsPresenter() {
     override fun setIngredientToDB(ingredientId: Int, category: String) {
         val ingredientsDBModel = IngredientDBModel(ingredientId, category)
         addToDispose(
-            App.instanse?.database?.ingredientDao()?.getIngredient(ingredientId, category)
+            App.instance?.database?.ingredientDao()?.getIngredient(ingredientId, category)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
                     if (t1 != null) {
-                        App.instanse?.database?.ingredientDao()?.delete(t1)
+                        App.instance?.database?.ingredientDao()?.delete(t1)
                     } else {
-                        App.instanse?.database?.ingredientDao()?.insert(ingredientsDBModel)
+                        App.instance?.database?.ingredientDao()?.insert(ingredientsDBModel)
                     }
 
                     screenView?.success()

@@ -13,7 +13,7 @@ class FavoritePresenterImpl : FavoritePresenter() {
 
     override fun getFavoriteList() {
         addToDispose(
-            App.instanse?.database?.favoriteDao()?.getAllFavorite()?.subscribeOn(Schedulers.io())
+            App.instance?.database?.favoriteDao()?.getAllFavorite()?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1 ->
                     if (t1 != null) {
@@ -29,7 +29,7 @@ class FavoritePresenterImpl : FavoritePresenter() {
 
     override fun getSelectedCocktail(category: String, id: Int) {
         addToDispose(
-            App.instanse?.database?.cocktailFB()?.getAllFirebaseCocktails()
+            App.instance?.database?.cocktailFB()?.getAllFirebaseCocktails()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe{t1, t2 ->
@@ -47,14 +47,14 @@ class FavoritePresenterImpl : FavoritePresenter() {
         val favoriteModel = FavoriteModel(cocktailId, name, image, category, abv, categoryName, favorite)
 
         addToDispose(
-            App.instanse?.database?.favoriteDao()?.getCocktail(cocktailId, category)
+            App.instance?.database?.favoriteDao()?.getCocktail(cocktailId, category)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
                     if (t1 == null) {
-                        App.instanse?.database?.favoriteDao()?.insert(favoriteModel)
+                        App.instance?.database?.favoriteDao()?.insert(favoriteModel)
                     } else {
-                        App.instanse?.database?.favoriteDao()?.delete(t1)
+                        App.instance?.database?.favoriteDao()?.delete(t1)
                     }
                 })
     }

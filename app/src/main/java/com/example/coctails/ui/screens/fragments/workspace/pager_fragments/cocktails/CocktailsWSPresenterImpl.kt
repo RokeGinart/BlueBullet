@@ -12,7 +12,7 @@ class CocktailsWSPresenterImpl : CocktailsWSPresenter() {
     override fun getAllCocktails() {
         responseList.clear()
         addToDispose(
-            App.instanse?.database?.cocktailFB()?.getAllFirebaseCocktails()
+            App.instance?.database?.cocktailFB()?.getAllFirebaseCocktails()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe{t1, t2 ->
@@ -26,7 +26,7 @@ class CocktailsWSPresenterImpl : CocktailsWSPresenter() {
 
     override fun showReadyCocktails() {
         addToDispose(
-            App.instanse?.database?.ingredientDao()?.getAllIngredient()
+            App.instance?.database?.ingredientDao()?.getAllIngredient()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.map { mapIng ->

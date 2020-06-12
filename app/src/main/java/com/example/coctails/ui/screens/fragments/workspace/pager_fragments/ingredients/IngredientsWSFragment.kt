@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -103,7 +104,7 @@ class IngredientsWSFragment :
         forwardAnim = AnimationUtils.loadAnimation(context, R.anim.rotate_forward)
         backwardAnim = AnimationUtils.loadAnimation(context, R.anim.rotate_backward)
 
-        App.instanse?.subject?.listenChange()?.subscribe(getInputObserver())
+        App.instance?.subject?.listenChange()?.subscribe(getInputObserver())
     }
 
     private fun setupRecycler() {
@@ -228,12 +229,13 @@ class IngredientsWSFragment :
                 ContextCompat.getColor(context!!, R.color.white)
             activity?.kitchenTabs?.getTabAt(0)?.orCreateBadge?.number = count
         } else {
+            Log.d("TAGS", "STEP 3 I")
             activity?.kitchenTabs?.getTabAt(0)?.removeBadge()
         }
     }
 
     override fun successChanges() {
-        App.instanse?.subject?.publish(CHANGED_FROM_ALL)
+        App.instance?.subject?.publish(CHANGED_FROM_ALL)
     }
 
     private fun openSearchDialog() {
@@ -508,7 +510,7 @@ class IngredientsWSFragment :
                 adapter?.resetDataItem(index, isChanged)
                 adapter?.notifyItemChanged(index)
 
-                App.instanse?.subject?.publish(CHANGED_FROM_ALL)
+                App.instance?.subject?.publish(CHANGED_FROM_ALL)
 
                 if (isChanged) {
                     count++

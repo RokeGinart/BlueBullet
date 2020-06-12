@@ -7,7 +7,7 @@ import io.reactivex.schedulers.Schedulers
 class GlassWSPresenterImpl : GlassWSPresenter() {
     override fun getGlassList() {
         addToDispose(
-            App.instanse?.database?.glassFB()?.getAllGlass()
+            App.instance?.database?.glassFB()?.getAllGlass()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->

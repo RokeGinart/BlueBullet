@@ -54,7 +54,7 @@ class ShoppingFragment : BaseFragment<ShoppingPresenter, ShoppingView>(), Shoppi
             presenter.getAllShoppingItems()
         }
 
-        App.instanse?.subject?.listenShoppingChange()?.subscribe(getInputObserver())
+        App.instance?.subject?.listenShoppingChange()?.subscribe(getInputObserver())
     }
 
     private fun setupRecycler() {

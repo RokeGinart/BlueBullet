@@ -10,7 +10,7 @@ class GlassPresenterImpl : GlassPresenter() {
 
     override fun getGlass(glassId: Int) {
         addToDispose(
-            App.instanse?.database?.glassFB()?.getGlassDetails(glassId)
+            App.instance?.database?.glassFB()?.getGlassDetails(glassId)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
@@ -23,7 +23,7 @@ class GlassPresenterImpl : GlassPresenter() {
 
     private fun getItemDataFromDB(glass: GlassFirebaseData) {
         addToDispose(
-            App.instanse?.database?.shoppingDao()?.getShoppingItem(
+            App.instance?.database?.shoppingDao()?.getShoppingItem(
                 glass.id,
                 "glass"
             )?.subscribeOn(
@@ -50,15 +50,15 @@ class GlassPresenterImpl : GlassPresenter() {
         val shoppingItem = Shopping(itemId, name, image, mainCategory, category, true)
 
         addToDispose(
-            App.instanse?.database?.shoppingDao()?.getShoppingItem(itemId, category)
+            App.instance?.database?.shoppingDao()?.getShoppingItem(itemId, category)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
                     if (t1 == null) {
-                        App.instanse?.database?.shoppingDao()?.insert(shoppingItem)
+                        App.instance?.database?.shoppingDao()?.insert(shoppingItem)
                         screenView?.changesSuccess(itemId, true)
                     } else {
-                        App.instanse?.database?.shoppingDao()?.delete(t1)
+                        App.instance?.database?.shoppingDao()?.delete(t1)
                         screenView?.changesSuccess(itemId, false)
                     }
                 })

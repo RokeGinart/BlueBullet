@@ -9,7 +9,7 @@ class ShoppingPresenterImpl : ShoppingPresenter() {
 
     override fun getAllShoppingItems() {
         addToDispose(
-            App.instanse?.database?.shoppingDao()?.getAllShoppingItem()?.subscribeOn(Schedulers.io())?.observeOn(
+            App.instance?.database?.shoppingDao()?.getAllShoppingItem()?.subscribeOn(Schedulers.io())?.observeOn(
                 AndroidSchedulers.mainThread()
             )?.subscribe { t1, t2 ->
                 if (t1 != null) {
@@ -34,14 +34,14 @@ class ShoppingPresenterImpl : ShoppingPresenter() {
         val shoppingItem = Shopping(itemId, name, image, mainCategory, category, true)
 
         addToDispose(
-            App.instanse?.database?.shoppingDao()?.getShoppingItem(itemId, category)
+            App.instance?.database?.shoppingDao()?.getShoppingItem(itemId, category)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
                     if (t1 == null) {
-                        App.instanse?.database?.shoppingDao()?.insert(shoppingItem)
+                        App.instance?.database?.shoppingDao()?.insert(shoppingItem)
                     } else {
-                        App.instanse?.database?.shoppingDao()?.delete(t1)
+                        App.instance?.database?.shoppingDao()?.delete(t1)
                     }
                 })
     }

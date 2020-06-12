@@ -1,49 +1,39 @@
 package com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients
 
-import androidx.annotation.NonNull
+import android.util.Log
 import com.example.coctails.core.App
 import com.example.coctails.core.room.entity.IngredientDBModel
-import com.example.coctails.network.models.firebase.drink.IngredientsModel
+import com.example.coctails.core.room.entity.ingredients_data.IngredientsFirebaseData
 import com.example.coctails.ui.screens.fragments.workspace.pager_fragments.ingredients.model.IngredientModelSelection
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
 
-    var database = FirebaseDatabase.getInstance()
-    var myRef = database.getReference("ingredients")
-
     private var selectedSort = 0
 
-    private val allIngredientsList = mutableListOf<IngredientsModel>()
+    private val allIngredientsList = mutableListOf<IngredientsFirebaseData>()
     private val tempIngredientList = mutableListOf<IngredientModelSelection>()
     private val ingredientsByCategoryList = mutableListOf<IngredientModelSelection>()
 
     override fun getIngredientList() {
         allIngredientsList.clear()
-        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-                dataSnapshot.children.forEach {
-                    it.children.forEach { alc ->
-                        allIngredientsList.add(alc.getValue(IngredientsModel::class.java)!!)
-                    }
+
+        addToDispose(
+            App.instance?.database?.ingredientsFB()?.getAllFirebaseIngredients()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    allIngredientsList.addAll(t1)
+                    getIngredientListFromDB()
                 }
-
-                getIngredientListFromDB()
-            }
-
-            override fun onCancelled(@NonNull databaseError: DatabaseError) {}
-        })
+        )
     }
 
     override fun getIngredientListFromDB() {
         tempIngredientList.clear()
         addToDispose(
-            App.instanse?.database?.ingredientDao()?.getAllIngredient()
+            App.instance?.database?.ingredientDao()?.getAllIngredient()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
@@ -252,7 +242,7 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
 
     override fun getListForSearch() {
         addToDispose(
-            App.instanse?.database?.ingredientDao()?.getAllIngredient()
+            App.instance?.database?.ingredientDao()?.getAllIngredient()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
@@ -286,14 +276,14 @@ class IngredientsWSPresenterImpl : IngredientsWSPresenter() {
     override fun setIngredientToDB(ingredientId: Int, category: String) {
         val ingredientsDBModel = IngredientDBModel(ingredientId, category)
         addToDispose(
-            App.instanse?.database?.ingredientDao()?.getIngredient(ingredientId, category)
+            App.instance?.database?.ingredientDao()?.getIngredient(ingredientId, category)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
                     if (t1 != null) {
-                        App.instanse?.database?.ingredientDao()?.delete(t1)
+                        App.instance?.database?.ingredientDao()?.delete(t1)
                     } else {
-                        App.instanse?.database?.ingredientDao()?.insert(ingredientsDBModel)
+                        App.instance?.database?.ingredientDao()?.insert(ingredientsDBModel)
                     }
 
                     screenView?.successChanges()

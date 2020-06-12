@@ -113,7 +113,7 @@ class EquipmentDetailsFragment : BaseFragment<EquipmentDetailsPresenter, Equipme
 
     override fun changesSuccess(id : Int, selected: Boolean) {
         val item = ItemChange("equipment", id, selected)
-        App.instanse?.subject?.publishItem(item)
+        App.instance?.subject?.publishItem(item)
     }
 
 

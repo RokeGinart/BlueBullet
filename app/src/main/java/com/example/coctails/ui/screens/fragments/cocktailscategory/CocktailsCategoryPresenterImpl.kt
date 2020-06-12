@@ -10,7 +10,7 @@ class CocktailsCategoryPresenterImpl : CocktailsCategoryPresenter() {
 
     override fun getCocktailsByCategory(category: String) {
         addToDispose(
-            App.instanse?.database?.cocktailFB()?.getAllFirebaseCocktails()
+            App.instance?.database?.cocktailFB()?.getAllFirebaseCocktails()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe{t1, t2 ->
@@ -29,7 +29,7 @@ class CocktailsCategoryPresenterImpl : CocktailsCategoryPresenter() {
 
     override fun getAllCocktails() {
         addToDispose(
-            App.instanse?.database?.cocktailFB()?.getAllFirebaseCocktails()
+            App.instance?.database?.cocktailFB()?.getAllFirebaseCocktails()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe{t1, t2 ->
@@ -40,7 +40,7 @@ class CocktailsCategoryPresenterImpl : CocktailsCategoryPresenter() {
 
     override fun getCocktailsByIngredient(ingredient: String) {
         addToDispose(
-            App.instanse?.database?.cocktailFB()?.getAllFirebaseCocktails()
+            App.instance?.database?.cocktailFB()?.getAllFirebaseCocktails()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe{t1, t2 ->

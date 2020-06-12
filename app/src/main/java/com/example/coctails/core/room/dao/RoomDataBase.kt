@@ -11,18 +11,21 @@ import com.example.coctails.core.room.entity.TypeConvert
 import com.example.coctails.core.room.entity.equipment_data.EquipmentFirebaseData
 import com.example.coctails.core.room.entity.glass_data.GlassFirebaseData
 import com.example.coctails.core.room.entity.guide_data.GuideFirebaseData
+import com.example.coctails.core.room.entity.ingredients_data.IngredientsFirebaseData
 
 @Database(entities = [FavoriteModel::class,
     IngredientDBModel::class,
     Shopping::class,
     CocktailFirebaseData::class,
+    IngredientsFirebaseData::class,
     GlassFirebaseData::class,
     GuideFirebaseData::class,
-    EquipmentFirebaseData::class],  version = 15)
+    EquipmentFirebaseData::class],  version = 16)
 @TypeConverters(TypeConvert::class)
 abstract class RoomDataBase : RoomDatabase() {
 
     abstract fun cocktailFB() : CocktailsFirebaseDataDAO
+    abstract fun ingredientsFB() : IngredientsFirebaseDAO
     abstract fun glassFB() : GlassDAO
     abstract fun equipmentFB() : EquipmentDAO
     abstract fun guideFB() : GuideDAO

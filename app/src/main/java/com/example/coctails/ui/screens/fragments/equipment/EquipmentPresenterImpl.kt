@@ -8,7 +8,7 @@ class EquipmentPresenterImpl : EquipmentPresenter() {
 
     override fun getAllEquipment() {
         addToDispose(
-            App.instanse?.database?.equipmentFB()?.getAllEquipment()
+            App.instance?.database?.equipmentFB()?.getAllEquipment()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->

@@ -8,7 +8,7 @@ class GuideDetailsPresenterImpl : GuideDetailsPresenter() {
 
     override fun getGuide(id: Int) {
         addToDispose(
-            App.instanse?.database?.guideFB()?.getGuidesDetails(id)
+            App.instance?.database?.guideFB()?.getGuidesDetails(id)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->

@@ -7,6 +7,7 @@ import com.example.coctails.core.room.entity.cocktails_data.CocktailFirebaseData
 import com.example.coctails.core.room.entity.equipment_data.EquipmentFirebaseData
 import com.example.coctails.core.room.entity.glass_data.GlassFirebaseData
 import com.example.coctails.core.room.entity.guide_data.GuideFirebaseData
+import com.example.coctails.core.room.entity.ingredients_data.IngredientsFirebaseData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -18,6 +19,7 @@ class SplashPresenterImpl : SplashPresenter() {
 
     private var database = FirebaseDatabase.getInstance()
     private var myRef = database.getReference("drink")
+    private var ingredientsDatabase = database.getReference("ingredients")
     private var glassDatabase = database.getReference("glass")
     private var equipmentDatabase = database.getReference("equipment")
     private var guideDatabase = database.getReference("guides")
@@ -40,12 +42,12 @@ class SplashPresenterImpl : SplashPresenter() {
 
     override fun checkData() {
         addToDispose(
-            App.instanse?.database?.cocktailFB()?.getAllFirebaseCocktails()
+            App.instance?.database?.cocktailFB()?.getAllFirebaseCocktails()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
                     if (t1.isNotEmpty()) {
-                        checkGlassData()
+                        checkIngredientsData()
                     } else {
                         getAllCocktails()
                     }
@@ -53,9 +55,24 @@ class SplashPresenterImpl : SplashPresenter() {
         )
     }
 
+    private fun checkIngredientsData() {
+        addToDispose(
+            App.instance?.database?.ingredientsFB()?.getAllFirebaseIngredients()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { t1, t2 ->
+                    if (t1.isNotEmpty()) {
+                        checkGlassData()
+                    } else {
+                        getAllIngredients()
+                    }
+                }
+        )
+    }
+
     private fun checkGlassData() {
         addToDispose(
-            App.instanse?.database?.glassFB()?.getAllGlass()
+            App.instance?.database?.glassFB()?.getAllGlass()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
@@ -71,7 +88,7 @@ class SplashPresenterImpl : SplashPresenter() {
 
     private fun checkEquipmentData() {
         addToDispose(
-            App.instanse?.database?.equipmentFB()?.getAllEquipment()
+            App.instance?.database?.equipmentFB()?.getAllEquipment()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
@@ -86,7 +103,7 @@ class SplashPresenterImpl : SplashPresenter() {
 
     private fun checkGuideData() {
         addToDispose(
-            App.instanse?.database?.guideFB()?.getAllGuides()
+            App.instance?.database?.guideFB()?.getAllGuides()
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe { t1, t2 ->
@@ -103,12 +120,32 @@ class SplashPresenterImpl : SplashPresenter() {
         myRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
 
-                App.instanse?.database?.cocktailFB()?.deleteAllData()
+                App.instance?.database?.cocktailFB()?.deleteAllData()
 
                 dataSnapshot.children.forEach {
                     it.children.forEach { cocktails ->
-                        App.instanse?.database?.cocktailFB()
+                        App.instance?.database?.cocktailFB()
                             ?.insert(cocktails.getValue(CocktailFirebaseData::class.java)!!)
+                    }
+                }
+
+                getAllIngredients()
+            }
+
+            override fun onCancelled(@NonNull databaseError: DatabaseError) {}
+        })
+    }
+
+    private fun getAllIngredients() {
+        ingredientsDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
+
+                App.instance?.database?.ingredientsFB()?.deleteAllFirebaseIngredients()
+
+                dataSnapshot.children.forEach {
+                    it.children.forEach { ingredient ->
+                        App.instance?.database?.ingredientsFB()
+                            ?.insert(ingredient.getValue(IngredientsFirebaseData::class.java)!!)
                     }
                 }
 
@@ -122,10 +159,10 @@ class SplashPresenterImpl : SplashPresenter() {
     private fun getAllGlass() {
         glassDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-                App.instanse?.database?.glassFB()?.deleteAllGlass()
+                App.instance?.database?.glassFB()?.deleteAllGlass()
 
                 dataSnapshot.children.forEach {
-                    App.instanse?.database?.glassFB()
+                    App.instance?.database?.glassFB()
                         ?.insert(it.getValue(GlassFirebaseData::class.java)!!)
                 }
 
@@ -139,10 +176,10 @@ class SplashPresenterImpl : SplashPresenter() {
     private fun getAllEquipment() {
         equipmentDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-                App.instanse?.database?.equipmentFB()?.deleteAllEquipment()
+                App.instance?.database?.equipmentFB()?.deleteAllEquipment()
 
                 dataSnapshot.children.forEach {
-                    App.instanse?.database?.equipmentFB()
+                    App.instance?.database?.equipmentFB()
                         ?.insert(it.getValue(EquipmentFirebaseData::class.java)!!)
                 }
 
@@ -156,10 +193,10 @@ class SplashPresenterImpl : SplashPresenter() {
     private fun getAllGuide() {
         guideDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-                App.instanse?.database?.guideFB()?.deleteAllGuide()
+                App.instance?.database?.guideFB()?.deleteAllGuide()
 
                 dataSnapshot.children.forEach {
-                    App.instanse?.database?.guideFB()
+                    App.instance?.database?.guideFB()
                         ?.insert(it.getValue(GuideFirebaseData::class.java)!!)
                 }
 

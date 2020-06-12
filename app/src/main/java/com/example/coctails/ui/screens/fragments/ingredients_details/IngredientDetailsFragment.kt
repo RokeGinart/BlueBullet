@@ -9,7 +9,7 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.example.coctails.R
 import com.example.coctails.interfaces.OnIngredientDataChanged
-import com.example.coctails.network.models.firebase.drink.IngredientsModel
+import com.example.coctails.core.room.entity.ingredients_data.IngredientsFirebaseData
 import com.example.coctails.ui.screens.BaseFragment
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import com.example.coctails.ui.screens.fragments.photoview.PhotoFragment
@@ -23,7 +23,7 @@ class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredien
     private var activity: MainActivity? = null
     private var ingCategory: String? = null
     private var ingId: Int? = null
-    private var ingredient : IngredientsModel? = null
+    private var ingredient : IngredientsFirebaseData? = null
     private var isSelected = false
     private var shopSelected = false
 
@@ -63,19 +63,19 @@ class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredien
     }
 
     @SuppressLint("SetTextI18n")
-    override fun showIngredientResult(ingredientModel: IngredientsModel) {
+    override fun showIngredientResult(ingredientFirebaseData: IngredientsFirebaseData) {
         commonProgressBar.visibility = View.GONE
         ingredientScrollID.visibility = View.VISIBLE
 
-        ingredient = ingredientModel
+        ingredient = ingredientFirebaseData
 
-        commonToolbarTitle.text = ingredientModel.name
-        ingredientCategoryID.text = ingredientModel.category?.name
-        ingredientABVID.text = ingredientModel.abv.toString() + getString(R.string.percent)
-        ingredientCountryID.text = ingredientModel.country
-        ingredientDescriptionID.text = ingredientModel.description
+        commonToolbarTitle.text = ingredientFirebaseData.name
+        ingredientCategoryID.text = ingredientFirebaseData.category?.name
+        ingredientABVID.text = ingredientFirebaseData.abv.toString() + getString(R.string.percent)
+        ingredientCountryID.text = ingredientFirebaseData.country
+        ingredientDescriptionID.text = ingredientFirebaseData.description
 
-        Glide.with(this).load(ingredientModel.image).into(ingredientImageID)
+        Glide.with(this).load(ingredientFirebaseData.image).into(ingredientImageID)
 
         viewClicked()
     }

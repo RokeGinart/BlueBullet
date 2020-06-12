@@ -2,7 +2,6 @@ package com.example.coctails.ui.screens.fragments.favorites
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coctails.R
@@ -51,7 +50,7 @@ class FavoriteFragment : BaseFragment<FavoritePresenter, FavoriteView>(), Favori
             presenter.getFavoriteList()
         }
 
-        App.instanse?.subject?.listenFavoriteChange()?.subscribe(getInputObserver())
+        App.instance?.subject?.listenFavoriteChange()?.subscribe(getInputObserver())
     }
 
     private fun setupRecycler() {

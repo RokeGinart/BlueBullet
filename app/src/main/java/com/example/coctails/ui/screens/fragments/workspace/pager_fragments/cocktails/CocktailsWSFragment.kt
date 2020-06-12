@@ -2,6 +2,7 @@ package com.example.coctails.ui.screens.fragments.workspace.pager_fragments.cock
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.GridLayoutManager
@@ -41,7 +42,7 @@ class CocktailsWSFragment :
         presenter.bindView(this)
         presenter.getAllCocktails()
 
-        App.instanse?.subject?.listen()?.subscribe(getInputObserver())
+        App.instance?.subject?.listen()?.subscribe(getInputObserver())
 
         setupRecycler()
     }
@@ -58,10 +59,13 @@ class CocktailsWSFragment :
     override fun showResult(cocktails: List<CocktailFirebaseData>) {
         readyCocktailMessage.visibility = View.GONE
         adapter?.setList(cocktails)
+        Log.d("TAGS", "STEP 1")
         if (cocktails.isNotEmpty()) {
+            Log.d("TAGS", "STEP 2")
             activity?.kitchenTabs?.getTabAt(1)?.orCreateBadge?.badgeTextColor = getColor(context!!, R.color.white)
             activity?.kitchenTabs?.getTabAt(1)?.orCreateBadge?.number = cocktails.size
         } else {
+            Log.d("TAGS", "STEP 3")
             activity?.kitchenTabs?.getTabAt(1)?.removeBadge()
         }
     }

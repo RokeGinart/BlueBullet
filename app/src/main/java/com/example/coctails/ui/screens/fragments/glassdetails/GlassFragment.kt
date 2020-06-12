@@ -93,7 +93,7 @@ class GlassFragment : BaseFragment<GlassPresenter, GlassView>(), GlassView {
 
     override fun changesSuccess(id : Int, selected: Boolean) {
         val item = ItemChange("glass", id, selected)
-        App.instanse?.subject?.publishItem(item)
+        App.instance?.subject?.publishItem(item)
     }
 
     override fun onDestroyView() {

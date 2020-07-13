@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Blue Bullet</string>
 
+    <string name="notification">Доступны новые рецепты!</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="loading">Загрузка данных…</string>
     <string name="splash_message">Что-то пошло не так…\nПроверьте подключение к интернету.</string>

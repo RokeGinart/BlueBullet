@@ -68,7 +68,7 @@ class EquipmentDetailsFragment : BaseFragment<EquipmentDetailsPresenter, Equipme
 
     private fun clickers(equipmentFirebaseData: EquipmentFirebaseData?){
         equipmentShop.setOnClickListener {
-            activity?.customToast(getString(R.string.clickToShop), 1)
+            activity?.customAddRemoveToast(getString(R.string.clickToShop), 1)
         }
 
         equipmentShop.setOnLongClickListener {
@@ -81,11 +81,11 @@ class EquipmentDetailsFragment : BaseFragment<EquipmentDetailsPresenter, Equipme
         equipmentTrolley.setOnClickListener {
             shoppingSelected = if(shoppingSelected){
                 trolleyImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_grocery_trolley))
-                activity?.customToast(getString(R.string.shopping_start) + equipmentFirebaseData?.name + getString(R.string.shopping_delete), 2)
+                activity?.customAddRemoveToast(getString(R.string.shopping_start) + equipmentFirebaseData?.name + getString(R.string.shopping_delete), 2)
                 false
             } else {
                 trolleyImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_grocery_trolley_selected))
-                activity?.customToast(getString(R.string.shopping_start) + equipmentFirebaseData?.name + getString(R.string.shopping_added), 1)
+                activity?.customAddRemoveToast(getString(R.string.shopping_start) + equipmentFirebaseData?.name + getString(R.string.shopping_added), 1)
                 true
             }
 
@@ -103,7 +103,7 @@ class EquipmentDetailsFragment : BaseFragment<EquipmentDetailsPresenter, Equipme
 
                 activity?.loadFragment(fragment, "GuideDetails", true)
             } else {
-                activity?.customToast(
+                activity?.customAddRemoveToast(
                     getString(R.string.no_guide) + equipmentFirebaseData.name + getString(R.string.no_guide_s_part),
                     2
                 )

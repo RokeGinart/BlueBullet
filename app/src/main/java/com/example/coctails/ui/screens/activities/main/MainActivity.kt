@@ -121,7 +121,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
             val t = System.currentTimeMillis()
             if (t - backPressedTime > 2000) {
                 backPressedTime = t
-                customToast("Нажмите назад, чтобы выйти", 0)
+                "Нажмите назад, чтобы выйти".customToast()
             } else {
                 super.onBackPressed()
                 this.finish()
@@ -151,7 +151,23 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
         }
     }
 
-    fun customToast(text: String, action : Int) {
+    private fun String.customToast() {
+        val inflater = layoutInflater
+        val layout: View =
+            inflater.inflate(R.layout.custom_toast,
+                findViewById(R.id.customToastLayout)
+            )
+
+        val tv = layout.findViewById(R.id.customToastMessage) as TextView
+
+        tv.text = this
+        val toast = Toast(applicationContext)
+        toast.setGravity(Gravity.BOTTOM, 0, 200)
+        toast.view = layout
+        toast.show()
+    }
+
+    fun customAddRemoveToast(text: String, action : Int){
         val inflater = layoutInflater
         val layout: View =
             inflater.inflate(R.layout.custom_toast, findViewById(R.id.customToastLayout))

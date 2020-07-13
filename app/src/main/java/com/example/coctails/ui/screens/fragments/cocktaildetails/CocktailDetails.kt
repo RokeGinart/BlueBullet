@@ -195,7 +195,7 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
         favButton.clickWithDebounce {
             favorite = if (favorite) {
                 favImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_ns))
-                activity?.customToast(
+                activity?.customAddRemoveToast(
                     getString(R.string.message_cocktail) + cocktails?.name + getString(
                         R.string.message_delete_cocktail
                     ), 2
@@ -203,7 +203,7 @@ class CocktailDetails : BaseFragment<CocktailDetailsPresenter, CocktailDetailsVi
                 false
             } else {
                 favImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_favorite_s))
-                activity?.customToast(
+                activity?.customAddRemoveToast(
                     getString(R.string.message_cocktail) + cocktails?.name + getString(
                         R.string.message_added_cocktail
                     ), 1

@@ -11,16 +11,18 @@ import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.example.coctails.R
-import com.example.coctails.core.App
 import com.example.coctails.core.Cocktails
+import com.example.coctails.services.MyWorker
 import com.example.coctails.ui.screens.BaseActivity
 import com.example.coctails.ui.screens.activities.main.MainActivity
 import kotlinx.android.synthetic.main.activity_splash.*
+import java.util.concurrent.TimeUnit
 
 
 class SplashActivity : BaseActivity<SplashPresenter, SplashView>(), SplashView {
@@ -59,6 +61,8 @@ class SplashActivity : BaseActivity<SplashPresenter, SplashView>(), SplashView {
           } else {
               showAdultDialog()
           }*/
+
+
     }
 
     private fun startCountDown(){

@@ -118,7 +118,7 @@ class IngredientDetailsFragment(private val onIngredientDataChanged: OnIngredien
         }
 
         ingredientShopID.clickWithDebounce {
-            activity?.customToast(getString(R.string.clickToShop), 1)
+            activity?.customAddRemoveToast(getString(R.string.clickToShop), 1)
         }
 
         favoriteIngredient.clickWithDebounce {

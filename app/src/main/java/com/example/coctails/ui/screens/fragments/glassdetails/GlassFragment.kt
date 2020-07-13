@@ -66,7 +66,7 @@ class GlassFragment : BaseFragment<GlassPresenter, GlassView>(), GlassView {
 
     private fun clickers(glass: GlassFirebaseData?) {
         glassShop.setOnClickListener {
-            activity?.customToast(getString(R.string.clickToShop), 1)
+            activity?.customAddRemoveToast(getString(R.string.clickToShop), 1)
         }
 
         glassShop.setOnLongClickListener {
@@ -79,11 +79,11 @@ class GlassFragment : BaseFragment<GlassPresenter, GlassView>(), GlassView {
         glassTrolley.setOnClickListener {
             selectedItem = if(selectedItem){
                 trolleyImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_grocery_trolley))
-                activity?.customToast(getString(R.string.shopping_start) + glass?.name + getString(R.string.shopping_delete), 2)
+                activity?.customAddRemoveToast(getString(R.string.shopping_start) + glass?.name + getString(R.string.shopping_delete), 2)
                 false
             } else {
                 trolleyImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_grocery_trolley_selected))
-                activity?.customToast(getString(R.string.shopping_start) + glass?.name + getString(R.string.shopping_added), 1)
+                activity?.customAddRemoveToast(getString(R.string.shopping_start) + glass?.name + getString(R.string.shopping_added), 1)
                 true
             }
 
